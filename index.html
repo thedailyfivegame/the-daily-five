@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>The Daily Five — One word. Six tries. Every day.</title>
+<meta name="description" content="A new five-letter word drops every day at midnight. Six guesses. No sign-up. Free forever."/>
+<meta property="og:title" content="The Daily Five"/>
+<meta property="og:description" content="One word. Six tries. Every day."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://thedailyfive.net"/>
+<meta name="theme-color" content="#f4efe4"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4991106296689056" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f4efe4; --paper2: #ede6d4; --paper3: #e4dbc6;
+  --ink: #1c1a16; --ink-soft: #4a463c; --ink-muted: #8a8070;
+  --line: #cdc4ad; --green: #3f7a4f; --green-dim: #2c5638;
+  --amber: #c89a2b; --absent: #a39b85; --accent: #9e2b25;
+  --tile: #fffdf7;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  background-image: radial-gradient(rgba(28,26,22,.025) 1px, transparent 1px);
+  background-size: 4px 4px;
+  overflow-x: hidden;
+}
+
+/* ─── NAV ─── */
+nav {
+  border-bottom: 2px solid var(--ink); padding: 12px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 50;
+  background: var(--paper);
+  background-image: radial-gradient(rgba(28,26,22,.025) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+.nav-logo { font-family: 'Fraunces', serif; font-weight: 900; font-size: 20px; text-decoration: none; color: var(--ink); letter-spacing: -.02em; }
+.nav-right { display: flex; gap: 10px; align-items: center; }
+.nav-link { font-size: 12px; font-weight: 600; color: var(--ink-soft); text-decoration: none; letter-spacing: .05em; text-transform: uppercase; transition: color .15s; }
+.nav-link:hover { color: var(--ink); }
+.nav-play { background: var(--ink); color: var(--paper); padding: 8px 18px; border-radius: 3px; text-decoration: none; font-weight: 700; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; transition: opacity .15s; }
+.nav-play:hover { opacity: .8; }
+
+/* ─── HERO ─── */
+.hero { max-width: 1040px; margin: 0 auto; padding: 72px 24px 56px; display: flex; align-items: center; justify-content: space-between; gap: 56px; flex-wrap: wrap; }
+.hero-text { flex: 1; min-width: 280px; }
+.hero-kicker { font-size: 10.5px; letter-spacing: .32em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 16px; }
+.hero-headline { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(44px, 7.5vw, 76px); line-height: .92; letter-spacing: -.03em; margin-bottom: 22px; }
+.hero-sub { font-size: 16px; line-height: 1.65; color: var(--ink-soft); max-width: 420px; margin-bottom: 36px; }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 28px; }
+.btn-primary { background: var(--green); color: #fff; padding: 15px 30px; border-radius: 4px; text-decoration: none; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: .06em; box-shadow: 0 4px 0 var(--green-dim); transition: transform .05s, box-shadow .05s; display: inline-block; }
+.btn-primary:active { transform: translateY(4px); box-shadow: none; }
+.btn-primary:hover { opacity: .92; }
+.btn-ghost { color: var(--ink); text-decoration: none; font-weight: 700; font-size: 13px; border-bottom: 2px solid var(--ink); padding-bottom: 2px; transition: opacity .15s; }
+.btn-ghost:hover { opacity: .6; }
+.store-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.store-badge { background: var(--ink); color: var(--paper); padding: 9px 15px; border-radius: 4px; text-decoration: none; display: flex; align-items: center; gap: 9px; transition: opacity .15s; }
+.store-badge:hover { opacity: .8; }
+.badge-icon { font-size: 19px; line-height: 1; }
+.badge-text { display: flex; flex-direction: column; }
+.badge-top { font-size: 8.5px; text-transform: uppercase; letter-spacing: .1em; opacity: .65; }
+.badge-name { font-weight: 700; font-size: 13.5px; }
+.badge-coming { font-size: 9px; opacity: .5; margin-top: 1px; font-style: italic; }
+
+/* ─── HERO PREVIEW (animated board) ─── */
+.hero-preview { flex: 0 0 auto; }
+.preview-wrap { background: var(--paper); border: 2px solid var(--ink); padding: 18px; box-shadow: 10px 10px 0 var(--ink); display: inline-block; }
+.preview-row { display: flex; gap: 5px; margin-bottom: 5px; }
+.preview-tile { width: 50px; height: 50px; border: 2px solid var(--line); background: var(--tile); border-radius: 2px; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-weight: 700; font-size: 24px; text-transform: uppercase; color: var(--ink); transition: background .3s, border-color .3s, color .3s; }
+.preview-tile.c { background: var(--green); border-color: var(--green); color: #fff; }
+.preview-tile.p { background: var(--amber); border-color: var(--amber); color: #fff; }
+.preview-tile.a { background: var(--absent); border-color: var(--absent); color: #fff; }
+
+/* ─── DIVIDER ─── */
+hr { border: none; border-top: 1px solid var(--line); margin: 0 24px; }
+
+/* ─── FEATURES ─── */
+.features { max-width: 800px; margin: 0 auto; padding: 64px 24px; }
+.section-eyebrow { font-size: 9.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+.section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+.feature-card { background: var(--paper2); border: 1.5px solid var(--line); padding: 22px 20px; border-radius: 2px; }
+.feature-icon { font-size: 26px; margin-bottom: 12px; }
+.feature-card h3 { font-weight: 800; font-size: 14px; margin-bottom: 6px; }
+.feature-card p { font-size: 12.5px; color: var(--ink-soft); line-height: 1.55; }
+
+/* ─── HOW IT WORKS ─── */
+.how { max-width: 800px; margin: 0 auto; padding: 0 24px 64px; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 28px; margin-top: 4px; }
+.step { border-left: 3px solid var(--line); padding-left: 16px; }
+.step-num { font-family: 'Fraunces', serif; font-weight: 900; font-size: 42px; color: var(--accent); line-height: 1; margin-bottom: 8px; }
+.step h3 { font-weight: 800; font-size: 14px; margin-bottom: 5px; }
+.step p { font-size: 12.5px; color: var(--ink-soft); line-height: 1.55; }
+
+/* ─── COLOR GUIDE ─── */
+.colors { max-width: 800px; margin: 0 auto; padding: 0 24px 64px; }
+.color-items { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 4px; }
+.color-item { display: flex; align-items: center; gap: 10px; }
+.color-swatch { width: 38px; height: 38px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-weight: 800; font-size: 19px; color: #fff; }
+.color-label { font-size: 13px; color: var(--ink-soft); font-weight: 500; }
+
+/* ─── DARK / SETTINGS SECTION ─── */
+.settings-section { max-width: 800px; margin: 0 auto; padding: 0 24px 64px; }
+.settings-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.chip { background: var(--paper2); border: 1.5px solid var(--line); padding: 8px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ─── CTA BANNER ─── */
+.cta-banner { background: var(--ink); color: var(--paper); padding: 64px 24px; text-align: center; background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px); background-size: 4px 4px; }
+.cta-banner h2 { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(30px, 5vw, 52px); letter-spacing: -.03em; margin-bottom: 14px; }
+.cta-banner p { font-size: 15px; opacity: .65; max-width: 480px; margin: 0 auto 32px; line-height: 1.6; }
+.btn-light { background: var(--paper); color: var(--ink); padding: 15px 36px; border-radius: 4px; text-decoration: none; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: .06em; box-shadow: 0 4px 0 rgba(0,0,0,.3); display: inline-block; transition: transform .05s, box-shadow .05s; }
+.btn-light:active { transform: translateY(4px); box-shadow: none; }
+.btn-light:hover { opacity: .92; }
+
+/* ─── FOOTER ─── */
+footer { border-top: 2px solid var(--ink); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 10.5px; color: var(--ink-soft); letter-spacing: .06em; text-transform: uppercase; }
+footer a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line); transition: color .15s; }
+footer a:hover { color: var(--ink); }
+footer .links { display: flex; gap: 20px; }
+
+@media (max-width: 640px) {
+  .hero { padding: 44px 20px 40px; gap: 36px; }
+  .hero-preview { width: 100%; display: flex; justify-content: center; }
+  .preview-tile { width: 44px; height: 44px; font-size: 20px; }
+  nav { padding: 10px 16px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">The Daily Five</a>
+  <div class="nav-right">
+    <a class="nav-link" href="#how">How to Play</a>
+    <a class="nav-play" href="play.html">Play →</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-kicker">Free · Daily · No sign-up required</p>
+    <h1 class="hero-headline">One word.<br>Six tries.<br>Every day.</h1>
+    <p class="hero-sub">A new five-letter word drops at midnight. Guess it, share your streak, come back tomorrow. That's the whole ritual.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="play.html">Play Today's Puzzle</a>
+      <a class="btn-ghost" href="#how">How to play</a>
+    </div>
+    <div class="store-row">
+      <a class="store-badge" href="#" id="androidBadge">
+        <span class="badge-icon">▶</span>
+        <span class="badge-text">
+          <span class="badge-top">Get it on</span>
+          <span class="badge-name">Google Play</span>
+          <span class="badge-coming">Coming soon</span>
+        </span>
+      </a>
+      <a class="store-badge" href="#" id="iosBadge">
+        <span class="badge-icon"></span>
+        <span class="badge-text">
+          <span class="badge-top">Download on the</span>
+          <span class="badge-name">App Store</span>
+          <span class="badge-coming">Coming soon</span>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-preview">
+    <div class="preview-wrap">
+      <!-- Animated board — JS fills this in -->
+      <div id="previewBoard"></div>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- ─── FEATURES ─── -->
+<section class="features">
+  <p class="section-eyebrow">Features</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🌙</div>
+      <h3>Dark Mode</h3>
+      <p>Toggle between the warm newspaper look and a deep dark theme — or let it follow your system.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💪</div>
+      <h3>Hard Mode</h3>
+      <p>Every revealed hint must appear in your next guess. For players who want a real challenge.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">👁</div>
+      <h3>Color Blind Mode</h3>
+      <p>High-contrast orange and blue palette, so everyone can play comfortably.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Stats & Streaks</h3>
+      <p>Track your wins, streaks, and guess distribution. Build a habit and watch your numbers grow.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <h3>Install as App</h3>
+      <p>Add to your home screen from any browser — no app store required. Works offline too.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⇪</div>
+      <h3>Share Your Grid</h3>
+      <p>One tap to copy your emoji grid and share with friends. No spoilers — just the grid.</p>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- ─── HOW TO PLAY ─── -->
+<section class="how" id="how">
+  <p class="section-eyebrow">How to play</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Type a word</h3>
+      <p>Enter any five-letter word using the on-screen keyboard or your physical keyboard.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Read the tiles</h3>
+      <p>Each tile flips to reveal how close your letters are. Three colors, clear logic.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Six chances</h3>
+      <p>Use the color clues to refine your guess. You have six tries to land the word.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3>Share & repeat</h3>
+      <p>Share your result, watch the countdown to the next word, and come back tomorrow.</p>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- ─── COLOR GUIDE ─── -->
+<section class="colors">
+  <p class="section-eyebrow">Color guide</p>
+  <div class="color-items">
+    <div class="color-item">
+      <div class="color-swatch" style="background:var(--green)">B</div>
+      <span class="color-label">Right letter, right spot</span>
+    </div>
+    <div class="color-item">
+      <div class="color-swatch" style="background:var(--amber)">R</div>
+      <span class="color-label">Right letter, wrong spot</span>
+    </div>
+    <div class="color-item">
+      <div class="color-swatch" style="background:var(--absent)">A</div>
+      <span class="color-label">Not in the word</span>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- ─── SETTINGS PREVIEW ─── -->
+<section class="settings-section">
+  <p class="section-eyebrow">Built for everyone</p>
+  <div class="settings-chips">
+    <div class="chip"><div class="dot" style="background:#1c1a16"></div> Dark Mode</div>
+    <div class="chip"><div class="dot" style="background:#9e2b25"></div> Hard Mode</div>
+    <div class="chip"><div class="dot" style="background:#f5793a"></div> Color Blind Mode</div>
+    <div class="chip"><div class="dot" style="background:#3f7a4f"></div> Haptic Feedback</div>
+    <div class="chip"><div class="dot" style="background:#c89a2b"></div> Sound Effects</div>
+    <div class="chip"><div class="dot" style="background:#a39b85"></div> Offline Play (PWA)</div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-banner">
+  <h2>Build your streak.</h2>
+  <p>No ads pestering you mid-game. No sign-up. No lives to buy. Just one word, every day, forever free.</p>
+  <a class="btn-light" href="play.html">Play Today's Word →</a>
+</section>
+
+<footer>
+  <span>© 2025 The Daily Five · <a href="mailto:thedailyfive.game@gmail.com">thedailyfive.game@gmail.com</a></span>
+  <div class="links">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="play.html">Play</a>
+  </div>
+</footer>
+
+<script>
+// ─── Animated board preview ───
+(function(){
+  var words = [
+    { guess:'CRANE', answer:'BRAVE', result:['a','a','p','a','p'] },
+    { guess:'BRAVE', answer:'BRAVE', result:['c','c','c','c','c'] },
+  ];
+  var empty = [['','','','',''],['','','','',''],['','','','',''],['','','','','']];
+  var board=document.getElementById('previewBoard');
+  if(!board) return;
+
+  function makeBoard(rows){
+    board.innerHTML='';
+    rows.forEach(function(row){
+      var rowEl=document.createElement('div'); rowEl.className='preview-row';
+      row.letters.forEach(function(ch,i){
+        var t=document.createElement('div');
+        t.className='preview-tile'+(row.states&&row.states[i]?' '+row.states[i]:'');
+        t.textContent=ch;
+        rowEl.appendChild(t);
+      });
+      board.appendChild(rowEl);
+    });
+  }
+
+  // Build initial state — first guess revealed, rest empty
+  function buildRows(phase){
+    var rows=[];
+    if(phase>=1) rows.push({letters:words[0].guess.split(''), states:words[0].result});
+    if(phase>=2) rows.push({letters:words[1].guess.split(''), states:words[1].result});
+    while(rows.length<6) rows.push({letters:['','','','','']});
+    return rows;
+  }
+
+  // Animate typing + reveal cycle
+  var phase=0;
+  makeBoard(buildRows(0));
+
+  function animateCycle(){
+    // Show phase 0 (empty)
+    makeBoard(buildRows(0));
+    setTimeout(function(){
+      // Reveal guess 1
+      makeBoard(buildRows(1));
+      setTimeout(function(){
+        // Reveal guess 2 (win)
+        makeBoard(buildRows(2));
+        setTimeout(function(){
+          // Reset
+          animateCycle();
+        }, 3000);
+      }, 1800);
+    }, 1000);
+  }
+  setTimeout(animateCycle, 800);
+
+  // Store badge "coming soon" handling
+  ['androidBadge','iosBadge'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.addEventListener('click',function(e){
+      e.preventDefault();
+      alert('The app is coming soon! Play on the web in the meantime — it works great on mobile.');
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -78,11 +78,12 @@ nav {
 .badge-name { font-weight: 700; font-size: 13.5px; }
 .badge-coming { font-size: 9px; opacity: .5; margin-top: 1px; font-style: italic; }
 
-/* ─── HERO PREVIEW (animated board) ─── */
+/* ─── HERO PREVIEW (game board) ─── */
 .hero-preview { flex: 0 0 auto; }
 .preview-wrap { background: var(--paper); border: 2px solid var(--ink); padding: 18px; box-shadow: 10px 10px 0 var(--ink); display: inline-block; }
 .preview-row { display: flex; gap: 5px; margin-bottom: 5px; }
-.preview-tile { width: 50px; height: 50px; border: 2px solid var(--line); background: var(--tile); border-radius: 2px; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-weight: 700; font-size: 24px; text-transform: uppercase; color: var(--ink); transition: background .3s, border-color .3s, color .3s; }
+.preview-row:last-child { margin-bottom: 0; }
+.preview-tile { width: 50px; height: 50px; border: 2px solid var(--line); background: var(--tile); border-radius: 2px; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-weight: 700; font-size: 24px; text-transform: uppercase; color: var(--ink); }
 .preview-tile.c { background: var(--green); border-color: var(--green); color: #fff; }
 .preview-tile.p { background: var(--amber); border-color: var(--amber); color: #fff; }
 .preview-tile.a { background: var(--absent); border-color: var(--absent); color: #fff; }
@@ -115,7 +116,7 @@ hr { border: none; border-top: 1px solid var(--line); margin: 0 24px; }
 .color-swatch { width: 38px; height: 38px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-weight: 800; font-size: 19px; color: #fff; }
 .color-label { font-size: 13px; color: var(--ink-soft); font-weight: 500; }
 
-/* ─── DARK / SETTINGS SECTION ─── */
+/* ─── SETTINGS SECTION ─── */
 .settings-section { max-width: 800px; margin: 0 auto; padding: 0 24px 64px; }
 .settings-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
 .chip { background: var(--paper2); border: 1.5px solid var(--line); padding: 8px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
@@ -165,7 +166,7 @@ footer .links { display: flex; gap: 20px; }
     </div>
     <div class="store-row">
       <a class="store-badge" href="#" id="androidBadge">
-        <span class="badge-icon">▶</span>
+        <span class="badge-icon">&#9654;</span>
         <span class="badge-text">
           <span class="badge-top">Get it on</span>
           <span class="badge-name">Google Play</span>
@@ -173,7 +174,7 @@ footer .links { display: flex; gap: 20px; }
         </span>
       </a>
       <a class="store-badge" href="#" id="iosBadge">
-        <span class="badge-icon"></span>
+        <span class="badge-icon">&#63743;</span>
         <span class="badge-text">
           <span class="badge-top">Download on the</span>
           <span class="badge-name">App Store</span>
@@ -185,8 +186,33 @@ footer .links { display: flex; gap: 20px; }
 
   <div class="hero-preview">
     <div class="preview-wrap">
-      <!-- Animated board — JS fills this in -->
-      <div id="previewBoard"></div>
+      <!-- Example game in progress — answer: BRAVE -->
+      <div class="preview-row">
+        <div class="preview-tile a">C</div>
+        <div class="preview-tile a">R</div>
+        <div class="preview-tile p">A</div>
+        <div class="preview-tile a">N</div>
+        <div class="preview-tile p">E</div>
+      </div>
+      <div class="preview-row">
+        <div class="preview-tile c">B</div>
+        <div class="preview-tile c">R</div>
+        <div class="preview-tile c">A</div>
+        <div class="preview-tile c">V</div>
+        <div class="preview-tile c">E</div>
+      </div>
+      <div class="preview-row">
+        <div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div>
+      </div>
+      <div class="preview-row">
+        <div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div>
+      </div>
+      <div class="preview-row">
+        <div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div>
+      </div>
+      <div class="preview-row">
+        <div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div><div class="preview-tile"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -214,7 +240,7 @@ footer .links { display: flex; gap: 20px; }
     </div>
     <div class="feature-card">
       <div class="feature-icon">📊</div>
-      <h3>Stats & Streaks</h3>
+      <h3>Stats &amp; Streaks</h3>
       <p>Track your wins, streaks, and guess distribution. Build a habit and watch your numbers grow.</p>
     </div>
     <div class="feature-card">
@@ -253,7 +279,7 @@ footer .links { display: flex; gap: 20px; }
     </div>
     <div class="step">
       <div class="step-num">04</div>
-      <h3>Share & repeat</h3>
+      <h3>Share &amp; repeat</h3>
       <p>Share your result, watch the countdown to the next word, and come back tomorrow.</p>
     </div>
   </div>
@@ -312,64 +338,15 @@ footer .links { display: flex; gap: 20px; }
 </footer>
 
 <script>
-// ─── Animated board preview ───
-(function(){
-  var words = [
-    { guess:'CRANE', answer:'BRAVE', result:['a','a','p','a','p'] },
-    { guess:'BRAVE', answer:'BRAVE', result:['c','c','c','c','c'] },
-  ];
-  var empty = [['','','','',''],['','','','',''],['','','','',''],['','','','','']];
-  var board=document.getElementById('previewBoard');
-  if(!board) return;
-
-  function makeBoard(rows){
-    board.innerHTML='';
-    rows.forEach(function(row){
-      var rowEl=document.createElement('div'); rowEl.className='preview-row';
-      row.letters.forEach(function(ch,i){
-        var t=document.createElement('div');
-        t.className='preview-tile'+(row.states&&row.states[i]?' '+row.states[i]:'');
-        t.textContent=ch;
-        rowEl.appendChild(t);
-      });
-      board.appendChild(rowEl);
-    });
-  }
-
-  // Build initial state — first guess revealed, rest empty
-  function buildRows(phase){
-    var rows=[];
-    if(phase>=1) rows.push({letters:words[0].guess.split(''), states:words[0].result});
-    if(phase>=2) rows.push({letters:words[1].guess.split(''), states:words[1].result});
-    while(rows.length<6) rows.push({letters:['','','','','']});
-    return rows;
-  }
-
-  // Animate typing + reveal cycle
-  var phase=0;
-  makeBoard(buildRows(0));
-
-  function animateCycle(){
-    // Show phase 0 (empty)
-    makeBoard(buildRows(0));
-    setTimeout(function(){
-      // Reveal guess 1
-      makeBoard(buildRows(1));
-      setTimeout(function(){
-        // Reveal guess 2 (win)
-        makeBoard(buildRows(2));
-        setTimeout(function(){
-          // Reset
-          animateCycle();
-        }, 3000);
-      }, 1800);
-    }, 1000);
-  }
-  setTimeout(animateCycle, 800);
-
   // Store badge "coming soon" handling
-  ['androidBadge','iosBadge'].forEach(function(id){
-    var el=document.getElementById(id);
-    if(el) el.addEventListener('click',function(e){
-      e.preventDefault();
-      alert('The app is coming soon! Play o
+  document.getElementById('androidBadge').addEventListener('click', function(e){
+    e.preventDefault();
+    alert('The Android app is coming soon! Play on the web for now.');
+  });
+  document.getElementById('iosBadge').addEventListener('click', function(e){
+    e.preventDefault();
+    alert('The iOS app is coming soon! Play on the web for now.');
+  });
+</script>
+</body>
+</html>

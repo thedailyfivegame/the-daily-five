@@ -1,6 +1,6 @@
-// Service Worker — The Daily Five
-const CACHE = 'df-v1';
-const ASSETS = ['/', '/play.html', '/manifest.json'];
+// Service Worker — The Daily Five v3
+const CACHE = 'df-v3';
+const ASSETS = ['/', '/index.html', '/play.html', '/words.js', '/manifest.json', '/favicon.svg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));

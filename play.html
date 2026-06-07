@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-<title>The Daily Five — One word. Six tries. Every day.</title>
+<title>The Daily Five â One word. Six tries. Every day.</title>
 <meta name="description" content="A new five-letter word every day. Six guesses. One ritual."/>
 <meta name="theme-color" content="#f4efe4" id="themeColor"/>
-<meta property="og:title" content="The Daily Five — Free Daily Word Game"/>
+<meta property="og:title" content="The Daily Five â Free Daily Word Game"/>
 <meta property="og:description" content="Guess the 5-letter word in 6 tries. A new word every day. Free, no sign-up, streaks and sharing."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://www.thedailyfive.net/play.html"/>
 <meta property="og:image" content="https://www.thedailyfive.net/og-image.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="The Daily Five — Free Daily Word Game"/>
-<meta name="twitter:description" content="Guess the 5-letter word in 6 tries. Free daily word puzzle — no sign-up needed."/>
+<meta name="twitter:title" content="The Daily Five â Free Daily Word Game"/>
+<meta name="twitter:description" content="Guess the 5-letter word in 6 tries. Free daily word puzzle â no sign-up needed."/>
 <meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
 <link rel="canonical" href="https://www.thedailyfive.net/play.html"/>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
@@ -40,6 +40,75 @@
     projectId:"thedailyfive-f7103",storageBucket:"thedailyfive-f7103.firebasestorage.app",
     messagingSenderId:"418141523968",appId:"1:418141523968:web:05acaf5cf23f85069ac8e5"};
   try{ if(!firebase.apps.length) firebase.initializeApp(cfg); }catch(e){}
+
+/* ─────────────────────────────────────────
+   LEADERBOARD
+───────────────────────────────────────── */
+function loadLeaderboard(){
+  var listEl=document.getElementById('lbList');
+  var myEl=document.getElementById('lbMyRank');
+  if(!listEl) return;
+  listEl.innerHTML='<div class="lb-loading">Loading…</div>';
+  myEl.innerHTML='';
+  var myId=S.get('df_pid');
+  try{
+    firebase.firestore().collection('lb').doc(String(DAY)).collection('p')
+      .orderBy('score','desc').limit(20).get()
+      .then(function(snap){
+        var entries=[];
+        snap.forEach(function(doc){ entries.push(doc.data()); });
+        _lbTotal=entries.length;
+        var myIdx=-1;
+        if(myId) entries.forEach(function(e,i){ if(e.id===myId) myIdx=i; });
+        _lbRank=myIdx>=0?myIdx+1:null;
+        // My rank banner
+        if(myIdx>=0){
+          var e=entries[myIdx], r=myIdx+1;
+          var med=r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r;
+          myEl.innerHTML='<div class="lb-my-rank"><div class="lb-my-label">Your rank today</div>'+
+            '<div style="display:flex;align-items:center;gap:8px">'+
+            '<span style="font-size:20px">'+med+'</span>'+
+            '<span style="font-weight:800;font-size:15px">'+e.score+' pts</span>'+
+            '<span style="color:var(--ink-muted);font-size:12px">'+( e.guesses===7?'X':e.guesses)+'/6</span>'+
+            '<span style="color:var(--ink-muted);font-size:12px">· '+r+' of '+_lbTotal+'</span>'+
+            '</div></div>';
+        } else {
+          myEl.innerHTML='<p style="font-size:12px;color:var(--ink-muted);text-align:center;padding:8px 0 4px">Finish today\'s word to appear on the leaderboard.</p>';
+        }
+        if(!entries.length){ listEl.innerHTML='<p class="lb-loading">Be the first to play today!</p>'; return; }
+        var html='';
+        entries.forEach(function(e,i){
+          var r=i+1, isMe=(e.id===myId);
+          var med=r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r;
+          html+='<div class="lb-entry'+(isMe?' me':'')+'">'+
+            '<span class="lb-rank-cell">'+med+'</span>'+
+            '<span class="lb-name'+(isMe?' me':'')+'">'+( isMe?'You':'Player')+'</span>'+
+            '<span class="lb-score">'+e.score+'</span>'+
+            '<span class="lb-tries">'+( e.guesses===7?'X':e.guesses)+'/6</span>'+
+            '</div>';
+        });
+        listEl.innerHTML=html;
+      }).catch(function(){ listEl.innerHTML='<p class="lb-loading">Could not load — check connection.</p>'; });
+  }catch(e2){ listEl.innerHTML='<p class="lb-loading">Leaderboard unavailable.</p>'; }
+}
+
+function switchModalTab(target){
+  document.querySelectorAll('.modal-tab').forEach(function(t){
+    t.classList.toggle('active',t.dataset.target===target);
+  });
+  document.getElementById('statsPane').style.display=target==='statsPane'?'':'none';
+  document.getElementById('lbPane').style.display=target==='lbPane'?'':'none';
+  if(target==='lbPane') loadLeaderboard();
+}
+
+document.querySelectorAll('.modal-tab').forEach(function(t){
+  t.addEventListener('click',function(){ switchModalTab(this.dataset.target); });
+});
+
+document.getElementById('openLeaderboard').addEventListener('click',function(){
+  openStats(false);
+  switchModalTab('lbPane');
+});
 })();
 </script>
 
@@ -473,20 +542,21 @@ main {
 
 <header>
   <div class="dateline">
-    <span id="dateText">—</span>
-    <span class="edition">No. <span id="puzzleNo">—</span></span>
+    <span id="dateText">â</span>
+    <span class="edition">No. <span id="puzzleNo">â</span></span>
   </div>
   <span class="hard-badge" id="hardBadge">Hard</span>
   <div class="masthead">The Daily Five</div>
-  <div class="subhead">One word · Six tries · Every day</div>
+  <div class="subhead">One word Â· Six tries Â· Every day</div>
   <div class="header-btns">
     <button class="hbtn" id="openHow" aria-label="How to play" title="How to play">?</button>
+    <button class="hbtn" id="openLeaderboard" aria-label="Leaderboard" title="Leaderboard">&#127942;</button>
     <button class="hbtn" id="openStats" aria-label="Statistics" title="Statistics">&#9636;</button>
     <button class="hbtn" id="openSettings" aria-label="Settings" title="Settings">&#9881;</button>
   </div>
 </header>
 
-<div id="practiceBar">🎯 Practice Mode<span>Stats not counted · <a id="exitPracticeLink" href="#" style="color:#fff;text-decoration:underline;font-weight:700;">Exit practice</a></span></div>
+<div id="practiceBar">ð¯ Practice Mode<span>Stats not counted Â· <a id="exitPracticeLink" href="#" style="color:#fff;text-decoration:underline;font-weight:700;">Exit practice</a></span></div>
 <div class="toast-zone" id="toastZone" aria-live="polite"></div>
 
 <main>
@@ -497,9 +567,9 @@ main {
 <div class="ad-banner" id="adBanner"><span>Advertisement</span></div>
 
 <div class="footer-note">
-  <a href="https://thedailyfive.net" target="_blank">thedailyfive.net</a> ·
-  <a href="privacy.html">Privacy</a> ·
-  <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a> ·
+  <a href="https://thedailyfive.net" target="_blank">thedailyfive.net</a> Â·
+  <a href="privacy.html">Privacy</a> Â·
+  <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a> Â·
   <a href="mailto:thedailyfive.game@gmail.com">Contact</a>
 </div>
 
@@ -527,6 +597,11 @@ main {
 <div class="overlay" id="statsOverlay" role="dialog" aria-modal="true" aria-labelledby="statsTitle">
   <div class="modal">
     <button class="modal-close" id="closeStats" aria-label="Close">&times;</button>
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-target="statsPane">Statistics</button>
+      <button class="modal-tab" data-target="lbPane">Leaderboard</button>
+    </div>
+    <div id="statsPane">
     <h2 id="statsTitle">Statistics</h2>
     <p class="modal-sub" id="statsSub"></p>
     <div class="stats-tabs">
@@ -549,7 +624,7 @@ main {
 
     <div class="def-block" id="defBlock" style="display:none;">
       <div class="def-word" id="defWord"></div>
-      <div class="def-text" id="defText">Loading definition…</div>
+      <div class="def-text" id="defText">Loading definitionâ¦</div>
     </div>
 
     <div class="dist-section">
@@ -573,12 +648,17 @@ main {
       </div>
       <div class="end-actions-row">
         <button class="share-btn" id="shareBtn">Share &#8682;</button>
-        <button class="practice-btn" id="practiceBtn">Practice ▶</button>
-        <button class="practice-btn" id="practiceAgainBtn" style="display:none;">Play Again ↺</button>
-        <button class="practice-btn" id="exitPracticeBtn" style="display:none;">Daily Word ⟵</button>
+        <button class="practice-btn" id="practiceBtn">Practice â¶</button>
+        <button class="practice-btn" id="practiceAgainBtn" style="display:none;">Play Again âº</button>
+        <button class="practice-btn" id="exitPracticeBtn" style="display:none;">Daily Word âµ</button>
       </div>
     </div>
     <ul class="how-list" id="howList"></ul>
+    </div>
+    <div id="lbPane" style="display:none">
+      <div id="lbMyRank"></div>
+      <div id="lbList"></div>
+    </div>
   </div>
 </div>
 
@@ -689,7 +769,7 @@ function fetchDefinition(word){
   if(!blk) return;
   blk.style.display='block';
   wordEl.textContent=word.toUpperCase();
-  textEl.textContent='Loading definition…';
+  textEl.textContent='Loading definitionâ¦';
   fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+word.toLowerCase())
     .then(function(r){ return r.json(); })
     .then(function(data){
@@ -707,7 +787,7 @@ function fetchDefinition(word){
 
 /* MILESTONE CELEBRATION */
 function checkMilestone(streak){
-  var milestones={7:'🔥 7-day streak! You\'re on fire!',30:'🏆 30-day streak! Legendary!',100:'💎 100-day streak! Unstoppable!'};
+  var milestones={7:'ð¥ 7-day streak! You\'re on fire!',30:'ð 30-day streak! Legendary!',100:'ð 100-day streak! Unstoppable!'};
   if(milestones[streak]){
     setTimeout(function(){ toast(milestones[streak], 3500); }, 800);
   }
@@ -759,7 +839,7 @@ KEYS.forEach(function(krow){
   krow.forEach(function(k){
     var b=document.createElement('button');
     b.className='key'; b.dataset.k=k;
-    if(k==='ENT'||k==='DEL'){ b.classList.add('wide'); b.textContent=k==='ENT'?'Enter':'⌫'; }
+    if(k==='ENT'||k==='DEL'){ b.classList.add('wide'); b.textContent=k==='ENT'?'Enter':'â«'; }
     else b.textContent=k;
     b.setAttribute('aria-label', k==='DEL'?'Delete':k==='ENT'?'Enter':k);
     b.addEventListener('pointerdown', function(e){ e.preventDefault(); handleKey(k); });
@@ -980,8 +1060,8 @@ function openStats(isEnd){
   document.getElementById('sCur').textContent=s.cur;
   document.getElementById('sMax').textContent=s.max;
   var streakEl=document.getElementById('streakDisplay');
-  if(s.cur>=5) streakEl.textContent='🔥 '+s.cur+'-day streak!';
-  else if(s.cur>=2) streakEl.textContent='⚡ '+s.cur+' in a row';
+  if(s.cur>=5) streakEl.textContent='ð¥ '+s.cur+'-day streak!';
+  else if(s.cur>=2) streakEl.textContent='â¡ '+s.cur+' in a row';
   else streakEl.textContent='';
 
   /* DIFFICULTY BADGE + SOLVE TIME */
@@ -995,7 +1075,7 @@ function openStats(isEnd){
     if(timerStart && timerEnd){
       var secs=Math.round((timerEnd-timerStart)/1000);
       var m=Math.floor(secs/60), sc=secs%60;
-      solveTimeEl.textContent=(gameStatus==='won'?'⏱ '+(m>0?m+'m ':'')+sc+'s':'');
+      solveTimeEl.textContent=(gameStatus==='won'?'â± '+(m>0?m+'m ':'')+sc+'s':'');
     } else {
       solveTimeEl.textContent='';
     }
@@ -1027,10 +1107,10 @@ function openStats(isEnd){
 
   // Title & sub
   if(practiceMode && played){
-    document.getElementById('statsTitle').textContent=gameStatus==='won'?'Nice one! 🎉':'So close.';
+    document.getElementById('statsTitle').textContent=gameStatus==='won'?'Nice one! ð':'So close.';
     document.getElementById('statsSub').textContent=gameStatus==='won'?'Practice word: '+ANSWER:'Practice word was '+ANSWER+'.';
   } else {
-    document.getElementById('statsTitle').textContent=played?(gameStatus==='won'?'Solved it 🎉':'So close.'): 'Statistics';
+    document.getElementById('statsTitle').textContent=played?(gameStatus==='won'?'Solved it ð':'So close.'): 'Statistics';
     var sub='';
     if(played){ sub=gameStatus==='won'?'You got it in '+guesses.length+(guesses.length===1?' try.':' tries.'):'Today\'s word was '+ANSWER+'.'; }
     document.getElementById('statsSub').textContent=sub;
@@ -1064,8 +1144,8 @@ document.getElementById('statsOverlay').addEventListener('click',function(e){ if
 (function(){
   var el=document.getElementById('howDetailList');
   el.innerHTML=
-    '<li><span class="mini"><span style="background:var(--green)">W</span></span><span>Right letter, <strong>right spot</strong> — tile turns green.</span></li>'+
-    '<li><span class="mini"><span style="background:var(--amber)">I</span></span><span>Right letter, <strong>wrong spot</strong> — tile turns gold.</span></li>'+
+    '<li><span class="mini"><span style="background:var(--green)">W</span></span><span>Right letter, <strong>right spot</strong> â tile turns green.</span></li>'+
+    '<li><span class="mini"><span style="background:var(--amber)">I</span></span><span>Right letter, <strong>wrong spot</strong> â tile turns gold.</span></li>'+
     '<li><span class="mini"><span style="background:var(--absent)">N</span></span><span>Letter is <strong>not in the word</strong> at all.</span></li>'+
     '<li style="color:var(--ink-soft);margin-top:6px;display:block;padding-left:0;">A new word drops every day at midnight. Build your streak!</li>';
 })();
@@ -1152,18 +1232,18 @@ document.getElementById('exitPracticeLink').addEventListener('click', function(e
 
 /* SHARE */
 function buildShare(){
-  var emoji={correct:'🟩',present:'🟨',absent:'⬜'};
+  var emoji={correct:'ð©',present:'ð¨',absent:'â¬'};
   var head='The Daily Five #'+DAY+' '+(gameStatus==='won'?guesses.length:'X')+'/6'+(settings.hard?' *':'');
   var grid=guesses.map(function(g){ return scoreGuess(g).map(function(s){ return emoji[s]; }).join(''); }).join('\n');
   var extras=[];
   var s=getStats();
-  if(s.cur>=2) extras.push((s.cur>=5?'🔥':'⚡')+' '+s.cur+' day streak');
+  if(s.cur>=2) extras.push((s.cur>=5?'ð¥':'â¡')+' '+s.cur+' day streak');
   if(timerStart && timerEnd && gameStatus==='won'){
     var secs=Math.round((timerEnd-timerStart)/1000);
     var m=Math.floor(secs/60), sc=secs%60;
-    extras.push('⏱ '+(m>0?m+'m ':'')+sc+'s');
+    extras.push('â± '+(m>0?m+'m ':'')+sc+'s');
   }
-  var tail=extras.length?' · '+extras.join(' · '):'';
+  var tail=extras.length?' Â· '+extras.join(' Â· '):'';
   return head+tail+'\n\n'+grid+'\n\n'+(_lbRank?'Rank #'+_lbRank+' of '+_lbTotal+' globally \uD83C\uDF0D\n\n':'')+'https://thedailyfive.net';
 }
 document.getElementById('shareBtn').addEventListener('click',function(){
@@ -1173,14 +1253,14 @@ document.getElementById('shareBtn').addEventListener('click',function(){
 });
 function copyText(text){
   if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){ toast('Copied! ✓'); },function(){ fallbackCopy(text); });
+    navigator.clipboard.writeText(text).then(function(){ toast('Copied! â'); },function(){ fallbackCopy(text); });
   } else fallbackCopy(text);
 }
 function fallbackCopy(text){
   var ta=document.createElement('textarea');
   ta.value=text; ta.style.cssText='position:fixed;opacity:0;top:0;left:0;';
   document.body.appendChild(ta); ta.select();
-  try{ document.execCommand('copy'); toast('Copied! ✓'); }catch(e){ toast('Copy failed'); }
+  try{ document.execCommand('copy'); toast('Copied! â'); }catch(e){ toast('Copy failed'); }
   ta.remove();
 }
 
@@ -1241,9 +1321,9 @@ if(gameStatus!=='playing'){
   } else {
     var bootStats=getStats();
     if(bootStats.cur>=2){
-      var welcomeMsg = bootStats.cur>=30 ? '💎 '+bootStats.cur+'-day streak — legendary!' :
-                       bootStats.cur>=7  ? '🔥 '+bootStats.cur+'-day streak — you\'re on fire!' :
-                                           '⚡ '+bootStats.cur+' day streak — keep it up!';
+      var welcomeMsg = bootStats.cur>=30 ? 'ð '+bootStats.cur+'-day streak â legendary!' :
+                       bootStats.cur>=7  ? 'ð¥ '+bootStats.cur+'-day streak â you\'re on fire!' :
+                                           'â¡ '+bootStats.cur+' day streak â keep it up!';
       setTimeout(function(){ toast(welcomeMsg, 2800); }, 500);
     }
   }

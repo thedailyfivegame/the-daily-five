@@ -1067,6 +1067,7 @@ function openStats(isEnd){
   document.getElementById('countdownWrap').style.display = (!practiceMode && played) ? '' : 'none';
 
   document.getElementById('statsOverlay').classList.add('open');
+  switchTab('statsPane');
   if(played && !practiceMode) startClock();
 }
 document.getElementById('openStats').addEventListener('click',function(){ openStats(false); });

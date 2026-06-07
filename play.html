@@ -6,6 +6,16 @@
 <title>The Daily Five — One word. Six tries. Every day.</title>
 <meta name="description" content="A new five-letter word every day. Six guesses. One ritual."/>
 <meta name="theme-color" content="#f4efe4" id="themeColor"/>
+<meta property="og:title" content="The Daily Five — Free Daily Word Game"/>
+<meta property="og:description" content="Guess the 5-letter word in 6 tries. A new word every day. Free, no sign-up, streaks and sharing."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://www.thedailyfive.net/play.html"/>
+<meta property="og:image" content="https://www.thedailyfive.net/splash.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="The Daily Five — Free Daily Word Game"/>
+<meta name="twitter:description" content="Guess the 5-letter word in 6 tries. Free daily word puzzle — no sign-up needed."/>
+<meta name="twitter:image" content="https://www.thedailyfive.net/splash.png"/>
+<link rel="canonical" href="https://www.thedailyfive.net/play.html"/>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link rel="manifest" href="manifest.json"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -358,6 +368,30 @@ main {
   .tile { width: 42px; height: 42px; font-size: 22px; }
   .key { height: 48px; font-size: 12px; }
 }
+
+/* PWA INSTALL BANNER */
+#pwaBar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--ink); color: var(--paper);
+  padding: 11px 14px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; font-weight: 600; z-index: 150;
+  border-top: 2px solid var(--green);
+  animation: slideUp .25s ease;
+}
+#pwaBar span { flex: 1; line-height: 1.4; }
+#pwaInstall {
+  background: var(--green); color: #fff; border: none;
+  padding: 8px 14px; border-radius: 3px; font-weight: 800;
+  font-size: 11px; text-transform: uppercase; cursor: pointer;
+  letter-spacing: .05em; white-space: nowrap;
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+#pwaDismiss {
+  background: none; border: none; color: var(--paper);
+  font-size: 20px; cursor: pointer; padding: 4px;
+  opacity: .6; line-height: 1; flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -371,6 +405,7 @@ main {
   <div class="masthead">The Daily Five</div>
   <div class="subhead">One word · Six tries · Every day</div>
   <div class="header-btns">
+    <button class="hbtn" id="openHow" aria-label="How to play" title="How to play" style="font-weight:900;font-size:16px;">?</button>
     <button class="hbtn" id="openStats" aria-label="Statistics" title="Statistics">&#9636;</button>
     <button class="hbtn" id="openSettings" aria-label="Settings" title="Settings">&#9881;</button>
   </div>
@@ -388,7 +423,28 @@ main {
 <div class="footer-note">
   <a href="https://thedailyfive.net" target="_blank">thedailyfive.net</a> ·
   <a href="privacy.html">Privacy</a> ·
+  <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a> ·
   <a href="mailto:thedailyfive.game@gmail.com">Contact</a>
+</div>
+
+<!-- PWA INSTALL BAR -->
+<div id="pwaBar" style="display:none;">
+  <span>Add The Daily Five to your home screen for the best experience</span>
+  <button id="pwaInstall">Install</button>
+  <button id="pwaDismiss">&#10005;</button>
+</div>
+
+<!-- HOW TO PLAY MODAL -->
+<div class="overlay" id="howOverlay" role="dialog" aria-modal="true" aria-labelledby="howTitle">
+  <div class="modal">
+    <button class="modal-close" id="closeHow" aria-label="Close">&times;</button>
+    <h2 id="howTitle">How to Play</h2>
+    <p class="modal-sub">Guess the word in six tries.</p>
+    <ul class="how-list" id="howDetailList"></ul>
+    <div style="margin-top:18px;text-align:center;">
+      <button id="howPlayBtn" style="background:var(--green);color:#fff;border:none;padding:12px 28px;font-family:'Hanken Grotesk',sans-serif;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.06em;border-radius:4px;cursor:pointer;box-shadow:0 3px 0 var(--green-dim);">Start Playing</button>
+    </div>
+  </div>
 </div>
 
 <!-- STATS MODAL -->
@@ -803,6 +859,28 @@ document.getElementById('statsOverlay').addEventListener('click',function(e){ if
     '<li style="color:var(--ink-soft)">A new word unlocks at midnight. Come back every day to build your streak.</li>';
 })();
 
+/* HOW TO PLAY MODAL */
+(function(){
+  var el=document.getElementById('howDetailList');
+  el.innerHTML=
+    '<li><span class="mini"><span style="background:var(--green)">W</span></span><span>Right letter, <strong>right spot</strong> — tile turns green.</span></li>'+
+    '<li><span class="mini"><span style="background:var(--amber)">I</span></span><span>Right letter, <strong>wrong spot</strong> — tile turns gold.</span></li>'+
+    '<li><span class="mini"><span style="background:var(--absent)">N</span></span><span>Letter is <strong>not in the word</strong> at all.</span></li>'+
+    '<li style="color:var(--ink-soft);margin-top:6px;display:block;padding-left:0;">A new word drops every day at midnight. Build your streak!</li>';
+})();
+
+function openHow(){
+  document.getElementById('howOverlay').classList.add('open');
+}
+function closeHow(){
+  S.set('df_seen','1');
+  document.getElementById('howOverlay').classList.remove('open');
+}
+document.getElementById('openHow').addEventListener('click', openHow);
+document.getElementById('closeHow').addEventListener('click', closeHow);
+document.getElementById('howPlayBtn').addEventListener('click', closeHow);
+document.getElementById('howOverlay').addEventListener('click',function(e){ if(e.target===this) closeHow(); });
+
 /* SETTINGS MODAL */
 document.getElementById('openSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.add('open'); });
 document.getElementById('closeSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.remove('open'); });
@@ -898,11 +976,32 @@ renderCurrent();
 if(gameStatus!=='playing'){
   setTimeout(function(){ openStats(true); },400);
 } else {
-  var st=getStats();
-  if(!st||st.played===0){ setTimeout(function(){ openStats(false); },350); }
+  if(!S.get('df_seen')){ setTimeout(function(){ openHow(); },350); }
 }
 
 document.addEventListener('touchend',function(e){ if(e.target.closest('.key')) e.preventDefault(); },{passive:false});
+
+/* PWA INSTALL BANNER */
+var pwaPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault(); pwaPrompt=e;
+  if(!S.get('df_pwa_ok')){
+    setTimeout(function(){ document.getElementById('pwaBar').style.display='flex'; },4000);
+  }
+});
+document.getElementById('pwaInstall').addEventListener('click',function(){
+  if(!pwaPrompt) return;
+  pwaPrompt.prompt();
+  pwaPrompt.userChoice.then(function(r){
+    pwaPrompt=null;
+    document.getElementById('pwaBar').style.display='none';
+    if(r.outcome==='accepted') S.set('df_pwa_ok','1');
+  });
+});
+document.getElementById('pwaDismiss').addEventListener('click',function(){
+  document.getElementById('pwaBar').style.display='none';
+  S.set('df_pwa_ok','1');
+});
 
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(function(){});

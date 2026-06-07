@@ -40,76 +40,6 @@
     projectId:"thedailyfive-f7103",storageBucket:"thedailyfive-f7103.firebasestorage.app",
     messagingSenderId:"418141523968",appId:"1:418141523968:web:05acaf5cf23f85069ac8e5"};
   try{ if(!firebase.apps.length) firebase.initializeApp(cfg); }catch(e){}
-
-/* ─── LEADERBOARD ─── */
-var _lbRank=null,_lbTotal=0;
-var _MEDALS=[String.fromCodePoint(0x1F947),String.fromCodePoint(0x1F948),String.fromCodePoint(0x1F949)];
-function _medal(r){ return r<=3?_MEDALS[r-1]:'#'+r; }
-
-function loadLeaderboard(){
-  var listEl=document.getElementById('lbList');
-  var myEl=document.getElementById('lbMyRank');
-  if(!listEl) return;
-  listEl.innerHTML='<div class="lb-loading">Loading…</div>';
-  myEl.innerHTML='';
-  var myId=S.get('df_pid');
-  try{
-    firebase.firestore().collection('lb').doc(String(DAY)).collection('p')
-      .orderBy('score','desc').limit(20).get()
-      .then(function(snap){
-        var entries=[];
-        snap.forEach(function(doc){ entries.push(doc.data()); });
-        _lbTotal=entries.length;
-        var myIdx=-1;
-        if(myId) entries.forEach(function(e,i){ if(e.id===myId) myIdx=i; });
-        _lbRank=myIdx>=0?myIdx+1:null;
-        if(myIdx>=0){
-          var me=entries[myIdx],r=myIdx+1;
-          myEl.innerHTML='<div class="lb-my-rank"><div class="lb-my-label">Your rank today</div>'+
-            '<div style="display:flex;align-items:center;gap:8px">'+
-            '<span style="font-size:20px">'+_medal(r)+'</span>'+
-            '<span style="font-weight:800;font-size:15px">'+me.score+' pts</span>'+
-            '<span style="color:var(--ink-muted);font-size:12px">'+( me.guesses===7?'X':me.guesses)+'/6</span>'+
-            '<span style="color:var(--ink-muted);font-size:12px">· '+r+' of '+_lbTotal+'</span>'+
-            '</div></div>';
-        } else {
-          myEl.innerHTML='<p style="font-size:12px;color:var(--ink-muted);text-align:center;padding:8px 0 4px">Finish today\'s word to appear on the leaderboard.</p>';
-        }
-        if(!entries.length){ listEl.innerHTML='<p class="lb-loading">Be the first to play today!</p>'; return; }
-        var html='';
-        entries.forEach(function(e,i){
-          var r=i+1,isMe=(e.id===myId);
-          html+='<div class="lb-entry'+(isMe?' me':'')+'">'+
-            '<span class="lb-rank-cell">'+_medal(r)+'</span>'+
-            '<span class="lb-name'+(isMe?' me':'')+'">'+( isMe?'You':'Player')+'</span>'+
-            '<span class="lb-score">'+e.score+'</span>'+
-            '<span class="lb-tries">'+( e.guesses===7?'X':e.guesses)+'/6</span>'+
-            '</div>';
-        });
-        listEl.innerHTML=html;
-      }).catch(function(){ listEl.innerHTML='<p class="lb-loading">Could not load — check connection.</p>'; });
-  }catch(e2){ listEl.innerHTML='<p class="lb-loading">Leaderboard unavailable.</p>'; }
-}
-
-function switchTab(target){
-  document.querySelectorAll('.modal-tab').forEach(function(t){
-    t.classList.toggle('active',t.dataset.target===target);
-  });
-  var sp=document.getElementById('statsPane');
-  var lp=document.getElementById('lbPane');
-  if(sp) sp.style.display=target==='statsPane'?'':'none';
-  if(lp) lp.style.display=target==='lbPane'?'':'none';
-  if(target==='lbPane') loadLeaderboard();
-}
-
-document.querySelectorAll('.modal-tab').forEach(function(t){
-  t.addEventListener('click',function(){ switchTab(this.dataset.target); });
-});
-
-document.getElementById('openLeaderboard').addEventListener('click',function(){
-  openStats(false);
-  switchTab('lbPane');
-});
 })();
 </script>
 
@@ -1424,7 +1354,7 @@ function loadLeaderboard(){
   var list=document.getElementById('lbList');
   var myRankEl=document.getElementById('lbMyRank');
   if(!list) return;
-  list.innerHTML='<div class="lb-loading">Loading&</div>';
+  list.innerHTML='<div class="lb-loading">Loading…</div>';
   var nameInput=document.getElementById('lbNameInput');
   if(nameInput) nameInput.value=localStorage.getItem('df_pname')||'';
   try{
@@ -1451,13 +1381,23 @@ function loadLeaderboard(){
     });
   }catch(e){list.innerHTML='<div class="lb-empty">Leaderboard unavailable.</div>';}
 }
-function switchTab(tab){
-  document.getElementById('panelStats').style.display=tab==='stats'?'':'none';
-  document.getElementById('panelLb').style.display=tab==='lb'?'':'none';
-  document.getElementById('tabStats').classList.toggle('active',tab==='stats');
-  document.getElementById('tabLb').classList.toggle('active',tab==='lb');
-  if(tab==='lb') loadLeaderboard();
+function switchTab(target){
+  document.querySelectorAll('.modal-tab').forEach(function(t){
+    t.classList.toggle('active',t.dataset.target===target);
+  });
+  var sp=document.getElementById('statsPane');
+  var lp=document.getElementById('lbPane');
+  if(sp) sp.style.display=target==='statsPane'?'':'none';
+  if(lp) lp.style.display=target==='lbPane'?'':'none';
+  if(target==='lbPane') loadLeaderboard();
 }
+document.querySelectorAll('.modal-tab').forEach(function(t){
+  t.addEventListener('click',function(){ switchTab(this.dataset.target); });
+});
+document.getElementById('openLeaderboard').addEventListener('click',function(){
+  document.getElementById('statsOverlay').classList.add('open');
+  switchTab('lbPane');
+});
 </script>
 </body>
 </html>

@@ -20,6 +20,9 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"The Daily Five","url":"https://www.thedailyfive.net","description":"A free daily word puzzle game. Guess the 5-letter word in 6 tries. New word every day at midnight.","applicationCategory":"GameApplication","genre":"Word Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Sunny Sammi"}}
 </script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is The Daily Five?","acceptedAnswer":{"@type":"Answer","text":"The Daily Five is a free daily word puzzle game where you guess a five-letter word in up to six tries. A new word is revealed every day at midnight, and everyone in the world plays the same word on the same day."}},{"@type":"Question","name":"How is The Daily Five different from Wordle?","acceptedAnswer":{"@type":"Answer","text":"The Daily Five is a Wordle alternative with extra polish: a warm newspaper aesthetic, solve timer, word definition reveal after each game, streak milestones, difficulty badges, dark mode, hard mode, color-blind mode, and it installs as a PWA — all without signing in."}},{"@type":"Question","name":"Is The Daily Five free to play?","acceptedAnswer":{"@type":"Answer","text":"Completely free — no subscription, no sign-up, and no lives to buy. The game itself will always be free."}},{"@type":"Question","name":"Does The Daily Five work on iPhone and Android?","acceptedAnswer":{"@type":"Answer","text":"Yes. The Daily Five runs in any modern browser on iOS and Android. You can also add it to your home screen as a progressive web app (PWA) for a native app experience."}},{"@type":"Question","name":"How often does the word change?","acceptedAnswer":{"@type":"Answer","text":"One new word every day at midnight. Everyone gets the same word on the same day, so you can compare results with friends without spoilers."}},{"@type":"Question","name":"What do the colored tiles mean?","acceptedAnswer":{"@type":"Answer","text":"Green means the letter is in the correct position. Amber means the letter is in the word but in the wrong spot. Gray means the letter is not in the word at all."}},{"@type":"Question","name":"What is Hard Mode?","acceptedAnswer":{"@type":"Answer","text":"In Hard Mode, any letter hint you reveal must be used in all subsequent guesses. It prevents cheap guessing strategies and makes the game significantly more challenging."}},{"@type":"Question","name":"Can I play offline?","acceptedAnswer":{"@type":"Answer","text":"Yes — after your first visit, The Daily Five installs as a PWA and works fully offline. Add it to your home screen for the best experience."}},{"@type":"Question","name":"Will my stats and streak reset?","acceptedAnswer":{"@type":"Answer","text":"Your stats and streak are saved in your browser's local storage. Clearing browser data or switching devices will reset them. Adding the game to your home screen helps preserve your data."}},{"@type":"Question","name":"What are the streak milestones?","acceptedAnswer":{"@type":"Answer","text":"The game celebrates milestone streaks with special messages: 7 days (on fire 🔥), 30 days (legendary 🏆), and 100 days (unstoppable 💎)."}}]}
+</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4991106296689056" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -138,6 +141,17 @@ footer a { color: inherit; text-decoration: none; border-bottom: 1px solid var(-
 footer a:hover { color: var(--ink); }
 footer .links { display: flex; gap: 20px; }
 
+/* ─── FAQ ─── */
+.faq { max-width: 800px; margin: 0 auto; padding: 0 24px 64px; }
+.faq-list { margin-top: 4px; }
+.faq-item { border-top: 1px solid var(--line); }
+.faq-item:last-child { border-bottom: 1px solid var(--line); }
+.faq-q { font-weight: 700; font-size: 15px; padding: 18px 0 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; user-select: none; }
+.faq-q::after { content: '+'; font-size: 22px; font-weight: 300; color: var(--ink-muted); flex-shrink: 0; transition: transform .2s; }
+.faq-item.open .faq-q::after { transform: rotate(45deg); }
+.faq-a { font-size: 13.5px; color: var(--ink-soft); line-height: 1.7; padding-bottom: 18px; display: none; max-width: 640px; }
+.faq-item.open .faq-a { display: block; }
+
 @media (max-width: 640px) {
   .hero { padding: 44px 20px 40px; gap: 36px; }
   .hero-preview { width: 100%; display: flex; justify-content: center; }
@@ -152,6 +166,7 @@ footer .links { display: flex; gap: 20px; }
   <a class="nav-logo" href="/">The Daily Five</a>
   <div class="nav-right">
     <a class="nav-link" href="#how">How to Play</a>
+    <a class="nav-link" href="#faq">FAQ</a>
     <a class="nav-play" href="play.html">Play →</a>
   </div>
 </nav>
@@ -323,6 +338,68 @@ footer .links { display: flex; gap: 20px; }
   </div>
 </section>
 
+<hr/>
+
+<!-- ─── FAQ ─── -->
+<section class="faq" id="faq">
+  <p class="section-eyebrow">Frequently asked questions</p>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <div class="faq-q">What is The Daily Five?</div>
+      <div class="faq-a">The Daily Five is a free daily word puzzle game where you guess a five-letter word in up to six tries. A new word is revealed every day at midnight, and everyone in the world plays the same word on the same day.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How is The Daily Five different from Wordle?</div>
+      <div class="faq-a">The Daily Five is a Wordle alternative with extra polish: a warm newspaper aesthetic, solve timer, word definition reveal after each game, streak milestones, difficulty badges, dark mode, hard mode, color-blind mode, and it installs as a PWA — all without signing in or creating an account.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is The Daily Five free to play?</div>
+      <div class="faq-a">Completely free — no subscription, no sign-up, no lives to buy. The game itself will always be free.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Does it work on iPhone and Android?</div>
+      <div class="faq-a">Yes. The Daily Five runs in any modern browser on iOS and Android. You can also add it to your home screen as a progressive web app (PWA) for a native-app experience, complete with offline support.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How often does the word change?</div>
+      <div class="faq-a">One new word every day at midnight. Everyone gets the same word on the same day, so you can compare emoji grids with friends without spoilers.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What do the colored tiles mean?</div>
+      <div class="faq-a">Green means the letter is in the correct position. Amber (yellow) means the letter is in the word but in the wrong spot. Gray means the letter is not in the word at all.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What is Hard Mode?</div>
+      <div class="faq-a">In Hard Mode, any letter hint you reveal must be used in all subsequent guesses. It prevents cheap guessing strategies and makes the game significantly more challenging. Enable it in Settings before you start guessing.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I play offline?</div>
+      <div class="faq-a">Yes — after your first visit, The Daily Five installs as a PWA and works fully offline. Just add it to your home screen for the best experience.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Will my stats and streak reset?</div>
+      <div class="faq-a">Your stats and streak are saved in your browser's local storage. Clearing your browser data or switching to a different device will reset them. Adding the game to your home screen (as a PWA) helps preserve your data for longer.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What are the streak milestones?</div>
+      <div class="faq-a">The game celebrates milestone streaks with special toast messages: 7 days in a row earns 🔥 "on fire", 30 days earns 🏆 "legendary", and 100 days earns 💎 "unstoppable". Your streak also appears in your share text so friends can see it.</div>
+    </div>
+
+  </div>
+</section>
+
+<hr/>
+
 <!-- ─── CTA ─── -->
 <section class="cta-banner">
   <h2>Build your streak.</h2>
@@ -331,7 +408,7 @@ footer .links { display: flex; gap: 20px; }
 </section>
 
 <footer>
-  <span>© 2025 The Daily Five · <a href="mailto:thedailyfive.game@gmail.com">thedailyfive.game@gmail.com</a></span>
+  <span>© 2026 The Daily Five · <a href="mailto:thedailyfive.game@gmail.com">thedailyfive.game@gmail.com</a></span>
   <div class="links">
     <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a>
     <a href="privacy.html">Privacy Policy</a>
@@ -349,6 +426,16 @@ footer .links { display: flex; gap: 20px; }
   document.getElementById('iosBadge').addEventListener('click', function(e){
     e.preventDefault();
     alert('The iOS app is coming soon! Play on the web for now.');
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(function(q){
+    q.addEventListener('click', function(){
+      var item = q.parentElement;
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(o){ o.classList.remove('open'); });
+      if(!isOpen) item.classList.add('open');
+    });
   });
 </script>
 </body>

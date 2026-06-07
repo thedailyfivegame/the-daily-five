@@ -1337,7 +1337,7 @@ function loadLeaderboard(){
         if(isMe) myRank=rank;
         var medal=rank<=3?'top3':'';
         html+='<div class="lb-row'+(isMe?' me':'')+'">'+
-          '<span class="lb-rank '+medal+'">'+(rank===1?'>G':rank===2?'>H':rank===3?'>I':'#'+rank)+'</span>'+
+          '<span class="lb-rank '+medal+'">'+(rank===1?'\uD83E\uDD47':rank===2?'\uD83E\uDD48':rank===3?'\uD83E\uDD49':'#'+rank)+'</span>'+
           '<span class="lb-name">'+(isMe?'<b>'+e.n+'</b>':e.n)+'</span>'+
           '<span class="lb-guesses">'+e.g+'/6</span>'+
           '<span class="lb-score">'+e.s+'</span>'+
@@ -1346,7 +1346,7 @@ function loadLeaderboard(){
       });
       list.innerHTML=html;
       if(myRank && myRankEl) myRankEl.textContent='Your rank: #'+myRank+' of '+snap.size+' players';
-      else if(myRankEl && gameStatus!=='playing') myRankEl.textContent='Finish today's word to appear here';
+      else if(myRankEl && gameStatus!=='playing') myRankEl.textContent="Finish today's word to appear here";
     });
   }catch(e){list.innerHTML='<div class="lb-empty">Leaderboard unavailable.</div>';}
 }

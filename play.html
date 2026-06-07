@@ -125,10 +125,11 @@ header {
 }
 .hbtn {
   background: none; border: none; cursor: pointer;
-  color: var(--ink); font-size: 18px; line-height: 1;
-  padding: 6px; border-radius: var(--radius);
+  color: var(--ink); font-size: 17px; line-height: 1;
+  padding: 6px 7px; border-radius: var(--radius);
   transition: background var(--trans), color var(--trans);
   display: flex; align-items: center; justify-content: center;
+  font-weight: 500;
 }
 .hbtn:hover { background: var(--paper-2); }
 .hard-badge {
@@ -163,7 +164,7 @@ main {
   display: flex; flex-direction: column;
   align-items: center; justify-content: space-between;
   width: 100%; max-width: 500px; margin: 0 auto;
-  padding: 4px 0 0;
+  padding: 10px 0 0;
 }
 
 /* BOARD */
@@ -405,7 +406,7 @@ main {
   <div class="masthead">The Daily Five</div>
   <div class="subhead">One word · Six tries · Every day</div>
   <div class="header-btns">
-    <button class="hbtn" id="openHow" aria-label="How to play" title="How to play" style="font-weight:900;font-size:16px;">?</button>
+    <button class="hbtn" id="openHow" aria-label="How to play" title="How to play">?</button>
     <button class="hbtn" id="openStats" aria-label="Statistics" title="Statistics">&#9636;</button>
     <button class="hbtn" id="openSettings" aria-label="Settings" title="Settings">&#9881;</button>
   </div>

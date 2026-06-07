@@ -6,10 +6,10 @@
 <title>The Daily Five — One word. Six tries. Every day.</title>
 <meta name="description" content="A new five-letter word every day. Six guesses. One ritual."/>
 <meta name="theme-color" content="#f4efe4" id="themeColor"/>
-<meta property="og:title" content="The Daily Five — Free Daily Word Game"/> 
+<meta property="og:title" content="The Daily Five — Free Daily Word Game"/>
 <meta property="og:description" content="Guess the 5-letter word in 6 tries. A new word every day. Free, no sign-up, streaks and sharing."/>
 <meta property="og:type" content="website"/>
-<meta property="og:url" content="https://www.thedailyfive.net/play.html "/>
+<meta property="og:url" content="https://www.thedailyfive.net/play.html"/>
 <meta property="og:image" content="https://www.thedailyfive.net/splash.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="The Daily Five — Free Daily Word Game"/>
@@ -358,6 +358,19 @@ main {
 
 .streak-display { text-align: center; margin: 8px 0 4px; font-family: 'Fraunces', serif; font-weight: 900; font-size: 15px; color: var(--accent); letter-spacing: .02em; }
 
+/* DIFFICULTY BADGE */
+.diff-row { text-align: center; margin: 6px 0 2px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.diff-badge { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; }
+.diff-easy  { background: var(--green);  color: #fff; }
+.diff-medium{ background: var(--amber);  color: #fff; }
+.diff-hard  { background: var(--accent); color: #fff; }
+.solve-time { font-size: 11px; color: var(--ink-muted); font-weight: 600; letter-spacing: .06em; }
+
+/* DEFINITION SECTION */
+.def-block { margin: 12px 0 0; padding: 11px 13px; background: var(--paper-2); border-left: 3px solid var(--green); border-radius: 0 2px 2px 0; }
+.def-word { font-size: 9px; text-transform: uppercase; letter-spacing: .18em; color: var(--ink-muted); font-weight: 700; margin-bottom: 4px; }
+.def-text { font-size: 12.5px; color: var(--ink-soft); line-height: 1.55; }
+
 #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 500; }
 
 @media (max-height: 640px) {
@@ -368,6 +381,9 @@ main {
 @media (max-width: 380px) {
   .tile { width: 42px; height: 42px; font-size: 22px; }
   .key { height: 48px; font-size: 12px; }
+}
+@media (min-width: 381px) and (min-height: 641px) {
+  .key { height: 56px; }
 }
 
 /* PWA INSTALL BANNER */
@@ -461,6 +477,17 @@ main {
       <div class="stat-cell"><div class="stat-num" id="sMax">0</div><div class="stat-lab">Best</div></div>
     </div>
     <div class="streak-display" id="streakDisplay"></div>
+
+    <div class="diff-row" id="diffRow" style="display:none;">
+      <span id="diffBadge" class="diff-badge"></span>
+      <span class="solve-time" id="solveTime"></span>
+    </div>
+
+    <div class="def-block" id="defBlock" style="display:none;">
+      <div class="def-word" id="defWord"></div>
+      <div class="def-text" id="defText">Loading definition…</div>
+    </div>
+
     <div class="dist-section">
       <div class="dist-title">Guess Distribution</div>
       <div id="dist"></div>
@@ -558,6 +585,52 @@ var ANSWER = ANSWERS[((DAY*7919)%ANSWERS.length+ANSWERS.length)%ANSWERS.length].
 /* GAME STATE */
 var ROWS=6, COLS=5;
 var guesses=[], current='', gameStatus='playing', keyState={};
+var timerStart=null, timerEnd=null;
+
+/* DIFFICULTY */
+function calcDifficulty(word){
+  var rare='QXZJVK', score=0;
+  for(var i=0;i<word.length;i++){
+    if(rare.indexOf(word[i])!==-1) score+=2;
+  }
+  var uniq=[]; for(var i=0;i<word.length;i++){ if(uniq.indexOf(word[i])===-1) uniq.push(word[i]); }
+  if(uniq.length<word.length) score+=2;
+  if(score>=4) return 'hard';
+  if(score>=2) return 'medium';
+  return 'easy';
+}
+
+/* DEFINITION */
+function fetchDefinition(word){
+  var blk=document.getElementById('defBlock');
+  var wordEl=document.getElementById('defWord');
+  var textEl=document.getElementById('defText');
+  if(!blk) return;
+  blk.style.display='block';
+  wordEl.textContent=word.toUpperCase();
+  textEl.textContent='Loading definition…';
+  fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+word.toLowerCase())
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(Array.isArray(data) && data[0] && data[0].meanings && data[0].meanings[0]){
+        var m=data[0].meanings[0];
+        var pos=m.partOfSpeech||'';
+        var def=(m.definitions&&m.definitions[0]&&m.definitions[0].definition)||'';
+        textEl.textContent=(pos?pos+': ':'')+def;
+      } else {
+        textEl.textContent='No definition found.';
+      }
+    })
+    .catch(function(){ textEl.textContent='Definition unavailable.'; });
+}
+
+/* MILESTONE CELEBRATION */
+function checkMilestone(streak){
+  var milestones={7:'🔥 7-day streak! You\'re on fire!',30:'🏆 30-day streak! Legendary!',100:'💎 100-day streak! Unstoppable!'};
+  if(milestones[streak]){
+    setTimeout(function(){ toast(milestones[streak], 3500); }, 800);
+  }
+}
 
 /* SOUND */
 var audioCtx = null;
@@ -686,6 +759,7 @@ function handleKey(k){
   }
   if(k==='ENT'||k==='ENTER'){ submitGuess(); return; }
   if(/^[A-Z]$/.test(k) && current.length<COLS){
+    if(!timerStart && guesses.length===0) timerStart=Date.now();
     current+=k;
     soundKey(); vibrate(8);
     renderCurrent();
@@ -734,8 +808,10 @@ function submitGuess(){
   }, totalReveal);
   var won = guess===ANSWER;
   if(won){
+    if(!timerEnd) timerEnd=Date.now();
     gameStatus='won';
-    recordResult(true, guesses.length);
+    var s=recordResult(true, guesses.length);
+    checkMilestone(s.cur);
     setTimeout(function(){
       row.classList.add('bounce');
       soundCorrect();
@@ -746,6 +822,7 @@ function submitGuess(){
     setTimeout(function(){ toast(msgs[Math.min(guesses.length-1, msgs.length-1)], 2000); }, totalReveal+100);
     setTimeout(function(){ openStats(true); }, totalReveal+1800);
   } else if(guesses.length>=ROWS){
+    if(!timerEnd) timerEnd=Date.now();
     gameStatus='lost';
     recordResult(false,0);
     soundWrong(); vibrate([80,40,80]);
@@ -772,11 +849,12 @@ function paintKeys(){
 }
 
 /* PERSIST GAME */
-function saveGame(){ S.setObj('df_game',{day:DAY, guesses:guesses, status:gameStatus}); }
+function saveGame(){ S.setObj('df_game',{day:DAY, guesses:guesses, status:gameStatus, timerStart:timerStart, timerEnd:timerEnd}); }
 function loadGame(){
   var g=S.getObj('df_game',null);
   if(!g||g.day!==DAY) return;
   guesses=g.guesses||[]; gameStatus=g.status||'playing';
+  timerStart=g.timerStart||null; timerEnd=g.timerEnd||null;
   guesses.forEach(function(guess,ri){
     var scored=scoreGuess(guess);
     var row=boardEl.children[ri];
@@ -797,7 +875,7 @@ function defaultStats(){ return {played:0,wins:0,cur:0,max:0,dist:[0,0,0,0,0,0],
 function getStats(){ return S.getObj('df_stats', defaultStats()); }
 function recordResult(won, count){
   var s=getStats();
-  if(s.lastDay===DAY) return;
+  if(s.lastDay===DAY) return s;
   s.played++;
   if(won){
     s.wins++;
@@ -807,6 +885,7 @@ function recordResult(won, count){
   } else { s.cur=0; }
   s.lastDay=DAY;
   S.setObj('df_stats',s);
+  return s;
 }
 
 /* STATS MODAL */
@@ -820,6 +899,28 @@ function openStats(isEnd){
   if(s.cur>=5) streakEl.textContent='🔥 '+s.cur+'-day streak!';
   else if(s.cur>=2) streakEl.textContent='⚡ '+s.cur+' in a row';
   else streakEl.textContent='';
+
+  /* DIFFICULTY BADGE + SOLVE TIME */
+  var diffRow=document.getElementById('diffRow');
+  var diffBadge=document.getElementById('diffBadge');
+  var solveTimeEl=document.getElementById('solveTime');
+  if(gameStatus!=='playing'){
+    var diff=calcDifficulty(ANSWER);
+    diffBadge.textContent=diff;
+    diffBadge.className='diff-badge diff-'+diff;
+    if(timerStart && timerEnd){
+      var secs=Math.round((timerEnd-timerStart)/1000);
+      var m=Math.floor(secs/60), sc=secs%60;
+      solveTimeEl.textContent=(gameStatus==='won'?'⏱ '+(m>0?m+'m ':'')+sc+'s':'');
+    } else {
+      solveTimeEl.textContent='';
+    }
+    diffRow.style.display='flex';
+    fetchDefinition(ANSWER);
+  } else {
+    diffRow.style.display='none';
+    document.getElementById('defBlock').style.display='none';
+  }
   var maxD=Math.max.apply(null,s.dist.concat([1]));
   var distEl=document.getElementById('dist'); distEl.innerHTML='';
   var hlRow=(gameStatus==='won')?guesses.length:-1;
@@ -905,7 +1006,16 @@ function buildShare(){
   var emoji={correct:'🟩',present:'🟨',absent:'⬜'};
   var head='The Daily Five #'+DAY+' '+(gameStatus==='won'?guesses.length:'X')+'/6'+(settings.hard?' *':'');
   var grid=guesses.map(function(g){ return scoreGuess(g).map(function(s){ return emoji[s]; }).join(''); }).join('\n');
-  return head+'\n\n'+grid+'\n\nhttps://thedailyfive.net';
+  var extras=[];
+  var s=getStats();
+  if(s.cur>=2) extras.push((s.cur>=5?'🔥':'⚡')+' '+s.cur+' day streak');
+  if(timerStart && timerEnd && gameStatus==='won'){
+    var secs=Math.round((timerEnd-timerStart)/1000);
+    var m=Math.floor(secs/60), sc=secs%60;
+    extras.push('⏱ '+(m>0?m+'m ':'')+sc+'s');
+  }
+  var tail=extras.length?' · '+extras.join(' · '):'';
+  return head+tail+'\n\n'+grid+'\n\nhttps://thedailyfive.net';
 }
 document.getElementById('shareBtn').addEventListener('click',function(){
   var text=buildShare();
@@ -977,7 +1087,17 @@ renderCurrent();
 if(gameStatus!=='playing'){
   setTimeout(function(){ openStats(true); },400);
 } else {
-  if(!S.get('df_seen')){ setTimeout(function(){ openHow(); },350); }
+  if(!S.get('df_seen')){
+    setTimeout(function(){ openHow(); },350);
+  } else {
+    var bootStats=getStats();
+    if(bootStats.cur>=2){
+      var welcomeMsg = bootStats.cur>=30 ? '💎 '+bootStats.cur+'-day streak — legendary!' :
+                       bootStats.cur>=7  ? '🔥 '+bootStats.cur+'-day streak — you\'re on fire!' :
+                                           '⚡ '+bootStats.cur+' day streak — keep it up!';
+      setTimeout(function(){ toast(welcomeMsg, 2800); }, 500);
+    }
+  }
 }
 
 document.addEventListener('touchend',function(e){ if(e.target.closest('.key')) e.preventDefault(); },{passive:false});
@@ -1011,4 +1131,224 @@ if('serviceWorker' in navigator){
 })();
 </script>
 </body>
+</html>
+)+sc+'s':'');
+    } else {
+      solveTimeEl.textContent='';
+    }
+    diffRow.style.display='flex';
+    fetchDefinition(ANSWER);
+  } else {
+    diffRow.style.display='none';
+    document.getElementById('defBlock').style.display='none';
+  }
+  var maxD=Math.max.apply(null,s.dist.concat([1]));
+  var distEl=document.getElementById('dist'); distEl.innerHTML='';
+  var hlRow=(gameStatus==='won')?guesses.length:-1;
+  for(var i=0;i<6;i++){
+    var rowEl=document.createElement('div'); rowEl.className='dist-row';
+    var nEl=document.createElement('span'); nEl.className='n'; nEl.textContent=i+1;
+    var wrapEl=document.createElement('div'); wrapEl.className='dist-bar-wrap';
+    var barEl=document.createElement('div');
+    barEl.className='dist-bar'+(i+1===hlRow?' hl':'');
+    barEl.style.width='8px';
+    barEl.textContent=s.dist[i];
+    wrapEl.appendChild(barEl);
+    rowEl.appendChild(nEl); rowEl.appendChild(wrapEl);
+    distEl.appendChild(rowEl);
+    (function(el,w){ setTimeout(function(){ el.style.width=Math.max(8,w/maxD*100)+'%'; },50); })(barEl, s.dist[i]);
+  }
+  var played=gameStatus!=='playing';
+  document.getElementById('endActions').classList.toggle('show', played);
+  document.getElementById('howList').style.display=(s.played===0&&!played)?'block':'none';
+  document.getElementById('statsTitle').textContent=played?(gameStatus==='won'?'Solved it 🎉':'So close.'): 'Statistics';
+  var sub='';
+  if(played){ sub=gameStatus==='won'?'You got it in '+guesses.length+(guesses.length===1?' try.':' tries.'):'Today\'s word was '+ANSWER+'.'; }
+  document.getElementById('statsSub').textContent=sub;
+  document.getElementById('statsOverlay').classList.add('open');
+  if(played) startClock();
+}
+document.getElementById('openStats').addEventListener('click',function(){ openStats(false); });
+document.getElementById('closeStats').addEventListener('click',function(){ document.getElementById('statsOverlay').classList.remove('open'); });
+document.getElementById('statsOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
+
+/* HOW TO PLAY */
+(function(){
+  var el=document.getElementById('howList');
+  el.innerHTML=
+    '<li><span class="mini"><span style="background:var(--green)">W</span></span>Right letter, right spot.</li>'+
+    '<li><span class="mini"><span style="background:var(--amber)">I</span></span>Right letter, wrong spot.</li>'+
+    '<li><span class="mini"><span style="background:var(--absent)">N</span></span>Not in the word at all.</li>'+
+    '<li style="color:var(--ink-soft)">A new word unlocks at midnight. Come back every day to build your streak.</li>';
+})();
+
+/* HOW TO PLAY MODAL */
+(function(){
+  var el=document.getElementById('howDetailList');
+  el.innerHTML=
+    '<li><span class="mini"><span style="background:var(--green)">W</span></span><span>Right letter, <strong>right spot</strong> — tile turns green.</span></li>'+
+    '<li><span class="mini"><span style="background:var(--amber)">I</span></span><span>Right letter, <strong>wrong spot</strong> — tile turns gold.</span></li>'+
+    '<li><span class="mini"><span style="background:var(--absent)">N</span></span><span>Letter is <strong>not in the word</strong> at all.</span></li>'+
+    '<li style="color:var(--ink-soft);margin-top:6px;display:block;padding-left:0;">A new word drops every day at midnight. Build your streak!</li>';
+})();
+
+function openHow(){
+  document.getElementById('howOverlay').classList.add('open');
+}
+function closeHow(){
+  S.set('df_seen','1');
+  document.getElementById('howOverlay').classList.remove('open');
+}
+document.getElementById('openHow').addEventListener('click', openHow);
+document.getElementById('closeHow').addEventListener('click', closeHow);
+document.getElementById('howPlayBtn').addEventListener('click', closeHow);
+document.getElementById('howOverlay').addEventListener('click',function(e){ if(e.target===this) closeHow(); });
+
+/* SETTINGS MODAL */
+document.getElementById('openSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.add('open'); });
+document.getElementById('closeSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.remove('open'); });
+document.getElementById('settingsOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
+
+/* COUNTDOWN */
+var clockInt=null;
+function startClock(){
+  if(clockInt) clearInterval(clockInt);
+  function tick(){
+    var now=new Date(), next=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+    var d=next-now, h=Math.floor(d/3.6e6), m=Math.floor(d%3.6e6/6e4), s=Math.floor(d%6e4/1e3);
+    var p=function(x){ return ('0'+x).slice(-2); };
+    var el=document.getElementById('clock'); if(el) el.textContent=p(h)+':'+p(m)+':'+p(s);
+  }
+  tick(); clockInt=setInterval(tick,1e3);
+}
+
+/* SHARE */
+function buildShare(){
+  var emoji={correct:'🟩',present:'🟨',absent:'⬜'};
+  var head='The Daily Five #'+DAY+' '+(gameStatus==='won'?guesses.length:'X')+'/6'+(settings.hard?' *':'');
+  var grid=guesses.map(function(g){ return scoreGuess(g).map(function(s){ return emoji[s]; }).join(''); }).join('\n');
+  var extras=[];
+  var s=getStats();
+  if(s.cur>=2) extras.push((s.cur>=5?'🔥':'⚡')+' '+s.cur+' day streak');
+  if(timerStart && timerEnd && gameStatus==='won'){
+    var secs=Math.round((timerEnd-timerStart)/1000);
+    var m=Math.floor(secs/60), sc=secs%60;
+    extras.push('⏱ '+(m>0?m+'m ':'')+sc+'s');
+  }
+  var tail=extras.length?' · '+extras.join(' · '):'';
+  return head+tail+'\n\n'+grid+'\n\nhttps://thedailyfive.net';
+}
+document.getElementById('shareBtn').addEventListener('click',function(){
+  var text=buildShare();
+  if(navigator.share){ navigator.share({text:text}).catch(function(){ copyText(text); }); }
+  else copyText(text);
+});
+function copyText(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){ toast('Copied! ✓'); },function(){ fallbackCopy(text); });
+  } else fallbackCopy(text);
+}
+function fallbackCopy(text){
+  var ta=document.createElement('textarea');
+  ta.value=text; ta.style.cssText='position:fixed;opacity:0;top:0;left:0;';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('Copied! ✓'); }catch(e){ toast('Copy failed'); }
+  ta.remove();
+}
+
+/* CONFETTI */
+function launchConfetti(){
+  var canvas=document.getElementById('confetti-canvas');
+  canvas.style.display='block';
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  var ctx=canvas.getContext('2d');
+  var particles=[];
+  var colors=['#3f7a4f','#c89a2b','#9e2b25','#4a8f5e','#d4a830','#f5793a','#85c0f9'];
+  for(var i=0;i<120;i++){
+    particles.push({
+      x:Math.random()*canvas.width, y:-10-Math.random()*100,
+      vx:(Math.random()-0.5)*4, vy:2+Math.random()*4,
+      w:8+Math.random()*8, h:4+Math.random()*4,
+      r:Math.random()*Math.PI*2, rv:(Math.random()-0.5)*0.2,
+      color:colors[Math.floor(Math.random()*colors.length)], opacity:1
+    });
+  }
+  var start=performance.now(), duration=3000;
+  function frame(now){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    var elapsed=now-start, progress=elapsed/duration;
+    particles.forEach(function(p){
+      p.x+=p.vx; p.y+=p.vy; p.r+=p.rv; p.vy+=0.06;
+      p.opacity=Math.max(0, 1-Math.max(0,progress-0.6)/0.4);
+      ctx.save();
+      ctx.globalAlpha=p.opacity;
+      ctx.translate(p.x,p.y); ctx.rotate(p.r);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    if(elapsed<duration) requestAnimationFrame(frame);
+    else { canvas.style.display='none'; ctx.clearRect(0,0,canvas.width,canvas.height); }
+  }
+  requestAnimationFrame(frame);
+}
+
+/* KEY PRESS ANIMATION */
+document.addEventListener('keydown',function(e){
+  var k=e.key.toUpperCase();
+  var btn=document.querySelector('.key[data-k="'+k+'"]');
+  if(!btn&&k==='ENTER') btn=document.querySelector('.key[data-k="ENT"]');
+  if(!btn&&k==='BACKSPACE') btn=document.querySelector('.key[data-k="DEL"]');
+  if(btn){ btn.classList.add('pressed'); setTimeout(function(){ btn.classList.remove('pressed'); },100); }
+});
+
+/* BOOT */
+loadGame();
+renderCurrent();
+if(gameStatus!=='playing'){
+  setTimeout(function(){ openStats(true); },400);
+} else {
+  if(!S.get('df_seen')){
+    setTimeout(function(){ openHow(); },350);
+  } else {
+    var bootStats=getStats();
+    if(bootStats.cur>=2){
+      var welcomeMsg = bootStats.cur>=30 ? '💎 '+bootStats.cur+'-day streak — legendary!' :
+                       bootStats.cur>=7  ? '🔥 '+bootStats.cur+'-day streak — you\'re on fire!' :
+                                           '⚡ '+bootStats.cur+' day streak — keep it up!';
+      setTimeout(function(){ toast(welcomeMsg, 2800); }, 500);
+    }
+  }
+}
+
+document.addEventListener('touchend',function(e){ if(e.target.closest('.key')) e.preventDefault(); },{passive:false});
+
+/* PWA INSTALL BANNER */
+var pwaPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault(); pwaPrompt=e;
+  if(!S.get('df_pwa_ok')){
+    setTimeout(function(){ document.getElementById('pwaBar').style.display='flex'; },4000);
+  }
+});
+document.getElementById('pwaInstall').addEventListener('click',function(){
+  if(!pwaPrompt) return;
+  pwaPrompt.prompt();
+  pwaPrompt.userChoice.then(function(r){
+    pwaPrompt=null;
+    document.getElementById('pwaBar').style.display='none';
+    if(r.outcome==='accepted') S.set('df_pwa_ok','1');
+  });
+});
+document.getElementById('pwaDismiss').addEventListener('click',function(){
+  document.getElementById('pwaBar').style.display='none';
+  S.set('df_pwa_ok','1');
+});
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>
 </html>

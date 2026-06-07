@@ -555,10 +555,6 @@ main {
     <div id="statsPane">
     <h2 id="statsTitle">Statistics</h2>
     <p class="modal-sub" id="statsSub"></p>
-    <div class="stats-tabs">
-      <button class="stats-tab active" id="tabStats" onclick="switchTab('stats')">Stats</button>
-      <button class="stats-tab" id="tabLb" onclick="switchTab('lb')">Leaderboard</button>
-    </div>
     <div id="panelStats">
     <div class="stat-grid">
       <div class="stat-cell"><div class="stat-num" id="sPlayed">0</div><div class="stat-lab">Played</div></div>
@@ -583,13 +579,6 @@ main {
       <div id="dist"></div>
     </div>
     </div><!-- end panelStats -->
-    <div id="panelLb" style="display:none;">
-      <div class="lb-name-row">
-        <input class="lb-name-input" id="lbNameInput" placeholder="Your display name (optional)" maxlength="20"/>
-        <button class="lb-name-btn" onclick="saveLbName()">Save</button>
-      </div>
-      <div class="lb-myrank" id="lbMyRank"></div>
-      <div class="lb-wrap" id="lbList"><div class="lb-loading">Loading rankings&</div></div>
     </div>
     
     <div class="end-actions" id="endActions">
@@ -1398,6 +1387,7 @@ document.getElementById('openLeaderboard').addEventListener('click',function(){
   document.getElementById('statsOverlay').classList.add('open');
   switchTab('lbPane');
 });
+document.getElementById('lbSaveNameBtn').addEventListener('click',saveLbName);
 
 })();
 </script>

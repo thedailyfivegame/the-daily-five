@@ -1164,7 +1164,7 @@ function buildShare(){
     extras.push('â± '+(m>0?m+'m ':'')+sc+'s');
   }
   var tail=extras.length?' Â· '+extras.join(' Â· '):'';
-  return head+tail+'\n\n'+grid+'\n\nhttps://thedailyfive.net';
+  return head+tail+'\n\n'+grid+'\n\n'+(_lbRank?'Rank #'+_lbRank+' of '+_lbTotal+' globally \uD83C\uDF0D\n\n':'')+'https://thedailyfive.net';
 }
 document.getElementById('shareBtn').addEventListener('click',function(){
   var text=buildShare();

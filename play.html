@@ -10,11 +10,11 @@
 <meta property="og:description" content="Guess the 5-letter word in 6 tries. A new word every day. Free, no sign-up, streaks and sharing."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://www.thedailyfive.net/play.html"/>
-<meta property="og:image" content="https://www.thedailyfive.net/splash.png"/>
+<meta property="og:image" content="https://www.thedailyfive.net/og-image.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="The Daily Five — Free Daily Word Game"/>
 <meta name="twitter:description" content="Guess the 5-letter word in 6 tries. Free daily word puzzle — no sign-up needed."/>
-<meta name="twitter:image" content="https://www.thedailyfive.net/splash.png"/>
+<meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
 <link rel="canonical" href="https://www.thedailyfive.net/play.html"/>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link rel="manifest" href="manifest.json"/>
@@ -366,6 +366,23 @@ main {
 .diff-hard  { background: var(--accent); color: #fff; }
 .solve-time { font-size: 11px; color: var(--ink-muted); font-weight: 600; letter-spacing: .06em; }
 
+/* PRACTICE MODE */
+#practiceBar {
+  background: var(--amber); color: #fff;
+  font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  text-align: center; padding: 5px 12px;
+  display: none;
+}
+#practiceBar span { opacity: .85; font-weight: 600; text-transform: none; letter-spacing: 0; margin-left: 8px; font-size: 10.5px; }
+.practice-btn {
+  background: var(--paper-2); color: var(--ink); border: 2px solid var(--line);
+  padding: 10px 18px; border-radius: 4px; font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+  cursor: pointer; transition: background .15s, border-color .15s; white-space: nowrap;
+}
+.practice-btn:hover { background: var(--paper-3); border-color: var(--ink-muted); }
+.end-actions-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+
 /* DEFINITION SECTION */
 .def-block { margin: 12px 0 0; padding: 11px 13px; background: var(--paper-2); border-left: 3px solid var(--green); border-radius: 0 2px 2px 0; }
 .def-word { font-size: 9px; text-transform: uppercase; letter-spacing: .18em; color: var(--ink-muted); font-weight: 700; margin-bottom: 4px; }
@@ -428,6 +445,7 @@ main {
   </div>
 </header>
 
+<div id="practiceBar">🎯 Practice Mode<span>Stats not counted · <a id="exitPracticeLink" href="#" style="color:#fff;text-decoration:underline;font-weight:700;">Exit practice</a></span></div>
 <div class="toast-zone" id="toastZone" aria-live="polite"></div>
 
 <main>
@@ -493,11 +511,16 @@ main {
       <div id="dist"></div>
     </div>
     <div class="end-actions" id="endActions">
-      <div class="countdown">
+      <div class="countdown" id="countdownWrap">
         <div class="countdown-lab">Next word in</div>
         <div class="countdown-clock" id="clock">--:--:--</div>
       </div>
-      <button class="share-btn" id="shareBtn">Share &#8682;</button>
+      <div class="end-actions-row">
+        <button class="share-btn" id="shareBtn">Share &#8682;</button>
+        <button class="practice-btn" id="practiceBtn">Practice ▶</button>
+        <button class="practice-btn" id="practiceAgainBtn" style="display:none;">Play Again ↺</button>
+        <button class="practice-btn" id="exitPracticeBtn" style="display:none;">Daily Word ⟵</button>
+      </div>
     </div>
     <ul class="how-list" id="howList"></ul>
   </div>
@@ -557,7 +580,7 @@ function applySettings() {
   document.documentElement.setAttribute('data-theme', settings.dark ? 'dark' : 'light');
   document.documentElement.setAttribute('data-colorblind', settings.colorBlind ? 'true' : 'false');
   document.getElementById('themeColor').content = settings.dark ? '#12110e' : '#f4efe4';
-  document.getElementById('hardBadge').classList.toggle('show', settings.hard);
+  document.getElementById('hardBadge').classList.toggle('show', settings.hard && !practiceMode);
   document.getElementById('darkToggle').checked       = settings.dark;
   document.getElementById('hardToggle').checked       = settings.hard;
   document.getElementById('colorBlindToggle').checked = settings.colorBlind;
@@ -580,12 +603,14 @@ var VALID = new Set(ANSWERS.concat(typeof WORDS!=='undefined'?WORDS:[]));
 var EPOCH = new Date(2025,0,1).getTime();
 function todayIdx(){ var d=new Date(); return Math.floor((new Date(d.getFullYear(),d.getMonth(),d.getDate())-EPOCH)/86400000); }
 var DAY = todayIdx();
-var ANSWER = ANSWERS[((DAY*7919)%ANSWERS.length+ANSWERS.length)%ANSWERS.length].toUpperCase();
+var DAILY_ANSWER = ANSWERS[((DAY*7919)%ANSWERS.length+ANSWERS.length)%ANSWERS.length].toUpperCase();
+var ANSWER = DAILY_ANSWER;
 
 /* GAME STATE */
 var ROWS=6, COLS=5;
 var guesses=[], current='', gameStatus='playing', keyState={};
 var timerStart=null, timerEnd=null;
+var practiceMode=false;
 
 /* DIFFICULTY */
 function calcDifficulty(word){
@@ -734,7 +759,7 @@ function scoreGuess(guess){
 
 /* HARD MODE */
 function hardModeError(guess){
-  if(!settings.hard) return null;
+  if(!settings.hard || practiceMode) return null;
   for(var r=0;r<guesses.length;r++){
     var scored=scoreGuess(guesses[r]);
     for(var c=0;c<COLS;c++){
@@ -829,7 +854,7 @@ function submitGuess(){
     setTimeout(function(){ toast(ANSWER, 2500); }, totalReveal);
     setTimeout(function(){ openStats(true); }, totalReveal+2000);
   }
-  saveGame();
+  if(!practiceMode) saveGame();
 }
 
 function shakeCurrent(){
@@ -875,6 +900,7 @@ function defaultStats(){ return {played:0,wins:0,cur:0,max:0,dist:[0,0,0,0,0,0],
 function getStats(){ return S.getObj('df_stats', defaultStats()); }
 function recordResult(won, count){
   var s=getStats();
+  if(practiceMode) return s;
   if(s.lastDay===DAY) return s;
   s.played++;
   if(won){
@@ -939,13 +965,28 @@ function openStats(isEnd){
   }
   var played=gameStatus!=='playing';
   document.getElementById('endActions').classList.toggle('show', played);
-  document.getElementById('howList').style.display=(s.played===0&&!played)?'block':'none';
-  document.getElementById('statsTitle').textContent=played?(gameStatus==='won'?'Solved it 🎉':'So close.'): 'Statistics';
-  var sub='';
-  if(played){ sub=gameStatus==='won'?'You got it in '+guesses.length+(guesses.length===1?' try.':' tries.'):'Today\'s word was '+ANSWER+'.'; }
-  document.getElementById('statsSub').textContent=sub;
+  document.getElementById('howList').style.display=(s.played===0&&!played&&!practiceMode)?'block':'none';
+
+  // Title & sub
+  if(practiceMode && played){
+    document.getElementById('statsTitle').textContent=gameStatus==='won'?'Nice one! 🎉':'So close.';
+    document.getElementById('statsSub').textContent=gameStatus==='won'?'Practice word: '+ANSWER:'Practice word was '+ANSWER+'.';
+  } else {
+    document.getElementById('statsTitle').textContent=played?(gameStatus==='won'?'Solved it 🎉':'So close.'): 'Statistics';
+    var sub='';
+    if(played){ sub=gameStatus==='won'?'You got it in '+guesses.length+(guesses.length===1?' try.':' tries.'):'Today\'s word was '+ANSWER+'.'; }
+    document.getElementById('statsSub').textContent=sub;
+  }
+
+  // Show/hide buttons based on mode
+  document.getElementById('shareBtn').style.display = (!practiceMode && played) ? '' : 'none';
+  document.getElementById('practiceBtn').style.display = (!practiceMode && played) ? '' : 'none';
+  document.getElementById('practiceAgainBtn').style.display = (practiceMode && played) ? '' : 'none';
+  document.getElementById('exitPracticeBtn').style.display = (practiceMode && played) ? '' : 'none';
+  document.getElementById('countdownWrap').style.display = (!practiceMode && played) ? '' : 'none';
+
   document.getElementById('statsOverlay').classList.add('open');
-  if(played) startClock();
+  if(played && !practiceMode) startClock();
 }
 document.getElementById('openStats').addEventListener('click',function(){ openStats(false); });
 document.getElementById('closeStats').addEventListener('click',function(){ document.getElementById('statsOverlay').classList.remove('open'); });
@@ -1000,6 +1041,56 @@ function startClock(){
   }
   tick(); clockInt=setInterval(tick,1e3);
 }
+
+/* PRACTICE MODE */
+function resetBoard(){
+  var rows=boardEl.children;
+  for(var r=0;r<ROWS;r++){
+    for(var c=0;c<COLS;c++){
+      var tile=rows[r].children[c];
+      tile.textContent='';
+      tile.setAttribute('data-state','');
+      tile.setAttribute('aria-label','empty');
+      tile.className='tile';
+    }
+    rows[r].className='row';
+    rows[r].dataset.r=r;
+  }
+  document.querySelectorAll('.key').forEach(function(b){ b.removeAttribute('data-state'); });
+  guesses=[]; current=''; keyState={}; timerStart=null; timerEnd=null;
+}
+
+function startPractice(){
+  document.getElementById('statsOverlay').classList.remove('open');
+  practiceMode=true;
+  gameStatus='playing';
+  var pool=ANSWERS.filter(function(w){ return w.toUpperCase()!==DAILY_ANSWER; });
+  ANSWER=pool[Math.floor(Math.random()*pool.length)].toUpperCase();
+  resetBoard();
+  renderCurrent();
+  document.getElementById('practiceBar').style.display='block';
+  document.getElementById('hardBadge').classList.remove('show');
+}
+
+function exitPractice(){
+  practiceMode=false;
+  ANSWER=DAILY_ANSWER;
+  document.getElementById('practiceBar').style.display='none';
+  document.getElementById('statsOverlay').classList.remove('open');
+  gameStatus='playing';
+  resetBoard();
+  loadGame();
+  renderCurrent();
+  if(gameStatus!=='playing'){
+    setTimeout(function(){ openStats(true); }, 300);
+  }
+  applySettings();
+}
+
+document.getElementById('practiceBtn').addEventListener('click', startPractice);
+document.getElementById('practiceAgainBtn').addEventListener('click', startPractice);
+document.getElementById('exitPracticeBtn').addEventListener('click', exitPractice);
+document.getElementById('exitPracticeLink').addEventListener('click', function(e){ e.preventDefault(); exitPractice(); });
 
 /* SHARE */
 function buildShare(){
@@ -1131,224 +1222,4 @@ if('serviceWorker' in navigator){
 })();
 </script>
 </body>
-</html>
-)+sc+'s':'');
-    } else {
-      solveTimeEl.textContent='';
-    }
-    diffRow.style.display='flex';
-    fetchDefinition(ANSWER);
-  } else {
-    diffRow.style.display='none';
-    document.getElementById('defBlock').style.display='none';
-  }
-  var maxD=Math.max.apply(null,s.dist.concat([1]));
-  var distEl=document.getElementById('dist'); distEl.innerHTML='';
-  var hlRow=(gameStatus==='won')?guesses.length:-1;
-  for(var i=0;i<6;i++){
-    var rowEl=document.createElement('div'); rowEl.className='dist-row';
-    var nEl=document.createElement('span'); nEl.className='n'; nEl.textContent=i+1;
-    var wrapEl=document.createElement('div'); wrapEl.className='dist-bar-wrap';
-    var barEl=document.createElement('div');
-    barEl.className='dist-bar'+(i+1===hlRow?' hl':'');
-    barEl.style.width='8px';
-    barEl.textContent=s.dist[i];
-    wrapEl.appendChild(barEl);
-    rowEl.appendChild(nEl); rowEl.appendChild(wrapEl);
-    distEl.appendChild(rowEl);
-    (function(el,w){ setTimeout(function(){ el.style.width=Math.max(8,w/maxD*100)+'%'; },50); })(barEl, s.dist[i]);
-  }
-  var played=gameStatus!=='playing';
-  document.getElementById('endActions').classList.toggle('show', played);
-  document.getElementById('howList').style.display=(s.played===0&&!played)?'block':'none';
-  document.getElementById('statsTitle').textContent=played?(gameStatus==='won'?'Solved it 🎉':'So close.'): 'Statistics';
-  var sub='';
-  if(played){ sub=gameStatus==='won'?'You got it in '+guesses.length+(guesses.length===1?' try.':' tries.'):'Today\'s word was '+ANSWER+'.'; }
-  document.getElementById('statsSub').textContent=sub;
-  document.getElementById('statsOverlay').classList.add('open');
-  if(played) startClock();
-}
-document.getElementById('openStats').addEventListener('click',function(){ openStats(false); });
-document.getElementById('closeStats').addEventListener('click',function(){ document.getElementById('statsOverlay').classList.remove('open'); });
-document.getElementById('statsOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
-
-/* HOW TO PLAY */
-(function(){
-  var el=document.getElementById('howList');
-  el.innerHTML=
-    '<li><span class="mini"><span style="background:var(--green)">W</span></span>Right letter, right spot.</li>'+
-    '<li><span class="mini"><span style="background:var(--amber)">I</span></span>Right letter, wrong spot.</li>'+
-    '<li><span class="mini"><span style="background:var(--absent)">N</span></span>Not in the word at all.</li>'+
-    '<li style="color:var(--ink-soft)">A new word unlocks at midnight. Come back every day to build your streak.</li>';
-})();
-
-/* HOW TO PLAY MODAL */
-(function(){
-  var el=document.getElementById('howDetailList');
-  el.innerHTML=
-    '<li><span class="mini"><span style="background:var(--green)">W</span></span><span>Right letter, <strong>right spot</strong> — tile turns green.</span></li>'+
-    '<li><span class="mini"><span style="background:var(--amber)">I</span></span><span>Right letter, <strong>wrong spot</strong> — tile turns gold.</span></li>'+
-    '<li><span class="mini"><span style="background:var(--absent)">N</span></span><span>Letter is <strong>not in the word</strong> at all.</span></li>'+
-    '<li style="color:var(--ink-soft);margin-top:6px;display:block;padding-left:0;">A new word drops every day at midnight. Build your streak!</li>';
-})();
-
-function openHow(){
-  document.getElementById('howOverlay').classList.add('open');
-}
-function closeHow(){
-  S.set('df_seen','1');
-  document.getElementById('howOverlay').classList.remove('open');
-}
-document.getElementById('openHow').addEventListener('click', openHow);
-document.getElementById('closeHow').addEventListener('click', closeHow);
-document.getElementById('howPlayBtn').addEventListener('click', closeHow);
-document.getElementById('howOverlay').addEventListener('click',function(e){ if(e.target===this) closeHow(); });
-
-/* SETTINGS MODAL */
-document.getElementById('openSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.add('open'); });
-document.getElementById('closeSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.remove('open'); });
-document.getElementById('settingsOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
-
-/* COUNTDOWN */
-var clockInt=null;
-function startClock(){
-  if(clockInt) clearInterval(clockInt);
-  function tick(){
-    var now=new Date(), next=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
-    var d=next-now, h=Math.floor(d/3.6e6), m=Math.floor(d%3.6e6/6e4), s=Math.floor(d%6e4/1e3);
-    var p=function(x){ return ('0'+x).slice(-2); };
-    var el=document.getElementById('clock'); if(el) el.textContent=p(h)+':'+p(m)+':'+p(s);
-  }
-  tick(); clockInt=setInterval(tick,1e3);
-}
-
-/* SHARE */
-function buildShare(){
-  var emoji={correct:'🟩',present:'🟨',absent:'⬜'};
-  var head='The Daily Five #'+DAY+' '+(gameStatus==='won'?guesses.length:'X')+'/6'+(settings.hard?' *':'');
-  var grid=guesses.map(function(g){ return scoreGuess(g).map(function(s){ return emoji[s]; }).join(''); }).join('\n');
-  var extras=[];
-  var s=getStats();
-  if(s.cur>=2) extras.push((s.cur>=5?'🔥':'⚡')+' '+s.cur+' day streak');
-  if(timerStart && timerEnd && gameStatus==='won'){
-    var secs=Math.round((timerEnd-timerStart)/1000);
-    var m=Math.floor(secs/60), sc=secs%60;
-    extras.push('⏱ '+(m>0?m+'m ':'')+sc+'s');
-  }
-  var tail=extras.length?' · '+extras.join(' · '):'';
-  return head+tail+'\n\n'+grid+'\n\nhttps://thedailyfive.net';
-}
-document.getElementById('shareBtn').addEventListener('click',function(){
-  var text=buildShare();
-  if(navigator.share){ navigator.share({text:text}).catch(function(){ copyText(text); }); }
-  else copyText(text);
-});
-function copyText(text){
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){ toast('Copied! ✓'); },function(){ fallbackCopy(text); });
-  } else fallbackCopy(text);
-}
-function fallbackCopy(text){
-  var ta=document.createElement('textarea');
-  ta.value=text; ta.style.cssText='position:fixed;opacity:0;top:0;left:0;';
-  document.body.appendChild(ta); ta.select();
-  try{ document.execCommand('copy'); toast('Copied! ✓'); }catch(e){ toast('Copy failed'); }
-  ta.remove();
-}
-
-/* CONFETTI */
-function launchConfetti(){
-  var canvas=document.getElementById('confetti-canvas');
-  canvas.style.display='block';
-  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-  var ctx=canvas.getContext('2d');
-  var particles=[];
-  var colors=['#3f7a4f','#c89a2b','#9e2b25','#4a8f5e','#d4a830','#f5793a','#85c0f9'];
-  for(var i=0;i<120;i++){
-    particles.push({
-      x:Math.random()*canvas.width, y:-10-Math.random()*100,
-      vx:(Math.random()-0.5)*4, vy:2+Math.random()*4,
-      w:8+Math.random()*8, h:4+Math.random()*4,
-      r:Math.random()*Math.PI*2, rv:(Math.random()-0.5)*0.2,
-      color:colors[Math.floor(Math.random()*colors.length)], opacity:1
-    });
-  }
-  var start=performance.now(), duration=3000;
-  function frame(now){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    var elapsed=now-start, progress=elapsed/duration;
-    particles.forEach(function(p){
-      p.x+=p.vx; p.y+=p.vy; p.r+=p.rv; p.vy+=0.06;
-      p.opacity=Math.max(0, 1-Math.max(0,progress-0.6)/0.4);
-      ctx.save();
-      ctx.globalAlpha=p.opacity;
-      ctx.translate(p.x,p.y); ctx.rotate(p.r);
-      ctx.fillStyle=p.color;
-      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
-      ctx.restore();
-    });
-    if(elapsed<duration) requestAnimationFrame(frame);
-    else { canvas.style.display='none'; ctx.clearRect(0,0,canvas.width,canvas.height); }
-  }
-  requestAnimationFrame(frame);
-}
-
-/* KEY PRESS ANIMATION */
-document.addEventListener('keydown',function(e){
-  var k=e.key.toUpperCase();
-  var btn=document.querySelector('.key[data-k="'+k+'"]');
-  if(!btn&&k==='ENTER') btn=document.querySelector('.key[data-k="ENT"]');
-  if(!btn&&k==='BACKSPACE') btn=document.querySelector('.key[data-k="DEL"]');
-  if(btn){ btn.classList.add('pressed'); setTimeout(function(){ btn.classList.remove('pressed'); },100); }
-});
-
-/* BOOT */
-loadGame();
-renderCurrent();
-if(gameStatus!=='playing'){
-  setTimeout(function(){ openStats(true); },400);
-} else {
-  if(!S.get('df_seen')){
-    setTimeout(function(){ openHow(); },350);
-  } else {
-    var bootStats=getStats();
-    if(bootStats.cur>=2){
-      var welcomeMsg = bootStats.cur>=30 ? '💎 '+bootStats.cur+'-day streak — legendary!' :
-                       bootStats.cur>=7  ? '🔥 '+bootStats.cur+'-day streak — you\'re on fire!' :
-                                           '⚡ '+bootStats.cur+' day streak — keep it up!';
-      setTimeout(function(){ toast(welcomeMsg, 2800); }, 500);
-    }
-  }
-}
-
-document.addEventListener('touchend',function(e){ if(e.target.closest('.key')) e.preventDefault(); },{passive:false});
-
-/* PWA INSTALL BANNER */
-var pwaPrompt=null;
-window.addEventListener('beforeinstallprompt',function(e){
-  e.preventDefault(); pwaPrompt=e;
-  if(!S.get('df_pwa_ok')){
-    setTimeout(function(){ document.getElementById('pwaBar').style.display='flex'; },4000);
-  }
-});
-document.getElementById('pwaInstall').addEventListener('click',function(){
-  if(!pwaPrompt) return;
-  pwaPrompt.prompt();
-  pwaPrompt.userChoice.then(function(r){
-    pwaPrompt=null;
-    document.getElementById('pwaBar').style.display='none';
-    if(r.outcome==='accepted') S.set('df_pwa_ok','1');
-  });
-});
-document.getElementById('pwaDismiss').addEventListener('click',function(){
-  document.getElementById('pwaBar').style.display='none';
-  S.set('df_pwa_ok','1');
-});
-
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').catch(function(){});
-}
-</script>
-</body>
-</html>
 </html>

@@ -22,14 +22,27 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="Daily Five"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4991106296689056" crossorigin="anonymous"></script>
-<!-- Google Analytics — replace G-XXXXXXXXXX with your Measurement ID -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<!-- Google Analytics — replace G-RX9TN7SJVP with your Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
+  gtag('config', 'G-RX9TN7SJVP');
 </script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+  var cfg={apiKey:"AIzaSyAy0iARQPIZSeE4W_Qco7ctonY_758yvvU",authDomain:"thedailyfive-f7103.firebaseapp.com",
+    projectId:"thedailyfive-f7103",storageBucket:"thedailyfive-f7103.firebasestorage.app",
+    messagingSenderId:"418141523968",appId:"1:418141523968:web:05acaf5cf23f85069ac8e5"};
+  try{ if(!firebase.apps.length) firebase.initializeApp(cfg); }catch(e){}
+})();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -434,6 +447,26 @@ main {
   font-size: 20px; cursor: pointer; padding: 4px;
   opacity: .6; line-height: 1; flex-shrink: 0;
 }
+
+/* ─── LEADERBOARD ─── */
+.stats-tabs{display:flex;border-bottom:2px solid var(--line);margin-bottom:14px;}
+.stats-tab{flex:1;padding:8px 0;font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:none;border:none;cursor:pointer;color:var(--ink-muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s;}
+.stats-tab.active{color:var(--ink);border-bottom-color:var(--ink);}
+.lb-wrap{max-height:260px;overflow-y:auto;}
+.lb-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line);font-size:12px;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row.me{background:rgba(63,122,79,.08);border-radius:3px;padding:5px 6px;margin:0 -6px;}
+.lb-rank{font-family:'Fraunces',serif;font-weight:900;font-size:14px;color:var(--ink-muted);min-width:22px;text-align:right;}
+.lb-rank.top3{color:var(--amber);}
+.lb-name{flex:1;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lb-guesses{color:var(--ink-muted);font-size:11px;min-width:28px;text-align:center;}
+.lb-score{font-weight:700;color:var(--green);min-width:44px;text-align:right;}
+.lb-empty{text-align:center;color:var(--ink-muted);font-size:13px;padding:24px 0;}
+.lb-myrank{text-align:center;font-size:13px;font-weight:700;color:var(--green);padding:8px 0 2px;}
+.lb-loading{text-align:center;color:var(--ink-muted);font-size:12px;padding:20px 0;}
+.lb-name-row{display:flex;gap:6px;align-items:center;margin-bottom:10px;}
+.lb-name-input{flex:1;border:1.5px solid var(--line);border-radius:3px;padding:5px 8px;font-family:'Hanken Grotesk',sans-serif;font-size:12px;background:var(--paper);color:var(--ink);}
+.lb-name-btn{background:var(--ink);color:var(--paper);border:none;border-radius:3px;padding:5px 10px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -496,6 +529,11 @@ main {
     <button class="modal-close" id="closeStats" aria-label="Close">&times;</button>
     <h2 id="statsTitle">Statistics</h2>
     <p class="modal-sub" id="statsSub"></p>
+    <div class="stats-tabs">
+      <button class="stats-tab active" id="tabStats" onclick="switchTab('stats')">Stats</button>
+      <button class="stats-tab" id="tabLb" onclick="switchTab('lb')">Leaderboard</button>
+    </div>
+    <div id="panelStats">
     <div class="stat-grid">
       <div class="stat-cell"><div class="stat-num" id="sPlayed">0</div><div class="stat-lab">Played</div></div>
       <div class="stat-cell"><div class="stat-num" id="sWin">0</div><div class="stat-lab">Win %</div></div>
@@ -518,6 +556,16 @@ main {
       <div class="dist-title">Guess Distribution</div>
       <div id="dist"></div>
     </div>
+    </div><!-- end panelStats -->
+    <div id="panelLb" style="display:none;">
+      <div class="lb-name-row">
+        <input class="lb-name-input" id="lbNameInput" placeholder="Your display name (optional)" maxlength="20"/>
+        <button class="lb-name-btn" onclick="saveLbName()">Save</button>
+      </div>
+      <div class="lb-myrank" id="lbMyRank"></div>
+      <div class="lb-wrap" id="lbList"><div class="lb-loading">Loading rankings…</div></div>
+    </div>
+    
     <div class="end-actions" id="endActions">
       <div class="countdown" id="countdownWrap">
         <div class="countdown-lab">Next word in</div>
@@ -844,6 +892,7 @@ function submitGuess(){
     if(!timerEnd) timerEnd=Date.now();
     gameStatus='won';
     var s=recordResult(true, guesses.length);
+    submitScore(guesses.length, timerEnd?((timerEnd-timerStart)/1000):0);
     checkMilestone(s.cur);
     setTimeout(function(){
       row.classList.add('bounce');
@@ -858,6 +907,7 @@ function submitGuess(){
     if(!timerEnd) timerEnd=Date.now();
     gameStatus='lost';
     recordResult(false,0);
+    submitScore(7, timerEnd?((timerEnd-timerStart)/1000):0);
     soundWrong(); vibrate([80,40,80]);
     setTimeout(function(){ toast(ANSWER, 2500); }, totalReveal);
     setTimeout(function(){ openStats(true); }, totalReveal+2000);
@@ -1228,6 +1278,85 @@ if('serviceWorker' in navigator){
 }
 
 })();
+
+
+// ── LEADERBOARD ──────────────────────────────────────────────────────────
+function getPlayerId(){
+  var id=localStorage.getItem('df_pid');
+  if(!id){id='p'+Math.random().toString(36).slice(2,9)+Date.now().toString(36);localStorage.setItem('df_pid',id);}
+  return id;
+}
+function getLbName(){
+  var n=localStorage.getItem('df_pname')||'';
+  return n.trim()||'Player '+getPlayerId().slice(1,5).toUpperCase();
+}
+function saveLbName(){
+  var v=document.getElementById('lbNameInput').value.trim().slice(0,20);
+  if(v){localStorage.setItem('df_pname',v);}
+  loadLeaderboard();
+}
+function calcScore(guesses,secs){
+  var base=[600,500,400,300,200,100][Math.min(guesses-1,5)];
+  var tBonus=Math.max(0,100-Math.floor(secs||0));
+  return base+tBonus;
+}
+var _lbRank=0, _lbTotal=0;
+function submitScore(guesses,secs){
+  if(practiceMode) return;
+  try{
+    var db=firebase.firestore();
+    var pid=getPlayerId();
+    var score=calcScore(guesses,secs);
+    db.collection('lb').doc(String(DAY)).collection('p').doc(pid).set({
+      n:getLbName(),g:guesses,t:Math.round(secs||0),s:score,ts:firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function(){
+      db.collection('lb').doc(String(DAY)).collection('p').orderBy('s','desc').get().then(function(snap){
+        var rank=1; snap.forEach(function(d,i){if(d.id===pid) _lbRank=rank; rank++;});
+        _lbTotal=snap.size;
+        var el=document.getElementById('lbMyRank');
+        if(el) el.textContent='Your rank today: #'+_lbRank+' of '+_lbTotal+' players';
+      });
+    });
+  }catch(e){}
+}
+function loadLeaderboard(){
+  var list=document.getElementById('lbList');
+  var myRankEl=document.getElementById('lbMyRank');
+  if(!list) return;
+  list.innerHTML='<div class="lb-loading">Loading…</div>';
+  var nameInput=document.getElementById('lbNameInput');
+  if(nameInput) nameInput.value=localStorage.getItem('df_pname')||'';
+  try{
+    var db=firebase.firestore();
+    var pid=getPlayerId();
+    db.collection('lb').doc(String(DAY)).collection('p').orderBy('s','desc').limit(50).get().then(function(snap){
+      if(snap.empty){list.innerHTML='<div class="lb-empty">No scores yet today.<br>Play to be first!</div>';return;}
+      var html=''; var rank=1; var myRank=0;
+      snap.forEach(function(d){
+        var e=d.data(); var isMe=d.id===pid;
+        if(isMe) myRank=rank;
+        var medal=rank<=3?'top3':'';
+        html+='<div class="lb-row'+(isMe?' me':'')+'">'+
+          '<span class="lb-rank '+medal+'">'+(rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':'#'+rank)+'</span>'+
+          '<span class="lb-name">'+(isMe?'<b>'+e.n+'</b>':e.n)+'</span>'+
+          '<span class="lb-guesses">'+e.g+'/6</span>'+
+          '<span class="lb-score">'+e.s+'</span>'+
+          '</div>';
+        rank++;
+      });
+      list.innerHTML=html;
+      if(myRank && myRankEl) myRankEl.textContent='Your rank: #'+myRank+' of '+snap.size+' players';
+      else if(myRankEl && gameStatus!=='playing') myRankEl.textContent='Finish today's word to appear here';
+    });
+  }catch(e){list.innerHTML='<div class="lb-empty">Leaderboard unavailable.</div>';}
+}
+function switchTab(tab){
+  document.getElementById('panelStats').style.display=tab==='stats'?'':'none';
+  document.getElementById('panelLb').style.display=tab==='lb'?'':'none';
+  document.getElementById('tabStats').classList.toggle('active',tab==='stats');
+  document.getElementById('tabLb').classList.toggle('active',tab==='lb');
+  if(tab==='lb') loadLeaderboard();
+}
 </script>
 </body>
 </html>

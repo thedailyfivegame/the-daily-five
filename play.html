@@ -595,9 +595,13 @@ main {
     </div>
     <ul class="how-list" id="howList"></ul>
     </div>
-    <div id="lbPane" style="display:none">
-      <div id="lbMyRank"></div>
-      <div id="lbList"></div>
+    <div id="lbPane" style="display:none;">
+      <div class="lb-name-row">
+        <input class="lb-name-input" id="lbNameInput" placeholder="Your display name (optional)" maxlength="20">
+        <button class="lb-name-btn" id="lbSaveNameBtn">Save</button>
+      </div>
+      <div class="lb-myrank" id="lbMyRank"></div>
+      <div class="lb-wrap" id="lbList"></div>
     </div>
   </div>
 </div>

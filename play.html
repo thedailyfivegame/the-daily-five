@@ -1316,4 +1316,208 @@ function loadLeaderboard(){
     .limit(20)
     .get()
     .then(function(snap){
-      if(snap.empty){ document.getElementById('lbList').innerHTML
+      if(snap.empty){ document.getElementById('lbList').innerHTML='<div class="lb-loading">No scores yet today. Play to be first!</div>'; return; }
+      var myName = (S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+      var html = '';
+      var medals = ['🥇','🥈','🥉'];
+      var myRank = -1;
+      snap.docs.forEach(function(doc, i){
+        var d = doc.data();
+        var rank = i + 1;
+        var isMe = myName && doc.id.indexOf(myName) > -1;
+        if(isMe) myRank = rank;
+        var medal = medals[i] || rank;
+        var triesLabel = d.tries === 1 ? '1 try' : d.tries + ' tries';
+        html += '<div class="lb-entry'+(isMe?' me':'')+'">'+
+          '<span class="lb-rank-cell">'+medal+'</span>'+
+          '<span class="lb-name'+(isMe?' me':'')+'">'+(d.name||'Anonymous')+'</span>'+
+          '<span class="lb-score">'+d.tries+'</span>'+
+          '<span class="lb-tries">'+triesLabel+'</span>'+
+          '</div>';
+      });
+      document.getElementById('lbList').innerHTML = html;
+      // Show my rank if found
+      if(myRank > 0){
+        var myData = snap.docs[myRank-1].data();
+        var myMedal = medals[myRank-1] || ('#'+myRank);
+        document.getElementById('lbMyEntry').innerHTML =
+          '<div class="lb-entry me">'+
+          '<span class="lb-rank-cell">'+myMedal+'</span>'+
+          '<span class="lb-name me">'+(myData.name||'You')+'</span>'+
+          '<span class="lb-score">'+myData.tries+'</span>'+
+          '</div>';
+        document.getElementById('lbMyRank').style.display='';
+      }
+    })
+    .catch(function(){
+      document.getElementById('lbList').innerHTML='<div class="lb-loading">Could not load scores.</div>';
+    });
+}
+
+(function(){
+  var el=document.getElementById('howList');
+  el.innerHTML=
+    '<li><span class="mini"><span style="background:var(--green)">W</span></span>Right letter, right spot.</li>'+
+    '<li><span class="mini"><span style="background:var(--amber)">I</span></span>Right letter, wrong spot.</li>'+
+    '<li><span class="mini"><span style="background:var(--absent)">N</span></span>Not in the word at all.</li>'+
+    '<li style="color:var(--ink-soft)">A new word unlocks at midnight, your time. Come back every day to build your streak.</li>';
+})();
+
+/* ─────────────────────────────────────────
+   SETTINGS MODAL
+───────────────────────────────────────── */
+document.getElementById('openSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.add('open'); });
+document.getElementById('closeSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.remove('open'); });
+document.getElementById('settingsOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
+
+/* ─────────────────────────────────────────
+   COUNTDOWN
+───────────────────────────────────────── */
+var clockInt=null;
+function startClock(){
+  if(clockInt) clearInterval(clockInt);
+  function tick(){
+    var now=new Date(), next=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+    var d=next-now, h=Math.floor(d/3.6e6), m=Math.floor(d%3.6e6/6e4), s=Math.floor(d%6e4/1e3);
+    var p=function(x){ return ('0'+x).slice(-2); };
+    var el=document.getElementById('clock'); if(el) el.textContent=p(h)+':'+p(m)+':'+p(s);
+  }
+  tick(); clockInt=setInterval(tick,1e3);
+}
+
+/* ─────────────────────────────────────────
+   SHARE
+───────────────────────────────────────── */
+function buildShare(){
+  var emoji={correct:'🟩',present:'🟨',absent:'⬜'};
+  var head='The Daily Five #'+DAY+'  '+(gameStatus==='won'?guesses.length:'X')+'/6'+(settings.hard?' *':'');
+  var grid=guesses.map(function(g){ return scoreGuess(g).map(function(s){ return emoji[s]; }).join(''); }).join('\n');
+  return head+'\n\n'+grid+'\n\nhttps://thedailyfive.net';
+}
+document.getElementById('shareBtn').addEventListener('click',function(){
+  var text=buildShare();
+  if(navigator.share){ navigator.share({text:text}).catch(function(){ copyText(text); }); }
+  else copyText(text);
+});
+function copyText(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){ toast('Copied! ✓'); },function(){ fallbackCopy(text); });
+  } else fallbackCopy(text);
+}
+function fallbackCopy(text){
+  var ta=document.createElement('textarea');
+  ta.value=text; ta.style.cssText='position:fixed;opacity:0;top:0;left:0;';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('Copied! ✓'); }catch(e){ toast('Copy failed'); }
+  ta.remove();
+}
+
+/* ─────────────────────────────────────────
+   CONFETTI
+───────────────────────────────────────── */
+function launchConfetti(){
+  var canvas=document.getElementById('confetti-canvas');
+  canvas.style.display='block';
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  var ctx=canvas.getContext('2d');
+  var particles=[];
+  var colors=['#3f7a4f','#c89a2b','#9e2b25','#4a8f5e','#d4a830','#f5793a','#85c0f9'];
+
+  for(var i=0;i<120;i++){
+    particles.push({
+      x: Math.random()*canvas.width,
+      y: -10-Math.random()*100,
+      vx: (Math.random()-0.5)*4,
+      vy: 2+Math.random()*4,
+      w: 8+Math.random()*8,
+      h: 4+Math.random()*4,
+      r: Math.random()*Math.PI*2,
+      rv: (Math.random()-0.5)*0.2,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      opacity: 1
+    });
+  }
+
+  var start=performance.now();
+  var duration=3000;
+  function frame(now){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    var elapsed=now-start;
+    var progress=elapsed/duration;
+
+    particles.forEach(function(p){
+      p.x+=p.vx; p.y+=p.vy; p.r+=p.rv;
+      p.vy+=0.06;
+      p.opacity=Math.max(0, 1-Math.max(0,progress-0.6)/0.4);
+
+      ctx.save();
+      ctx.globalAlpha=p.opacity;
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.r);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+
+    if(elapsed<duration) requestAnimationFrame(frame);
+    else { canvas.style.display='none'; ctx.clearRect(0,0,canvas.width,canvas.height); }
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ─────────────────────────────────────────
+   KEY PRESS ANIMATION (physical keyboard)
+───────────────────────────────────────── */
+document.addEventListener('keydown',function(e){
+  var k=e.key.toUpperCase();
+  var btn=document.querySelector('.key[data-k="'+k+'"]');
+  if(!btn&&k==='ENTER') btn=document.querySelector('.key[data-k="ENT"]');
+  if(!btn&&k==='BACKSPACE') btn=document.querySelector('.key[data-k="DEL"]');
+  if(btn){ btn.classList.add('pressed'); setTimeout(function(){ btn.classList.remove('pressed'); },100); }
+});
+
+/* ─────────────────────────────────────────
+   BOOT
+───────────────────────────────────────── */
+loadGame();
+renderCurrent();
+
+// Board entrance animation — tiles cascade in
+(function(){
+  var allTiles = boardEl.querySelectorAll('.tile');
+  allTiles.forEach(function(t){
+    var r = parseInt(t.dataset.r);
+    var c = parseInt(t.dataset.c);
+    // Only animate tiles that haven't been played yet (no revealed state)
+    var state = t.getAttribute('data-state');
+    if(state && state !== '' && state !== 'filled') return; // skip already-revealed tiles
+    var delay = (r * 5 + c) * 28;
+    t.style.setProperty('--enter-delay', delay + 'ms');
+    t.classList.add('entering');
+    var totalDur = delay + 600;
+    setTimeout(function(){
+      t.classList.remove('entering');
+      t.style.removeProperty('--enter-delay');
+    }, totalDur);
+  });
+})();
+
+if(gameStatus!=='playing'){
+  setTimeout(function(){ openStats(true); },400);
+} else {
+  var st=getStats();
+  if(!st||st.played===0){ setTimeout(function(){ openStats(false); },350); }
+}
+
+// Prevent double-tap zoom on mobile
+document.addEventListener('touchend',function(e){ if(e.target.closest('.key')) e.preventDefault(); },{passive:false});
+
+// Service worker for PWA
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(function(){});
+}
+
+})();
+</script>
+</body>
+</html>

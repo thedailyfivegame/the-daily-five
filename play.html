@@ -217,8 +217,8 @@ main {
 .board { display: grid; grid-template-rows: repeat(6,1fr); gap: 5px; }
 .row { display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; }
 .tile {
-  width: clamp(46px, 14vw, 62px);
-  height: clamp(46px, 14vw, 62px);
+  width: clamp(44px, 12vw, 56px);
+  height: clamp(44px, 12vw, 56px);
   border: 2px solid var(--line);
   background: var(--tile);
   display: flex; align-items: center; justify-content: center;
@@ -266,21 +266,21 @@ main {
 }
 
 /* KEYBOARD */
-.keyboard { width: 100%; padding: 4px 4px 10px; flex: 0 0 auto; }
+.keyboard { width: 100%; padding: 4px 4px 6px; flex: 0 0 auto; }
 .krow {
   display: flex; justify-content: center;
-  gap: 4px; margin-bottom: 5px;
+  gap: 4px; margin-bottom: 4px;
   touch-action: manipulation;
 }
 .key {
-  flex: 1; min-width: 0; height: 54px; max-width: 40px;
+  flex: 1; min-width: 0; height: 48px; max-width: 40px;
   border: none; border-radius: 4px;
   background: var(--paper-2); color: var(--ink);
   font-family: 'Hanken Grotesk', sans-serif;
   font-weight: 700; font-size: 13px; text-transform: uppercase;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 0 var(--ink-muted);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.14);
   transition: transform .04s, box-shadow .04s, background .12s, color .12s;
   -webkit-tap-highlight-color: transparent;
 }

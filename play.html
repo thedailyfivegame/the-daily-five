@@ -15,6 +15,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+  var cfg={
+    apiKey:"AIzaSyAy0iARQPIZSeE4W_Qco7ctonY_758yvvU",
+    authDomain:"thedailyfive-f7103.firebaseapp.com",
+    projectId:"thedailyfive-f7103",
+    storageBucket:"thedailyfive-f7103.appspot.com"
+  };
+  try{
+    if(!firebase.apps.length) firebase.initializeApp(cfg);
+    window._db = firebase.firestore();
+  }catch(e){ window._db = null; }
+})();
+</script>
 <style>
 /* ═══════════════════════════════════════════
    DESIGN TOKENS — Light theme (default)
@@ -512,6 +528,70 @@ main {
 .toggle input:checked ~ .toggle-thumb { transform: translateX(20px); }
 
 /* ═══════════════════════════════════════════
+   MODAL TABS (Stats / Leaderboard)
+═══════════════════════════════════════════ */
+.modal-tabs {
+  display: flex; margin: -6px -20px 16px;
+  border-bottom: 2px solid var(--ink);
+}
+.modal-tab {
+  flex: 1; background: none; border: none; cursor: pointer;
+  padding: 10px 0;
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 700; font-size: 11px; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--ink-muted);
+  border-bottom: 3px solid transparent; margin-bottom: -2px;
+  transition: color var(--trans), border-color var(--trans);
+}
+.modal-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
+.modal-tab:hover { color: var(--ink-soft); }
+
+/* ═══════════════════════════════════════════
+   LEADERBOARD
+═══════════════════════════════════════════ */
+#lbPane { min-height: 120px; }
+.lb-name-row {
+  display: flex; gap: 8px; align-items: center;
+  margin-bottom: 14px;
+}
+.lb-name-input {
+  flex: 1; background: var(--paper-2); border: 1.5px solid var(--line);
+  color: var(--ink); font-family: 'Hanken Grotesk', sans-serif;
+  font-size: 13px; font-weight: 600; padding: 8px 10px;
+  border-radius: 3px; outline: none;
+  transition: border-color var(--trans);
+}
+.lb-name-input:focus { border-color: var(--ink); }
+.lb-save-btn {
+  background: var(--ink); color: var(--paper); border: none;
+  padding: 8px 14px; font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 700; font-size: 12px; text-transform: uppercase;
+  letter-spacing: .05em; cursor: pointer; border-radius: 3px;
+  transition: opacity var(--trans);
+}
+.lb-save-btn:hover { opacity: .85; }
+.lb-my-rank {
+  background: var(--paper-2); margin: 0 -20px 12px;
+  padding: 10px 20px; border-bottom: 1px solid var(--line);
+}
+.lb-my-label {
+  font-size: 9px; text-transform: uppercase; letter-spacing: .15em;
+  color: var(--ink-muted); font-weight: 700; margin-bottom: 4px;
+}
+.lb-entry {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 13px;
+}
+.lb-entry:last-child { border-bottom: none; }
+.lb-entry.me { font-weight: 700; }
+.lb-rank-cell { font-size: 17px; min-width: 28px; text-align: center; }
+.lb-name { flex: 1; color: var(--ink-soft); font-weight: 500; }
+.lb-name.me { color: var(--ink); font-weight: 700; }
+.lb-score { font-weight: 800; color: var(--ink); font-size: 14px; }
+.lb-tries { color: var(--ink-muted); font-size: 11px; }
+.lb-loading { text-align: center; padding: 24px; color: var(--ink-muted); font-size: 13px; }
+
+/* ═══════════════════════════════════════════
    STREAK FIRE ANIMATION
 ═══════════════════════════════════════════ */
 .streak-display {
@@ -559,6 +639,7 @@ main {
   <div class="masthead">The Daily Five</div>
   <div class="subhead">One word · Six tries · Every day</div>
   <div class="header-btns">
+    <button class="hbtn" id="openLeaderboard" aria-label="Leaderboard" title="Leaderboard">🏆</button>
     <button class="hbtn" id="openStats" aria-label="Statistics" title="Statistics">▤</button>
     <button class="hbtn" id="openSettings" aria-label="Settings" title="Settings">⚙</button>
   </div>
@@ -593,32 +674,55 @@ main {
 <div class="overlay" id="statsOverlay" role="dialog" aria-modal="true" aria-labelledby="statsTitle">
   <div class="modal">
     <button class="modal-close" id="closeStats" aria-label="Close">×</button>
-    <h2 id="statsTitle">Statistics</h2>
-    <p class="modal-sub" id="statsSub"></p>
 
-    <div class="stat-grid">
-      <div class="stat-cell"><div class="stat-num" id="sPlayed">0</div><div class="stat-lab">Played</div></div>
-      <div class="stat-cell"><div class="stat-num" id="sWin">0</div><div class="stat-lab">Win %</div></div>
-      <div class="stat-cell"><div class="stat-num" id="sCur">0</div><div class="stat-lab">Streak</div></div>
-      <div class="stat-cell"><div class="stat-num" id="sMax">0</div><div class="stat-lab">Best</div></div>
+    <!-- Tabs -->
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tabStats" aria-selected="true">Statistics</button>
+      <button class="modal-tab" id="tabLb" aria-selected="false">Leaderboard</button>
     </div>
 
-    <div class="streak-display" id="streakDisplay"></div>
+    <!-- Stats pane -->
+    <div id="statsPane">
+      <h2 id="statsTitle" style="margin-bottom:4px">Statistics</h2>
+      <p class="modal-sub" id="statsSub"></p>
 
-    <div class="dist-section">
-      <div class="dist-title">Guess Distribution</div>
-      <div id="dist"></div>
-    </div>
-
-    <div class="end-actions" id="endActions">
-      <div class="countdown">
-        <div class="countdown-lab">Next word in</div>
-        <div class="countdown-clock" id="clock">--:--:--</div>
+      <div class="stat-grid">
+        <div class="stat-cell"><div class="stat-num" id="sPlayed">0</div><div class="stat-lab">Played</div></div>
+        <div class="stat-cell"><div class="stat-num" id="sWin">0</div><div class="stat-lab">Win %</div></div>
+        <div class="stat-cell"><div class="stat-num" id="sCur">0</div><div class="stat-lab">Streak</div></div>
+        <div class="stat-cell"><div class="stat-num" id="sMax">0</div><div class="stat-lab">Best</div></div>
       </div>
-      <button class="share-btn" id="shareBtn">Share ⇪</button>
+
+      <div class="streak-display" id="streakDisplay"></div>
+
+      <div class="dist-section">
+        <div class="dist-title">Guess Distribution</div>
+        <div id="dist"></div>
+      </div>
+
+      <div class="end-actions" id="endActions">
+        <div class="countdown">
+          <div class="countdown-lab">Next word in</div>
+          <div class="countdown-clock" id="clock">--:--:--</div>
+        </div>
+        <button class="share-btn" id="shareBtn">Share ⇪</button>
+      </div>
+
+      <ul class="how-list" id="howList"></ul>
     </div>
 
-    <ul class="how-list" id="howList"></ul>
+    <!-- Leaderboard pane -->
+    <div id="lbPane" style="display:none">
+      <div class="lb-name-row">
+        <input class="lb-name-input" id="lbNameInput" type="text" maxlength="20" placeholder="Your name on leaderboard…"/>
+        <button class="lb-save-btn" id="lbSaveBtn">Save</button>
+      </div>
+      <div id="lbMyRank" class="lb-my-rank" style="display:none">
+        <div class="lb-my-label">Your rank today</div>
+        <div id="lbMyEntry"></div>
+      </div>
+      <div id="lbList"><div class="lb-loading">Loading…</div></div>
+    </div>
   </div>
 </div>
 
@@ -1009,6 +1113,7 @@ function submitGuess(){
   if(won){
     gameStatus='won';
     recordResult(true, guesses.length);
+    setTimeout(function(){ submitScore(); }, totalReveal + 200);
     setTimeout(function(){
       row.classList.add('bounce');
       soundCorrect();
@@ -1139,170 +1244,76 @@ document.getElementById('openStats').addEventListener('click',function(){ openSt
 document.getElementById('closeStats').addEventListener('click',function(){ document.getElementById('statsOverlay').classList.remove('open'); });
 document.getElementById('statsOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
 
-(function(){
-  var el=document.getElementById('howList');
-  el.innerHTML=
-    '<li><span class="mini"><span style="background:var(--green)">W</span></span>Right letter, right spot.</li>'+
-    '<li><span class="mini"><span style="background:var(--amber)">I</span></span>Right letter, wrong spot.</li>'+
-    '<li><span class="mini"><span style="background:var(--absent)">N</span></span>Not in the word at all.</li>'+
-    '<li style="color:var(--ink-soft)">A new word unlocks at midnight, your time. Come back every day to build your streak.</li>';
-})();
-
 /* ─────────────────────────────────────────
-   SETTINGS MODAL
+   LEADERBOARD
 ───────────────────────────────────────── */
-document.getElementById('openSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.add('open'); });
-document.getElementById('closeSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.remove('open'); });
-document.getElementById('settingsOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
-
-/* ─────────────────────────────────────────
-   COUNTDOWN
-───────────────────────────────────────── */
-var clockInt=null;
-function startClock(){
-  if(clockInt) clearInterval(clockInt);
-  function tick(){
-    var now=new Date(), next=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
-    var d=next-now, h=Math.floor(d/3.6e6), m=Math.floor(d%3.6e6/6e4), s=Math.floor(d%6e4/1e3);
-    var p=function(x){ return ('0'+x).slice(-2); };
-    var el=document.getElementById('clock'); if(el) el.textContent=p(h)+':'+p(m)+':'+p(s);
-  }
-  tick(); clockInt=setInterval(tick,1e3);
-}
-
-/* ─────────────────────────────────────────
-   SHARE
-───────────────────────────────────────── */
-function buildShare(){
-  var emoji={correct:'🟩',present:'🟨',absent:'⬜'};
-  var head='The Daily Five #'+DAY+'  '+(gameStatus==='won'?guesses.length:'X')+'/6'+(settings.hard?' *':'');
-  var grid=guesses.map(function(g){ return scoreGuess(g).map(function(s){ return emoji[s]; }).join(''); }).join('\n');
-  return head+'\n\n'+grid+'\n\nhttps://thedailyfive.net';
-}
-document.getElementById('shareBtn').addEventListener('click',function(){
-  var text=buildShare();
-  if(navigator.share){ navigator.share({text:text}).catch(function(){ copyText(text); }); }
-  else copyText(text);
+// Tab switching
+document.getElementById('tabStats').addEventListener('click',function(){
+  document.getElementById('statsPane').style.display='';
+  document.getElementById('lbPane').style.display='none';
+  document.getElementById('tabStats').classList.add('active');
+  document.getElementById('tabLb').classList.remove('active');
 });
-function copyText(text){
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){ toast('Copied! ✓'); },function(){ fallbackCopy(text); });
-  } else fallbackCopy(text);
-}
-function fallbackCopy(text){
-  var ta=document.createElement('textarea');
-  ta.value=text; ta.style.cssText='position:fixed;opacity:0;top:0;left:0;';
-  document.body.appendChild(ta); ta.select();
-  try{ document.execCommand('copy'); toast('Copied! ✓'); }catch(e){ toast('Copy failed'); }
-  ta.remove();
-}
-
-/* ─────────────────────────────────────────
-   CONFETTI
-───────────────────────────────────────── */
-function launchConfetti(){
-  var canvas=document.getElementById('confetti-canvas');
-  canvas.style.display='block';
-  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-  var ctx=canvas.getContext('2d');
-  var particles=[];
-  var colors=['#3f7a4f','#c89a2b','#9e2b25','#4a8f5e','#d4a830','#f5793a','#85c0f9'];
-
-  for(var i=0;i<120;i++){
-    particles.push({
-      x: Math.random()*canvas.width,
-      y: -10-Math.random()*100,
-      vx: (Math.random()-0.5)*4,
-      vy: 2+Math.random()*4,
-      w: 8+Math.random()*8,
-      h: 4+Math.random()*4,
-      r: Math.random()*Math.PI*2,
-      rv: (Math.random()-0.5)*0.2,
-      color: colors[Math.floor(Math.random()*colors.length)],
-      opacity: 1
-    });
-  }
-
-  var start=performance.now();
-  var duration=3000;
-  function frame(now){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    var elapsed=now-start;
-    var progress=elapsed/duration;
-
-    particles.forEach(function(p){
-      p.x+=p.vx; p.y+=p.vy; p.r+=p.rv;
-      p.vy+=0.06;
-      p.opacity=Math.max(0, 1-Math.max(0,progress-0.6)/0.4);
-
-      ctx.save();
-      ctx.globalAlpha=p.opacity;
-      ctx.translate(p.x,p.y);
-      ctx.rotate(p.r);
-      ctx.fillStyle=p.color;
-      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
-      ctx.restore();
-    });
-
-    if(elapsed<duration) requestAnimationFrame(frame);
-    else { canvas.style.display='none'; ctx.clearRect(0,0,canvas.width,canvas.height); }
-  }
-  requestAnimationFrame(frame);
-}
-
-/* ─────────────────────────────────────────
-   KEY PRESS ANIMATION (physical keyboard)
-───────────────────────────────────────── */
-document.addEventListener('keydown',function(e){
-  var k=e.key.toUpperCase();
-  var btn=document.querySelector('.key[data-k="'+k+'"]');
-  if(!btn&&k==='ENTER') btn=document.querySelector('.key[data-k="ENT"]');
-  if(!btn&&k==='BACKSPACE') btn=document.querySelector('.key[data-k="DEL"]');
-  if(btn){ btn.classList.add('pressed'); setTimeout(function(){ btn.classList.remove('pressed'); },100); }
+document.getElementById('tabLb').addEventListener('click',function(){
+  document.getElementById('statsPane').style.display='none';
+  document.getElementById('lbPane').style.display='';
+  document.getElementById('tabStats').classList.remove('active');
+  document.getElementById('tabLb').classList.add('active');
+  loadLeaderboard();
 });
 
-/* ─────────────────────────────────────────
-   BOOT
-───────────────────────────────────────── */
-loadGame();
-renderCurrent();
+// Open straight to leaderboard tab
+document.getElementById('openLeaderboard').addEventListener('click',function(){
+  openStats(false);
+  // Switch to lb tab
+  setTimeout(function(){
+    document.getElementById('tabLb').click();
+  }, 50);
+});
 
-// Board entrance animation — tiles cascade in
+// Name save
+document.getElementById('lbSaveBtn').addEventListener('click',function(){
+  var n = document.getElementById('lbNameInput').value.trim().substring(0,20);
+  if(!n) return;
+  S.set('df_lb_name', n);
+  toast('Name saved!');
+  if(gameStatus !== 'playing') submitScore();
+});
+document.getElementById('lbNameInput').addEventListener('keydown',function(e){
+  if(e.key==='Enter') document.getElementById('lbSaveBtn').click();
+});
+
+// Restore saved name
 (function(){
-  var allTiles = boardEl.querySelectorAll('.tile');
-  allTiles.forEach(function(t){
-    var r = parseInt(t.dataset.r);
-    var c = parseInt(t.dataset.c);
-    // Only animate tiles that haven't been played yet (no revealed state)
-    var state = t.getAttribute('data-state');
-    if(state && state !== '' && state !== 'filled') return; // skip already-revealed tiles
-    var delay = (r * 5 + c) * 28;
-    t.style.setProperty('--enter-delay', delay + 'ms');
-    t.classList.add('entering');
-    var totalDur = delay + 600;
-    setTimeout(function(){
-      t.classList.remove('entering');
-      t.style.removeProperty('--enter-delay');
-    }, totalDur);
-  });
+  var saved = S.get('df_lb_name');
+  if(saved) document.getElementById('lbNameInput').value = saved;
 })();
 
-if(gameStatus!=='playing'){
-  setTimeout(function(){ openStats(true); },400);
-} else {
-  var st=getStats();
-  if(!st||st.played===0){ setTimeout(function(){ openStats(false); },350); }
+function submitScore(){
+  if(!window._db) return;
+  var name = S.get('df_lb_name');
+  if(!name) return;
+  if(gameStatus === 'playing') return;
+  var tries = gameStatus === 'won' ? guesses.length : 7;
+  var docId = 'day' + DAY + '_' + name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+  window._db.collection('scores').doc(docId).set({
+    day: DAY,
+    name: name,
+    tries: tries,
+    won: gameStatus === 'won',
+    ts: firebase.firestore.FieldValue.serverTimestamp()
+  }).catch(function(){});
 }
 
-// Prevent double-tap zoom on mobile
-document.addEventListener('touchend',function(e){ if(e.target.closest('.key')) e.preventDefault(); },{passive:false});
-
-// Service worker for PWA
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').catch(function(){});
-}
-
-})();
-</script>
-</body>
-</html>
+function loadLeaderboard(){
+  if(!window._db){ document.getElementById('lbList').innerHTML='<div class="lb-loading">Leaderboard unavailable.</div>'; return; }
+  document.getElementById('lbList').innerHTML='<div class="lb-loading">Loading…</div>';
+  window._db.collection('scores')
+    .where('day','==',DAY)
+    .where('won','==',true)
+    .orderBy('tries','asc')
+    .orderBy('ts','asc')
+    .limit(20)
+    .get()
+    .then(function(snap){
+      if(snap.empty){ document.getElementById('lbList').innerHTML

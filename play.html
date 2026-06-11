@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-RX9TN7SJVP');
+  </script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-<title>The Daily Five — One word. Six tries. Every day.</title>
+<title>The Daily Five â One word. Six tries. Every day.</title>
 <meta name="description" content="A new five-letter word every day. Six guesses. One ritual."/>
 <meta name="theme-color" content="#f4efe4" id="themeColor"/>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
@@ -32,9 +40,9 @@
 })();
 </script>
 <style>
-/* ═══════════════════════════════════════════
-   DESIGN TOKENS — Light theme (default)
-═══════════════════════════════════════════ */
+/* âââââââââââââââââââââââââââââââââââââââââââ
+   DESIGN TOKENS â Light theme (default)
+âââââââââââââââââââââââââââââââââââââââââââ */
 :root {
   --paper:     #f4efe4;
   --paper-2:   #ede6d4;
@@ -83,9 +91,9 @@
   --amber-dim: #5ea8f0;
 }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    RESET & BASE
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
 body {
@@ -108,9 +116,9 @@ body::before {
 }
 * { position: relative; z-index: 1; }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    HEADER
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 header {
   border-bottom: 2px solid var(--ink);
   padding: 8px 14px 7px;
@@ -161,9 +169,9 @@ header {
 }
 .hard-badge.show { display: inline-block; }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    TOAST
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 .toast-zone {
   position: fixed; top: 80px; left: 0; right: 0;
   display: flex; flex-direction: column; align-items: center;
@@ -180,9 +188,9 @@ header {
 }
 @keyframes toastIn { from { opacity:0; transform:translateY(-10px) scale(.95); } to { opacity:1; transform:none; } }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    MAIN LAYOUT
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 main {
   flex: 1 1 auto;
   display: flex; flex-direction: column;
@@ -191,9 +199,9 @@ main {
   padding: 4px 0 0;
 }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    BOARD
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 .board-wrap {
   flex: 1 1 auto;
   display: flex; align-items: center; justify-content: center;
@@ -228,7 +236,7 @@ main {
 .tile[data-state="present"] { background: var(--amber); border-color: var(--amber); color: #fff; }
 .tile[data-state="absent"]  { background: var(--absent); border-color: var(--absent); color: #fff; }
 
-/* Active cursor tile — blinking caret on the next-to-type position */
+/* Active cursor tile â blinking caret on the next-to-type position */
 .tile.active-cursor {
   border-color: var(--ink);
   box-shadow: var(--shadow), 0 0 0 1.5px var(--ink-soft);
@@ -247,7 +255,7 @@ main {
 }
 @keyframes blink-cursor { 0%,100%{opacity:1} 50%{opacity:0} }
 
-/* Board entrance — tiles drop in staggered on load */
+/* Board entrance â tiles drop in staggered on load */
 @keyframes tile-enter {
   0%   { opacity:0; transform:translateY(-18px) scale(.86); }
   55%  { opacity:1; transform:translateY(3px) scale(1.04); }
@@ -258,7 +266,7 @@ main {
   animation-delay: var(--enter-delay, 0ms);
 }
 
-/* Pop animation when letter typed — snappier spring */
+/* Pop animation when letter typed â snappier spring */
 .tile.pop { animation: pop .13s cubic-bezier(0.34,1.56,0.64,1); }
 @keyframes pop {
   0%  { transform:scale(.84); }
@@ -302,9 +310,9 @@ main {
   100%{ transform: translateY(0); }
 }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    KEYBOARD
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 .keyboard { width: 100%; padding: 4px 4px 10px; flex: 0 0 auto; }
 .krow {
   display: flex; justify-content: center;
@@ -345,9 +353,9 @@ main {
   animation-delay: var(--key-delay, 0ms);
 }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    AD BANNER SLOT
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 .ad-banner {
   width: 100%; text-align: center; min-height: 52px;
   display: flex; align-items: center; justify-content: center;
@@ -358,18 +366,18 @@ main {
   transition: background var(--trans);
 }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    FOOTER
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 .footer-note {
   text-align: center; font-size: 9.5px; color: var(--ink-muted);
   padding: 3px 0 6px; letter-spacing: .06em;
 }
 .footer-note a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    MODAL OVERLAY
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 .overlay {
   position: fixed; inset: 0;
   background: rgba(10,9,7,.6);
@@ -414,9 +422,9 @@ main {
   margin-bottom: 14px; min-height: 18px;
 }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    STATS MODAL
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 .stat-grid {
   display: flex; justify-content: space-around;
   margin: 12px 0 4px; gap: 4px;
@@ -492,9 +500,9 @@ main {
   font-family: 'Fraunces', serif;
 }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    SETTINGS MODAL
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 .settings-list { margin-top: 14px; }
 .setting-row {
   display: flex; align-items: center; justify-content: space-between;
@@ -527,9 +535,9 @@ main {
 .toggle input:checked + .toggle-track { background: var(--green); }
 .toggle input:checked ~ .toggle-thumb { transform: translateX(20px); }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    MODAL TABS (Stats / Leaderboard)
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 .modal-tabs {
   display: flex; margin: -6px -20px 16px;
   border-bottom: 2px solid var(--ink);
@@ -546,9 +554,9 @@ main {
 .modal-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
 .modal-tab:hover { color: var(--ink-soft); }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    LEADERBOARD
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 #lbPane { min-height: 120px; }
 .lb-name-row {
   display: flex; gap: 8px; align-items: center;
@@ -591,9 +599,9 @@ main {
 .lb-tries { color: var(--ink-muted); font-size: 11px; }
 .lb-loading { text-align: center; padding: 24px; color: var(--ink-muted); font-size: 13px; }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    STREAK FIRE ANIMATION
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 .streak-display {
   text-align: center; margin: 8px 0 4px;
   font-family: 'Fraunces', serif; font-weight: 900;
@@ -601,17 +609,17 @@ main {
   letter-spacing: .02em;
 }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    CONFETTI CANVAS
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 #confetti-canvas {
   position: fixed; inset: 0;
   pointer-events: none; z-index: 500;
 }
 
-/* ═══════════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââââââ
    RESPONSIVE
-═══════════════════════════════════════════ */
+âââââââââââââââââââââââââââââââââââââââââââ */
 @media (max-height: 640px) {
   .tile {
     width: clamp(40px, 12vw, 52px);
@@ -629,32 +637,32 @@ main {
 </head>
 <body>
 
-<!-- ═══ HEADER ═══ -->
+<!-- âââ HEADER âââ -->
 <header>
   <div class="dateline">
-    <span id="dateText">—</span>
-    <span class="edition">No. <span id="puzzleNo">—</span></span>
+    <span id="dateText">â</span>
+    <span class="edition">No. <span id="puzzleNo">â</span></span>
   </div>
   <span class="hard-badge" id="hardBadge">Hard</span>
   <div class="masthead">The Daily Five</div>
-  <div class="subhead">One word · Six tries · Every day</div>
+  <div class="subhead">One word Â· Six tries Â· Every day</div>
   <div class="header-btns">
-    <button class="hbtn" id="openLeaderboard" aria-label="Leaderboard" title="Leaderboard">🏆</button>
-    <button class="hbtn" id="openStats" aria-label="Statistics" title="Statistics">▤</button>
-    <button class="hbtn" id="openSettings" aria-label="Settings" title="Settings">⚙</button>
+    <button class="hbtn" id="openLeaderboard" aria-label="Leaderboard" title="Leaderboard">ð</button>
+    <button class="hbtn" id="openStats" aria-label="Statistics" title="Statistics">â¤</button>
+    <button class="hbtn" id="openSettings" aria-label="Settings" title="Settings">â</button>
   </div>
 </header>
 
-<!-- ═══ TOASTS ═══ -->
+<!-- âââ TOASTS âââ -->
 <div class="toast-zone" id="toastZone" aria-live="polite"></div>
 
-<!-- ═══ GAME ═══ -->
+<!-- âââ GAME âââ -->
 <main>
   <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="Wordle game board"></div></div>
   <div class="keyboard" id="keyboard" role="group" aria-label="Keyboard"></div>
 </main>
 
-<!-- ═══ AD BANNER ═══ -->
+<!-- âââ AD BANNER âââ -->
 <div class="ad-banner" id="adBanner">
   <!-- Replace this comment block with real AdSense code when approved:
   <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px"
@@ -665,15 +673,15 @@ main {
 </div>
 
 <div class="footer-note">
-  <a href="https://thedailyfive.net" target="_blank">thedailyfive.net</a> ·
-  <a href="privacy.html">Privacy</a> ·
+  <a href="https://thedailyfive.net" target="_blank">thedailyfive.net</a> Â·
+  <a href="privacy.html">Privacy</a> Â·
   <a href="mailto:thedailyfive.game@gmail.com">Contact</a>
 </div>
 
-<!-- ═══ STATS MODAL ═══ -->
+<!-- âââ STATS MODAL âââ -->
 <div class="overlay" id="statsOverlay" role="dialog" aria-modal="true" aria-labelledby="statsTitle">
   <div class="modal">
-    <button class="modal-close" id="closeStats" aria-label="Close">×</button>
+    <button class="modal-close" id="closeStats" aria-label="Close">Ã</button>
 
     <!-- Tabs -->
     <div class="modal-tabs">
@@ -705,7 +713,7 @@ main {
           <div class="countdown-lab">Next word in</div>
           <div class="countdown-clock" id="clock">--:--:--</div>
         </div>
-        <button class="share-btn" id="shareBtn">Share ⇪</button>
+        <button class="share-btn" id="shareBtn">Share âª</button>
       </div>
 
       <ul class="how-list" id="howList"></ul>
@@ -714,22 +722,22 @@ main {
     <!-- Leaderboard pane -->
     <div id="lbPane" style="display:none">
       <div class="lb-name-row">
-        <input class="lb-name-input" id="lbNameInput" type="text" maxlength="20" placeholder="Your name on leaderboard…"/>
+        <input class="lb-name-input" id="lbNameInput" type="text" maxlength="20" placeholder="Your name on leaderboardâ¦"/>
         <button class="lb-save-btn" id="lbSaveBtn">Save</button>
       </div>
       <div id="lbMyRank" class="lb-my-rank" style="display:none">
         <div class="lb-my-label">Your rank today</div>
         <div id="lbMyEntry"></div>
       </div>
-      <div id="lbList"><div class="lb-loading">Loading…</div></div>
+      <div id="lbList"><div class="lb-loading">Loadingâ¦</div></div>
     </div>
   </div>
 </div>
 
-<!-- ═══ SETTINGS MODAL ═══ -->
+<!-- âââ SETTINGS MODAL âââ -->
 <div class="overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
   <div class="modal">
-    <button class="modal-close" id="closeSettings" aria-label="Close">×</button>
+    <button class="modal-close" id="closeSettings" aria-label="Close">Ã</button>
     <h2 id="settingsTitle">Settings</h2>
 
     <div class="settings-list">
@@ -798,16 +806,16 @@ main {
   </div>
 </div>
 
-<!-- ═══ CONFETTI CANVAS ═══ -->
+<!-- âââ CONFETTI CANVAS âââ -->
 <canvas id="confetti-canvas" style="display:none;"></canvas>
 
 <script>
 (function () {
 'use strict';
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    STORAGE
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 var _mem = {};
 var _ls = (function(){ try{ localStorage.setItem('_t','1'); localStorage.removeItem('_t'); return true; }catch(e){ return false; } })();
 var S = {
@@ -817,9 +825,9 @@ var S = {
   setObj: function(k,v){ S.set(k,JSON.stringify(v)); }
 };
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    SETTINGS
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 var settings = S.getObj('df_settings', {
   dark: false, hard: false, colorBlind: false, sound: false, haptic: true
 });
@@ -847,24 +855,24 @@ document.getElementById('colorBlindToggle').addEventListener('change', function(
 document.getElementById('soundToggle').addEventListener('change', function(){ saveSetting('sound', this.checked); applySettings(); });
 document.getElementById('hapticToggle').addEventListener('change', function(){ saveSetting('haptic', this.checked); applySettings(); });
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    WORD LIST
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 var ANSWERS = ["about","above","abuse","actor","acute","admit","adopt","adult","after","again","agent","agree","ahead","alarm","album","alert","alike","alive","allow","alone","along","alter","among","anger","angle","angry","apart","apple","apply","arena","argue","arise","array","aside","asset","audio","audit","avoid","award","aware","beach","began","begin","being","below","bench","birth","black","blame","blank","blast","blind","block","blood","board","boost","booth","bound","brain","brand","brave","bread","break","breed","brief","bring","broad","broke","brown","build","built","buyer","cable","candy","cargo","carry","catch","cause","chain","chair","chaos","charm","chart","chase","cheap","check","chest","chief","child","chose","civil","claim","class","clean","clear","click","climb","clock","close","cloud","coach","coast","could","count","court","cover","craft","crash","crazy","cream","crime","cross","crowd","crown","crude","curve","cycle","daily","dance","dated","dealt","death","debut","delay","depth","doing","doubt","dozen","draft","drama","drank","dream","dress","drill","drink","drive","drove","dying","eager","early","earth","eight","elite","empty","enemy","enjoy","enter","entry","equal","error","event","every","exact","exist","extra","faith","false","fault","fiber","field","fifth","fifty","fight","final","first","fixed","flame","flash","fleet","floor","fluid","focus","force","forth","forty","forum","found","frame","frank","fraud","fresh","front","fruit","fully","funny","giant","given","glass","globe","glory","going","grace","grade","grain","grand","grant","grass","great","green","gross","group","grown","guard","guess","guest","guide","happy","harsh","heart","heavy","hence","horse","hotel","house","human","ideal","image","index","inner","input","issue","joint","judge","known","label","large","laser","later","laugh","lease","least","leave","legal","level","light","limit","links","lives","local","logic","loose","lower","lucky","lunch","lying","magic","major","maker","march","match","maybe","mayor","meant","medal","media","metal","might","minor","minus","mixed","model","money","month","moral","motor","mount","mouse","mouth","movie","music","needs","nerve","never","newly","night","noble","noise","north","noted","novel","nurse","occur","ocean","offer","often","order","other","ought","paint","panel","paper","party","peace","phase","phone","photo","piano","piece","pilot","pitch","place","plain","plane","plant","plate","point","pound","power","press","price","pride","prime","print","prior","prize","proof","proud","prove","queen","quick","quiet","quite","radio","raise","range","rapid","ratio","reach","ready","realm","rebel","refer","relax","reply","rider","ridge","right","rigid","risky","river","robot","rough","round","route","royal","rural","scale","scene","scope","score","sense","serve","seven","shall","shape","share","sharp","sheet","shelf","shell","shift","shine","shirt","shock","shoot","short","shown","sight","silly","since","sixth","sixty","sized","skill","sleep","slide","small","smart","smile","smoke","solid","solve","sorry","sound","south","space","spare","speak","speed","spend","spent","split","spoke","sport","staff","stage","stake","stand","start","state","steam","steel","steep","stick","still","stock","stone","stood","store","storm","story","strip","stuck","study","stuff","style","sugar","suite","super","sweet","table","taken","taste","teach","teeth","thank","theft","their","theme","there","these","thick","thing","think","third","those","three","threw","throw","thumb","tiger","tight","timer","title","today","topic","total","touch","tough","tower","track","trade","train","treat","trend","trial","tribe","trick","tried","tries","truck","truly","trust","truth","twice","twist","ultra","uncle","under","undue","union","unity","until","upper","upset","urban","usage","usual","valid","value","video","virus","visit","vital","vocal","voice","waste","watch","water","wheel","where","which","while","white","whole","whose","woman","women","world","worry","worse","worst","worth","would","wound","write","wrong","wrote","yield","young","youth"];
 var EPOCH = new Date(2025,0,1).getTime();
 function todayIdx(){ var d=new Date(); return Math.floor((new Date(d.getFullYear(),d.getMonth(),d.getDate())-EPOCH)/86400000); }
 var DAY = todayIdx();
 var ANSWER = ANSWERS[((DAY*7919)%ANSWERS.length+ANSWERS.length)%ANSWERS.length].toUpperCase();
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    GAME STATE
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 var ROWS=6, COLS=5;
 var guesses=[], current='', gameStatus='playing', keyState={};
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    SOUND ENGINE (Web Audio API)
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 var audioCtx = null;
 function getAudio(){ if(!audioCtx){ try{ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return audioCtx; }
 function playTone(freq, dur, type, vol){
@@ -886,17 +894,17 @@ function soundInvalid(){ playTone(180, .18, 'sawtooth', .08); }
 function soundCorrect(){ [523,659,784,1047].forEach(function(f,i){ setTimeout(function(){ playTone(f,.15,'sine',.08); }, i*80); }); }
 function soundWrong(){ playTone(220, .3, 'triangle', .07); }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    HAPTICS
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function vibrate(ms){
   if(!settings.haptic) return;
   try{ navigator.vibrate && navigator.vibrate(ms||8); }catch(e){}
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    BUILD BOARD
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 var boardEl = document.getElementById('board');
 for(var r=0;r<ROWS;r++){
   var row=document.createElement('div');
@@ -910,9 +918,9 @@ for(var r=0;r<ROWS;r++){
   boardEl.appendChild(row);
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    BUILD KEYBOARD
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 var KEYS=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['ENT','Z','X','C','V','B','N','M','DEL']];
 var kbEl=document.getElementById('keyboard');
 var _keyIdx = 0;
@@ -921,7 +929,7 @@ KEYS.forEach(function(krow){
   krow.forEach(function(k){
     var b=document.createElement('button');
     b.className='key'; b.dataset.k=k;
-    if(k==='ENT'||k==='DEL'){ b.classList.add('wide'); b.textContent=k==='ENT'?'Enter':'⌫'; }
+    if(k==='ENT'||k==='DEL'){ b.classList.add('wide'); b.textContent=k==='ENT'?'Enter':'â«'; }
     else b.textContent=k;
     b.setAttribute('aria-label', k==='DEL'?'Delete':k==='ENT'?'Enter':k);
     b.addEventListener('pointerdown', function(e){ e.preventDefault(); handleKey(k); });
@@ -938,18 +946,18 @@ setTimeout(function(){
   document.querySelectorAll('.key.key-entering').forEach(function(k){ k.classList.remove('key-entering'); k.style.removeProperty('--key-delay'); });
 }, 1500);
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    DATE
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 (function(){
   var d=new Date();
   document.getElementById('dateText').textContent = d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase();
   document.getElementById('puzzleNo').textContent = DAY;
 })();
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    ACTIVE CURSOR HELPER
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function updateCursor(){
   // Clear cursor from all tiles first
   document.querySelectorAll('.tile.active-cursor').forEach(function(t){ t.classList.remove('active-cursor'); });
@@ -964,9 +972,9 @@ function updateCursor(){
   }
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    RENDER CURRENT ROW
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function renderCurrent(){
   var r=guesses.length;
   if(r>=ROWS) return;
@@ -981,9 +989,9 @@ function renderCurrent(){
   updateCursor();
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    TOAST
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 var toastTimer=null;
 function toast(msg, dur){
   var z=document.getElementById('toastZone');
@@ -994,9 +1002,9 @@ function toast(msg, dur){
   toastTimer=setTimeout(function(){ t.style.opacity='0'; setTimeout(function(){if(t.parentNode)t.remove();},280); }, dur||1300);
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    SCORE GUESS
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function scoreGuess(guess){
   var res=new Array(COLS).fill('absent');
   var counts={};
@@ -1009,9 +1017,9 @@ function scoreGuess(guess){
   return res;
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    HARD MODE VALIDATION
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function hardModeError(guess){
   if(!settings.hard) return null;
   for(var r=0;r<guesses.length;r++){
@@ -1030,9 +1038,9 @@ function hardModeError(guess){
   return null;
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    KEY HANDLER
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function handleKey(k){
   if(gameStatus!=='playing') return;
   k=k.toUpperCase();
@@ -1061,9 +1069,9 @@ document.addEventListener('keydown',function(e){
   handleKey(e.key);
 });
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    SUBMIT GUESS
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function submitGuess(){
   if(current.length<COLS){ shakeCurrent(); toast('Not enough letters'); soundInvalid(); vibrate([10,50,10]); return; }
 
@@ -1140,9 +1148,9 @@ function shakeCurrent(){
   setTimeout(function(){ row.classList.remove('shake'); },400);
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    KEYBOARD COLOR
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function paintKeys(){
   document.querySelectorAll('.key').forEach(function(b){
     var L=(b.dataset.k||'').toUpperCase();
@@ -1151,9 +1159,9 @@ function paintKeys(){
   });
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    PERSIST GAME
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function saveGame(){
   S.setObj('df_game',{day:DAY, guesses:guesses, status:gameStatus});
 }
@@ -1177,9 +1185,9 @@ function loadGame(){
   paintKeys();
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    STATS
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function defaultStats(){ return {played:0,wins:0,cur:0,max:0,dist:[0,0,0,0,0,0],lastDay:null}; }
 function getStats(){ return S.getObj('df_stats', defaultStats()); }
 function recordResult(won, count){
@@ -1196,9 +1204,9 @@ function recordResult(won, count){
   S.setObj('df_stats',s);
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    STATS MODAL
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function openStats(isEnd){
   var s=getStats();
   document.getElementById('sPlayed').textContent=s.played;
@@ -1207,8 +1215,8 @@ function openStats(isEnd){
   document.getElementById('sMax').textContent=s.max;
 
   var streakEl=document.getElementById('streakDisplay');
-  if(s.cur>=5) streakEl.textContent='🔥 '+s.cur+'-day streak!';
-  else if(s.cur>=2) streakEl.textContent='⚡ '+s.cur+' in a row';
+  if(s.cur>=5) streakEl.textContent='ð¥ '+s.cur+'-day streak!';
+  else if(s.cur>=2) streakEl.textContent='â¡ '+s.cur+' in a row';
   else streakEl.textContent='';
 
   var maxD=Math.max.apply(null,s.dist.concat([1]));
@@ -1231,7 +1239,7 @@ function openStats(isEnd){
   var played=gameStatus!=='playing';
   document.getElementById('endActions').classList.toggle('show', played);
   document.getElementById('howList').style.display=(s.played===0&&!played)?'block':'none';
-  document.getElementById('statsTitle').textContent=played?(gameStatus==='won'?'Solved it 🎉':'So close.'): 'Statistics';
+  document.getElementById('statsTitle').textContent=played?(gameStatus==='won'?'Solved it ð':'So close.'): 'Statistics';
   var sub='';
   if(played){ sub=gameStatus==='won'?'You got it in '+guesses.length+(guesses.length===1?' try.':' tries.'):'Today\'s word was '+ANSWER+'.'; }
   document.getElementById('statsSub').textContent=sub;
@@ -1244,9 +1252,9 @@ document.getElementById('openStats').addEventListener('click',function(){ openSt
 document.getElementById('closeStats').addEventListener('click',function(){ document.getElementById('statsOverlay').classList.remove('open'); });
 document.getElementById('statsOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    LEADERBOARD
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 // Tab switching
 document.getElementById('tabStats').addEventListener('click',function(){
   document.getElementById('statsPane').style.display='';
@@ -1307,7 +1315,7 @@ function submitScore(){
 
 function loadLeaderboard(){
   if(!window._db){ document.getElementById('lbList').innerHTML='<div class="lb-loading">Leaderboard unavailable.</div>'; return; }
-  document.getElementById('lbList').innerHTML='<div class="lb-loading">Loading…</div>';
+  document.getElementById('lbList').innerHTML='<div class="lb-loading">Loadingâ¦</div>';
   window._db.collection('scores')
     .where('day','==',DAY)
     .where('won','==',true)
@@ -1319,7 +1327,7 @@ function loadLeaderboard(){
       if(snap.empty){ document.getElementById('lbList').innerHTML='<div class="lb-loading">No scores yet today. Play to be first!</div>'; return; }
       var myName = (S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
       var html = '';
-      var medals = ['🥇','🥈','🥉'];
+      var medals = ['ð¥','ð¥','ð¥'];
       var myRank = -1;
       snap.docs.forEach(function(doc, i){
         var d = doc.data();
@@ -1363,16 +1371,16 @@ function loadLeaderboard(){
     '<li style="color:var(--ink-soft)">A new word unlocks at midnight, your time. Come back every day to build your streak.</li>';
 })();
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    SETTINGS MODAL
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 document.getElementById('openSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.add('open'); });
 document.getElementById('closeSettings').addEventListener('click',function(){ document.getElementById('settingsOverlay').classList.remove('open'); });
 document.getElementById('settingsOverlay').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    COUNTDOWN
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 var clockInt=null;
 function startClock(){
   if(clockInt) clearInterval(clockInt);
@@ -1385,11 +1393,11 @@ function startClock(){
   tick(); clockInt=setInterval(tick,1e3);
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    SHARE
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function buildShare(){
-  var emoji={correct:'🟩',present:'🟨',absent:'⬜'};
+  var emoji={correct:'ð©',present:'ð¨',absent:'â¬'};
   var head='The Daily Five #'+DAY+'  '+(gameStatus==='won'?guesses.length:'X')+'/6'+(settings.hard?' *':'');
   var grid=guesses.map(function(g){ return scoreGuess(g).map(function(s){ return emoji[s]; }).join(''); }).join('\n');
   return head+'\n\n'+grid+'\n\nhttps://thedailyfive.net';
@@ -1401,20 +1409,20 @@ document.getElementById('shareBtn').addEventListener('click',function(){
 });
 function copyText(text){
   if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){ toast('Copied! ✓'); },function(){ fallbackCopy(text); });
+    navigator.clipboard.writeText(text).then(function(){ toast('Copied! â'); },function(){ fallbackCopy(text); });
   } else fallbackCopy(text);
 }
 function fallbackCopy(text){
   var ta=document.createElement('textarea');
   ta.value=text; ta.style.cssText='position:fixed;opacity:0;top:0;left:0;';
   document.body.appendChild(ta); ta.select();
-  try{ document.execCommand('copy'); toast('Copied! ✓'); }catch(e){ toast('Copy failed'); }
+  try{ document.execCommand('copy'); toast('Copied! â'); }catch(e){ toast('Copy failed'); }
   ta.remove();
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    CONFETTI
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 function launchConfetti(){
   var canvas=document.getElementById('confetti-canvas');
   canvas.style.display='block';
@@ -1465,9 +1473,9 @@ function launchConfetti(){
   requestAnimationFrame(frame);
 }
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    KEY PRESS ANIMATION (physical keyboard)
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 document.addEventListener('keydown',function(e){
   var k=e.key.toUpperCase();
   var btn=document.querySelector('.key[data-k="'+k+'"]');
@@ -1476,13 +1484,13 @@ document.addEventListener('keydown',function(e){
   if(btn){ btn.classList.add('pressed'); setTimeout(function(){ btn.classList.remove('pressed'); },100); }
 });
 
-/* ─────────────────────────────────────────
+/* âââââââââââââââââââââââââââââââââââââââââ
    BOOT
-───────────────────────────────────────── */
+âââââââââââââââââââââââââââââââââââââââââ */
 loadGame();
 renderCurrent();
 
-// Board entrance animation — tiles cascade in
+// Board entrance animation â tiles cascade in
 (function(){
   var allTiles = boardEl.querySelectorAll('.tile');
   allTiles.forEach(function(t){

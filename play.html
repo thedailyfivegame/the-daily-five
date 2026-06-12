@@ -880,6 +880,8 @@ var EPOCH = new Date(2025,0,1).getTime();
 function todayIdx(){ var d=new Date(); return Math.floor((new Date(d.getFullYear(),d.getMonth(),d.getDate())-EPOCH)/86400000); }
 var DAY = todayIdx();
 var ANSWER = ANSWERS[((DAY*7919)%ANSWERS.length+ANSWERS.length)%ANSWERS.length].toUpperCase();
+var IS_PRACTICE = (typeof location!=="undefined" && location.search.indexOf("practice=1") > -1);
+if(IS_PRACTICE){ ANSWER = ANSWERS[Math.floor(Math.random()*ANSWERS.length)].toUpperCase(); }
 
 /* ─────────────────────────────────────────
    GAME STATE
@@ -969,7 +971,7 @@ setTimeout(function(){
 (function(){
   var d=new Date();
   document.getElementById('dateText').textContent = d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase();
-  document.getElementById('puzzleNo').textContent = DAY - 526;
+  document.getElementById('puzzleNo').textContent = IS_PRACTICE ? "PRACTICE" : (DAY - 526);
 })();
 
 /* ─────────────────────────────────────────
@@ -1138,7 +1140,7 @@ function submitGuess(){
   if(won){
     gameStatus='won';
     recordResult(true, guesses.length);
-    setTimeout(function(){ submitScore(); }, totalReveal + 200);
+    if(!IS_PRACTICE) setTimeout(function(){ submitScore(); }, totalReveal + 200);
     setTimeout(function(){
       row.classList.add('bounce');
       soundCorrect();
@@ -1208,6 +1210,7 @@ function loadGame(){
 function defaultStats(){ return {played:0,wins:0,cur:0,max:0,dist:[0,0,0,0,0,0],lastDay:null}; }
 function getStats(){ return S.getObj('df_stats', defaultStats()); }
 function recordResult(won, count){
+  if(IS_PRACTICE) return;
   var s=getStats();
   if(s.lastDay===DAY) return;
   s.played++;
@@ -1263,7 +1266,8 @@ function openStats(isEnd){
   document.getElementById('statsSub').textContent=sub;
 
   document.getElementById('statsOverlay').classList.add('open');
-  if(played) startClock();
+  if(played && !IS_PRACTICE) startClock();
+  if(IS_PRACTICE && played){var _ea=document.getElementById("endActions");if(_ea)_ea.innerHTML='<a href="" onclick="location.reload();return false;" style="flex:1;text-align:center;padding:10px;background:var(--accent,#6aaa64);color:#fff;border-radius:8px;font-weight:600;font-size:0.9rem;text-decoration:none;display:block;">&#127918; Play Again</a>';}
 }
 
 document.getElementById('openStats').addEventListener('click',function(){ openStats(false); });

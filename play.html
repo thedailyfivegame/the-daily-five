@@ -718,6 +718,11 @@ main {
       </div>
 
       <ul class="how-list" id="howList"></ul>
+      <div id="lossReveal" style="display:none;text-align:center;padding:16px 0 4px;">
+        <div style="font-size:0.82rem;color:var(--text-muted,#999);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em">The word was</div>
+        <div id="lossWord" style="font-size:2.2rem;font-weight:700;letter-spacing:0.18em;color:var(--accent,#6aaa64)"></div>
+        <a href="play.html?practice=1" style="display:inline-block;margin-top:14px;padding:9px 22px;background:var(--accent,#6aaa64);color:#fff;border-radius:24px;text-decoration:none;font-weight:600;font-size:0.85rem">Try Practice Mode</a>
+      </div>
     </div>
 
     <!-- Leaderboard pane -->
@@ -1210,6 +1215,7 @@ function recordResult(won, count){
 ───────────────────────────────────────── */
 function openStats(isEnd){
   var s=getStats();
+  var _lr=document.getElementById('lossReveal');if(_lr){if(gameStatus==='lost'){var _lw=document.getElementById('lossWord');if(_lw)_lw.textContent=ANSWER;_lr.style.display='';}else{_lr.style.display='none';}}
   document.getElementById('sPlayed').textContent=s.played;
   document.getElementById('sWin').textContent=s.played?Math.round(s.wins/s.played*100):0;
   document.getElementById('sCur').textContent=s.cur;
@@ -1320,8 +1326,6 @@ function loadLeaderboard(){
   window._db.collection('scores')
     .where('day','==',DAY)
     .where('won','==',true)
-    .orderBy('tries','asc')
-    .orderBy('ts','asc')
     .limit(20)
     .get()
     .then(function(snap){
@@ -1330,7 +1334,8 @@ function loadLeaderboard(){
       var html = '';
       var medals = ['🥇','🥈','🥉'];
       var myRank = -1;
-      snap.docs.forEach(function(doc, i){
+      var sortedDocs=snap.docs.slice().sort(function(a,b){var da=a.data(),db=b.data();return(da.tries-db.tries)||((da.ts||0)-(db.ts||0));});
+      sortedDocs.forEach(function(doc, i){
         var d = doc.data();
         var rank = i + 1;
         var isMe = myName && doc.id.indexOf(myName) > -1;
@@ -1347,7 +1352,7 @@ function loadLeaderboard(){
       document.getElementById('lbList').innerHTML = html;
       // Show my rank if found
       if(myRank > 0){
-        var myData = snap.docs[myRank-1].data();
+        var myData = sortedDocs[myRank-1].data();
         var myMedal = medals[myRank-1] || ('#'+myRank);
         document.getElementById('lbMyEntry').innerHTML =
           '<div class="lb-entry me">'+

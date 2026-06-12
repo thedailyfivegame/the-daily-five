@@ -1182,9 +1182,11 @@ function paintKeys(){
    PERSIST GAME
 ───────────────────────────────────────── */
 function saveGame(){
+  if(IS_PRACTICE) return;
   S.setObj('df_game',{day:DAY, guesses:guesses, status:gameStatus});
 }
 function loadGame(){
+  if(IS_PRACTICE) return;
   var g=S.getObj('df_game',null);
   if(!g||g.day!==DAY) return;
   guesses=g.guesses||[]; gameStatus=g.status||'playing';
@@ -1531,7 +1533,7 @@ renderCurrent();
   });
 })();
 
-if(gameStatus!=='playing'){
+if(gameStatus!=='playing' && !IS_PRACTICE){
   setTimeout(function(){ openStats(true); },400);
 } else {
   var st=getStats();

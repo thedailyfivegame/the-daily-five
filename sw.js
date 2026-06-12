@@ -1,6 +1,6 @@
 // Service Worker — The Daily Five
 // v4 — cache all game-critical assets for full offline support
-const CACHE = 'df-v4';
+const CACHE = 'df-v5';
 
 const PRECACHE = [
   '/',

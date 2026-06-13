@@ -103,7 +103,7 @@ body {
   font-family: 'Hanken Grotesk', system-ui, sans-serif;
   display: flex; flex-direction: column;
   min-height: 100dvh;
-  overflow: hidden;
+  overflow-x: hidden;
   transition: background var(--trans), color var(--trans);
   -webkit-tap-highlight-color: transparent;
   user-select: none;
@@ -632,8 +632,9 @@ main {
   header { padding: 6px 14px 5px; }
 }
 @media (max-width: 480px) {
-  header { padding-right: 50px; }
+  header { padding-right: 55px; }
   .masthead { font-size: clamp(18px, 5vw, 44px); }
+  .header-btns .hbtn { padding: 5px 6px; font-size: 16px; min-width: 30px; }
 }
 @media (max-width: 380px) {
   .tile { width: 42px; height: 42px; font-size: 22px; }

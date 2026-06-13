@@ -26,6 +26,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script>
 (function(){
   var cfg={
@@ -640,6 +641,29 @@ main {
   .tile { width: 42px; height: 42px; font-size: 22px; }
   .key { height: 48px; font-size: 12px; }
 }
+/* === EMAIL CAPTURE === */
+.email-capture{display:none;margin-top:14px;border-top:1px solid var(--line);padding-top:14px;text-align:center;animation:fadeIn .3s ease;}
+.email-capture.show{display:block;}
+.email-capture-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;color:var(--ink);}
+.email-capture-sub{font-size:11px;color:var(--ink-soft);margin-bottom:10px;}
+.email-row{display:flex;gap:8px;}
+.email-input{flex:1;background:var(--paper-2);border:1.5px solid var(--line);color:var(--ink);font-family:'Hanken Grotesk',sans-serif;font-size:13px;padding:8px 10px;border-radius:3px;outline:none;transition:border-color var(--trans);}
+.email-input:focus{border-color:var(--ink);}
+.email-submit-btn{background:var(--ink);color:var(--paper);border:none;padding:8px 14px;font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;border-radius:3px;transition:opacity .15s;}
+.email-submit-btn:hover{opacity:.85;}
+.email-success{display:none;color:var(--green);font-size:12px;font-weight:700;margin-top:8px;}
+/* === AUTH MODAL === */
+.google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 0;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;border-radius:4px;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:14px;transition:background var(--trans),border-color var(--trans);margin-bottom:12px;}
+.google-btn:hover{background:var(--paper-2);border-color:var(--ink-soft);}
+.auth-divider{text-align:center;position:relative;margin:10px 0;}
+.auth-divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--line);}
+.auth-divider span{background:var(--paper);padding:0 10px;font-size:11px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.1em;}
+.auth-toggle{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:10px;}
+.auth-toggle button{background:none;border:none;cursor:pointer;color:var(--ink);font-weight:700;text-decoration:underline;font-size:11px;font-family:inherit;}
+.auth-avatar{width:52px;height:52px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;margin:0 auto 8px;font-family:'Fraunces',serif;overflow:hidden;}
+.auth-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
+.hbtn-account{background:var(--green)!important;color:#fff!important;border-radius:50%!important;font-size:13px!important;font-weight:700!important;font-family:'Fraunces',serif!important;}
+
 </style>
 </head>
 <body>
@@ -657,6 +681,10 @@ main {
     <button class="hbtn" id="openLeaderboard" aria-label="Leaderboard" title="Leaderboard">🏆</button>
     <button class="hbtn" id="openStats" aria-label="Statistics" title="Statistics">▤</button>
     <button class="hbtn" id="openSettings" aria-label="Settings" title="Settings">⚙</button>
+
+    <button class="hbtn" id="openAuth" aria-label="Account" title="Sign in">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    </button>
   </div>
 </header>
 
@@ -722,6 +750,18 @@ main {
         </div>
         <button class="share-btn" id="shareBtn">Share ⇪</button>
       </div>
+
+      <!-- EMAIL CAPTURE -->
+      <div class="email-capture" id="emailCapture">
+        <p class="email-capture-title">Daily Reminder</p>
+        <p class="email-capture-sub">Get notified when tomorrow&rsquo;s word is ready.</p>
+        <div class="email-row" id="emailRow">
+          <input type="email" class="email-input" id="emailInput" placeholder="your@email.com" autocomplete="email">
+          <button class="email-submit-btn" id="emailSubmit">Notify me</button>
+        </div>
+        <p class="email-success" id="emailSuccess">&#10003; You&rsquo;re in! See you tomorrow.</p>
+      </div>
+
 
       <ul class="how-list" id="howList"></ul>
       <div id="lossReveal" style="display:none;text-align:center;padding:16px 0 4px;">
@@ -829,6 +869,39 @@ main {
 </div>
 
 <!-- ═══ CONFETTI CANVAS ═══ -->
+<!-- === AUTH MODAL === -->
+<div class="overlay" id="authOverlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" id="closeAuth" aria-label="Close">&times;</button>
+
+    <!-- Signed out -->
+    <div id="authSignedOut">
+      <h2 style="text-align:center;margin-bottom:4px">Sign In</h2>
+      <p class="modal-sub">Sync your streak across devices &amp; keep your leaderboard identity.</p>
+      <button class="google-btn" id="googleSignInBtn">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.616z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+        Continue with Google
+      </button>
+      <div class="auth-divider"><span>or use email</span></div>
+      <div>
+        <input type="email" class="email-input" id="authEmailInput" placeholder="Email address" autocomplete="email" style="width:100%;margin-bottom:8px">
+        <input type="password" class="email-input" id="authPassInput" placeholder="Password" autocomplete="current-password" style="width:100%;margin-bottom:8px">
+        <button class="email-submit-btn" id="authEmailBtn" style="width:100%">Sign in</button>
+        <p class="auth-toggle">No account? <button id="authToggleBtn">Sign up</button></p>
+      </div>
+    </div>
+
+    <!-- Signed in -->
+    <div id="authSignedIn" style="display:none;text-align:center">
+      <div class="auth-avatar" id="authAvatar"></div>
+      <h2 id="authName" style="margin:8px 0 2px"></h2>
+      <p class="modal-sub" id="authEmailDisplay"></p>
+      <p style="font-size:11px;color:var(--ink-soft);margin:0 0 16px">Streak and stats sync across all your devices.</p>
+      <button class="email-submit-btn" id="signOutBtn" style="background:var(--paper-2);color:var(--ink);border:1.5px solid var(--line)">Sign out</button>
+    </div>
+  </div>
+</div>
+
 <canvas id="confetti-canvas" style="display:none;"></canvas>
 
 <script>
@@ -1157,6 +1230,7 @@ function submitGuess(){
     var msgs = ['Genius!','Magnificent!','Impressive!','Splendid!','Great!','Phew!'];
     setTimeout(function(){ toast(msgs[Math.min(guesses.length-1, msgs.length-1)], 2000); }, totalReveal+100);
     setTimeout(function(){ openStats(true); }, totalReveal+1800);
+    setTimeout(initEmailCapture, totalReveal+2600);
   } else if(guesses.length>=ROWS){
     gameStatus='lost';
     recordResult(false,0);
@@ -1547,10 +1621,166 @@ if(gameStatus!=='playing' && !IS_PRACTICE){
   if(!st||st.played===0){ setTimeout(function(){ openStats(false); },350); }
 }
 
+
+
+/* === EMAIL CAPTURE === */
+var _emailInitDone=false;
+function initEmailCapture(){
+  if(IS_PRACTICE||localStorage.getItem('tdf-subscribed')||_emailInitDone) return;
+  _emailInitDone=true;
+  var el=document.getElementById('emailCapture');
+  var input=document.getElementById('emailInput');
+  var btn=document.getElementById('emailSubmit');
+  var row=document.getElementById('emailRow');
+  var succ=document.getElementById('emailSuccess');
+  if(!el) return;
+  el.classList.add('show');
+  btn.addEventListener('click',function(){
+    var email=input.value.trim();
+    if(!email||!/\S+@\S+\.\S+/.test(email)){input.style.borderColor='var(--accent)';return;}
+    btn.textContent='...';
+    try{
+      if(window._db){
+        window._db.collection('subscribers').add({
+          email:email,
+          ts:firebase.firestore.FieldValue.serverTimestamp(),
+          source:window.ReactNativeWebView?'app':'web'
+        });
+      }
+    }catch(e){}
+    localStorage.setItem('tdf-subscribed','1');
+    row.style.display='none';
+    succ.style.display='block';
+    setTimeout(function(){el.classList.remove('show');},3000);
+  });
+}
+
+/* === FIREBASE AUTH === */
+var _auth=null;
+function initAuth(){
+  try{
+    if(!firebase.apps||!firebase.apps.length) return;
+    _auth=firebase.auth();
+    _auth.onAuthStateChanged(function(user){ handleAuthState(user); });
+    // Redirect result after Google sign-in on web
+    _auth.getRedirectResult().then(function(result){
+      if(result&&result.user) document.getElementById('authOverlay').classList.remove('open');
+    }).catch(function(){});
+  }catch(e){}
+}
+
+function handleAuthState(user){
+  var btn=document.getElementById('openAuth');
+  if(!btn) return;
+  if(user){
+    var initLetter=(user.displayName||user.email||'?')[0].toUpperCase();
+    btn.textContent=initLetter;
+    btn.classList.add('hbtn-account');
+    syncStatsToCloud(user);
+    updateAuthModal(user);
+    if(window.ReactNativeWebView){
+      window.ReactNativeWebView.postMessage(JSON.stringify({type:'AUTH_STATE',uid:user.uid,email:user.email,name:user.displayName}));
+    }
+  }else{
+    btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>';
+    btn.classList.remove('hbtn-account');
+    updateAuthModal(null);
+  }
+}
+
+function updateAuthModal(user){
+  var out=document.getElementById('authSignedOut');
+  var inn=document.getElementById('authSignedIn');
+  if(!out||!inn) return;
+  if(user){
+    out.style.display='none'; inn.style.display='block';
+    document.getElementById('authName').textContent=user.displayName||'Player';
+    document.getElementById('authEmailDisplay').textContent=user.email||'';
+    var av=document.getElementById('authAvatar');
+    av.innerHTML=user.photoURL?('<img src="'+user.photoURL+'" alt="">'):(user.displayName||'?')[0].toUpperCase();
+  }else{
+    out.style.display='block'; inn.style.display='none';
+  }
+}
+
+function syncStatsToCloud(user){
+  if(!window._db||!user) return;
+  try{
+    var raw=localStorage.getItem('tdf-stats');
+    var stats=raw?JSON.parse(raw):{};
+    window._db.collection('users').doc(user.uid).set({
+      email:user.email,displayName:user.displayName,stats:stats,
+      lastSync:firebase.firestore.FieldValue.serverTimestamp()
+    },{merge:true});
+  }catch(e){}
+}
+
+function doGoogleSignIn(){
+  if(!_auth) return;
+  if(window.ReactNativeWebView){
+    window.ReactNativeWebView.postMessage(JSON.stringify({type:'REQUEST_GOOGLE_SIGNIN'}));
+    return;
+  }
+  var provider=new firebase.auth.GoogleAuthProvider();
+  _auth.signInWithPopup(provider).catch(function(e){
+    if(e.code==='auth/popup-blocked'||e.code==='auth/popup-closed-by-user'){
+      _auth.signInWithRedirect(provider);
+    }
+  });
+}
+
+// Native bridge -- receive messages from React Native App.tsx
+window.addEventListener('message',function(e){
+  var msg;try{msg=JSON.parse(e.data);}catch(ex){return;}
+  if(msg.type==='PUSH_TOKEN'&&window._db){
+    window._db.collection('push-tokens').doc(msg.token).set({
+      token:msg.token,platform:msg.platform||'android',
+      ts:firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }
+  if(msg.type==='GOOGLE_CREDENTIAL'&&_auth){
+    var cred=firebase.auth.GoogleAuthProvider.credential(msg.idToken,msg.accessToken);
+    _auth.signInWithCredential(cred).catch(function(e2){console.error('auth cred err',e2);});
+  }
+});
+
+function initAuthModal(){
+  var overlay=document.getElementById('authOverlay');
+  if(!overlay) return;
+  document.getElementById('openAuth').addEventListener('click',function(){
+    overlay.classList.add('open');
+  });
+  document.getElementById('closeAuth').addEventListener('click',function(){overlay.classList.remove('open');});
+  overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.classList.remove('open');});
+  document.getElementById('googleSignInBtn').addEventListener('click',doGoogleSignIn);
+  document.getElementById('signOutBtn').addEventListener('click',function(){
+    if(_auth) _auth.signOut();
+    overlay.classList.remove('open');
+  });
+  var isSignUp=false;
+  document.getElementById('authToggleBtn').addEventListener('click',function(){
+    isSignUp=!isSignUp;
+    document.getElementById('authEmailBtn').textContent=isSignUp?'Sign up':'Sign in';
+    this.textContent=isSignUp?'Sign in instead':'Sign up';
+    document.getElementById('authPassInput').setAttribute('autocomplete',isSignUp?'new-password':'current-password');
+  });
+  document.getElementById('authEmailBtn').addEventListener('click',function(){
+    if(!_auth) return;
+    var email=document.getElementById('authEmailInput').value.trim();
+    var pass=document.getElementById('authPassInput').value;
+    if(!email||!pass) return;
+    var p=isSignUp?_auth.createUserWithEmailAndPassword(email,pass):_auth.signInWithEmailAndPassword(email,pass);
+    p.then(function(){overlay.classList.remove('open');}).catch(function(e2){alert(e2.message);});
+  });
+}
+
 // Prevent double-tap zoom on mobile
 document.addEventListener('touchend',function(e){ if(e.target.closest('.key')) e.preventDefault(); },{passive:false});
 
 // Service worker for PWA
+initAuth();
+initAuthModal();
+
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(function(){});
 }

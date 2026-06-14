@@ -39,6 +39,10 @@ img{max-width:100%;display:block;}
 .nav-logo{font-family:var(--font-serif);font-size:20px;font-weight:700;letter-spacing:-.02em;}
 .nav-play-btn{background:var(--dark);color:#fff;padding:9px 20px;border-radius:8px;font-weight:600;font-size:14px;transition:background .15s;}
 .nav-play-btn:hover{background:#333;}
+.nav-links{display:flex;align-items:center;gap:20px;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--dark);opacity:0.65;transition:opacity .15s;}
+.nav-links a:hover{opacity:1;}
+@media(max-width:640px){.nav-links{display:none;}}
 
 /* ── HERO ── */
 .hero-v2{padding:64px 32px 48px;max-width:1200px;margin:0 auto;}
@@ -179,6 +183,10 @@ footer a:hover{color:#fff;}
 <!-- ═══ NAV ═══ -->
 <nav class="site-nav">
   <a href="/" class="nav-logo">The Daily Five</a>
+  <div class="nav-links">
+    <a href="archive.html">Archive</a>
+    <a href="about.html">How to Play</a>
+  </div>
   <div class="nav-actions">
     <a href="play.html" class="nav-play-btn">Play Now →</a>
   </div>

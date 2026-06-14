@@ -55,9 +55,14 @@
     /* ── Header ── */
     header{
       border-bottom:2px solid var(--ink);
-      padding:8px 14px 7px;text-align:center;
+      padding:8px 14px 7px;
       transition:border-color var(--trans);
     }
+    .header-top{
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:4px;
+    }
+    .header-center{text-align:center;flex:1;}
     .dateline{
       font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
       color:var(--ink-soft);font-weight:600;
@@ -74,19 +79,18 @@
       font-family:'Fraunces',serif;font-style:italic;
     }
     .back-btn{
-      position:absolute;left:14px;top:50%;transform:translateY(-50%);
       background:none;border:1.5px solid var(--line);cursor:pointer;
       color:var(--ink);font-size:13px;font-weight:600;
       padding:6px 12px;border-radius:var(--radius);
       font-family:'Hanken Grotesk',sans-serif;
       transition:background var(--trans),border-color var(--trans);
-      text-decoration:none;display:flex;align-items:center;gap:5px;
+      text-decoration:none;display:inline-flex;align-items:center;gap:5px;
+      white-space:nowrap;flex-shrink:0;
     }
     .back-btn:hover{background:var(--paper-2);border-color:var(--ink-soft);}
     .theme-btn{
-      position:absolute;right:14px;top:50%;transform:translateY(-50%);
       background:none;border:none;cursor:pointer;font-size:18px;padding:6px;
-      color:var(--ink);border-radius:var(--radius);
+      color:var(--ink);border-radius:var(--radius);flex-shrink:0;
     }
 
     /* ── Page body ── */
@@ -195,15 +199,19 @@
 </head>
 <body>
 <header>
-  <a class="back-btn" href="play.html">← Game</a>
   <div class="dateline">
     <span id="headerDate"></span>
     <span class="edition">Rankings</span>
     <span id="headerEdition"></span>
   </div>
-  <div class="masthead">The Daily Five</div>
-  <div class="subhead">Leaderboard</div>
-  <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">🌙</button>
+  <div class="header-top">
+    <a class="back-btn" href="play.html">&#8592; Game</a>
+    <div class="header-center">
+      <div class="masthead">The Daily Five</div>
+      <div class="subhead">Leaderboard</div>
+    </div>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">&#127769;</button>
+  </div>
 </header>
 
 <div class="page">

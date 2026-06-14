@@ -2,7 +2,200 @@
 <html lang="en" data-theme="light">
 <head>
   <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP">
+/* ════════════════════════════════════════
+   COINS & HINTS SYSTEM
+   ════════════════════════════════════════ */
+var COIN_KEY='tdf_coins_v1';
+var letterCheckMode=false,letterCheckCost=0;
+var usedRevealPos=[];
+
+function getCoins(){return parseInt(localStorage.getItem(COIN_KEY)||'10',10);}
+
+function setCoins(n){
+  n=Math.max(0,n);
+  localStorage.setItem(COIN_KEY,String(n));
+  renderCoinDisplay();
+  try{
+    var u=firebase.auth&&firebase.auth().currentUser;
+    if(u) db.collection('users').doc(u.uid).set({coins:n},{merge:true});
+  }catch(e){}
+}
+
+function renderCoinDisplay(){
+  var el=document.getElementById('coinCount');
+  if(el) el.textContent=getCoins();
+}
+
+function showCoinPop(text){
+  var anchor=document.getElementById('coinDisplay');
+  var el=document.createElement('div');
+  el.className='coin-pop';
+  el.textContent=text;
+  if(anchor){
+    var r=anchor.getBoundingClientRect();
+    el.style.left=r.left+'px';
+    el.style.top=(r.bottom+6)+'px';
+  }else{
+    el.style.left='50%';el.style.top='60px';el.style.transform='translateX(-50%)';
+  }
+  document.body.appendChild(el);
+  setTimeout(function(){el.remove();},1400);
+}
+
+function awardDailyCoins(guessCount){
+  var key='tdf_coins_day_'+DAY;
+  if(localStorage.getItem(key)) return;
+  localStorage.setItem(key,'1');
+  var earned=10;
+  if(guessCount<=2) earned+=10;
+  else if(guessCount===3) earned+=5;
+  else if(guessCount===4) earned+=2;
+  var streak=parseInt(localStorage.getItem('tdf_streak')||'0',10);
+  if(streak>=7) earned+=5;
+  else if(streak>=3) earned+=2;
+  setCoins(getCoins()+earned);
+  setTimeout(function(){
+    showCoinPop('+'+earned+' 🪙');
+    toast('You earned '+earned+' coins! 🪙',2000);
+  },400);
+}
+
+function openCoinModal(){
+  var el=document.getElementById('coinBalance');
+  if(el) el.textContent=getCoins();
+  document.getElementById('coinOverlay').classList.add('open');
+}
+function closeCoinModal(){document.getElementById('coinOverlay').classList.remove('open');}
+
+function openHintModal(){
+  if(gameStatus!=='playing') return;
+  var coins=getCoins();
+  var el=document.getElementById('hintCoinBalance');
+  if(el) el.textContent=coins;
+  document.querySelectorAll('.hint-option').forEach(function(o){
+    o.classList.toggle('disabled',coins<parseInt(o.dataset.cost,10));
+  });
+  document.getElementById('hintOverlay').classList.add('open');
+}
+function closeHintModal(){document.getElementById('hintOverlay').classList.remove('open');}
+
+function useHint(type){
+  var costs={reveal:5,check:3,extra:8};
+  var cost=costs[type];
+  if(getCoins()<cost){toast('Not enough coins! 🪙',1500);closeHintModal();return;}
+  if(type==='reveal'){
+    var all=Array.from({length:COLS},function(_,i){return i;});
+    var avail=all.filter(function(i){return usedRevealPos.indexOf(i)<0;});
+    if(!avail.length){toast('No more letters to reveal!',1500);closeHintModal();return;}
+    var pos=avail[Math.floor(Math.random()*avail.length)];
+    usedRevealPos.push(pos);
+    setCoins(getCoins()-cost);
+    closeHintModal();
+    showRevealHint(pos);
+  } else if(type==='check'){
+    closeHintModal();
+    startLetterCheck(cost);
+  } else if(type==='extra'){
+    setCoins(getCoins()-cost);
+    closeHintModal();
+    addExtraRow();
+    toast('Extra guess added! 🎯',1500);
+  }
+}
+
+function showRevealHint(pos){
+  var letter=ANSWER[pos];
+  var el=document.createElement('div');
+  el.style.cssText='position:fixed;top:28%;left:50%;transform:translateX(-50%);background:#538d4e;color:#fff;font-size:30px;font-weight:900;width:54px;height:54px;display:flex;align-items:center;justify-content:center;border-radius:6px;z-index:9000;letter-spacing:0;animation:bounceIn .35s ease;';
+  el.textContent=letter;
+  document.body.appendChild(el);
+  showCoinPop('-5 🪙');
+  toast('Position '+(pos+1)+' is "'+letter+'"',2500);
+  setTimeout(function(){
+    el.style.transition='opacity .4s';el.style.opacity='0';
+    setTimeout(function(){el.remove();},400);
+  },2200);
+}
+
+function startLetterCheck(cost){
+  letterCheckMode=true;letterCheckCost=cost;
+  toast('Tap any key to check if it's in the word',2500);
+  document.querySelectorAll('#keyboard [data-key]').forEach(function(k){
+    k.style.outline='2px solid #f5c518';
+  });
+}
+
+function doLetterCheck(letter){
+  if(!letterCheckMode) return false;
+  letterCheckMode=false;
+  document.querySelectorAll('#keyboard [data-key]').forEach(function(k){k.style.outline='';});
+  setCoins(getCoins()-letterCheckCost);
+  showCoinPop('-3 🪙');
+  var inWord=ANSWER.indexOf(letter)>=0;
+  toast('"'+letter+'" '+(inWord?'IS in':'is NOT in')+' the word '+(inWord?'🟡':'⬛'),2500);
+  letterCheckCost=0;
+  return true;
+}
+
+function addExtraRow(){
+  var board=document.getElementById('board');
+  if(!board) return;
+  var row=document.createElement('div');
+  row.setAttribute('role','row');
+  for(var i=0;i<COLS;i++){
+    var t=document.createElement('div');
+    t.className='tile';
+    t.setAttribute('role','cell');
+    t.setAttribute('aria-label','empty');
+    row.appendChild(t);
+  }
+  board.appendChild(row);
+  ROWS++;
+  showCoinPop('-8 🪙');
+}
+
+function openAdModal(){
+  closeHintModal();
+  document.getElementById('adOverlay').classList.add('open');
+  var fill=document.getElementById('adTimerFill');
+  var btn=document.getElementById('adClaimBtn');
+  if(fill) fill.style.width='0%';
+  if(btn){btn.disabled=true;btn.textContent='Watching… (5s)';}
+  var elapsed=0;
+  clearInterval(window._adTimer);
+  window._adTimer=setInterval(function(){
+    elapsed+=100;
+    var pct=Math.min(100,(elapsed/5000)*100);
+    if(fill) fill.style.width=pct+'%';
+    var rem=Math.ceil((5000-elapsed)/1000);
+    if(elapsed>=5000){
+      clearInterval(window._adTimer);
+      if(btn){btn.disabled=false;btn.textContent='Claim 5 coins 🪙';}
+    } else {
+      if(btn) btn.textContent='Watching… ('+rem+'s)';
+    }
+  },100);
+}
+function closeAdModal(){document.getElementById('adOverlay').classList.remove('open');clearInterval(window._adTimer);}
+function claimAdCoins(){setCoins(getCoins()+5);closeAdModal();showCoinPop('+5 🪙');toast('You earned 5 coins! 🪙',1500);}
+
+(function initCoins(){
+  if(localStorage.getItem(COIN_KEY)===null) localStorage.setItem(COIN_KEY,'10');
+  renderCoinDisplay();
+  try{
+    firebase.auth&&firebase.auth().onAuthStateChanged(function(u){
+      if(!u) return;
+      db.collection('users').doc(u.uid).get().then(function(doc){
+        if(doc.exists&&typeof doc.data().coins==='number'){
+          var fb=doc.data().coins,loc=getCoins();
+          if(fb>loc){localStorage.setItem(COIN_KEY,String(fb));renderCoinDisplay();}
+        }
+      }).catch(function(){});
+    });
+  }catch(e){}
+})();
+</script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -679,6 +872,42 @@ main {
 .auth-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
 .hbtn-account{background:var(--green)!important;color:#fff!important;border-radius:50%!important;font-size:13px!important;font-weight:700!important;font-family:'Fraunces',serif!important;}
 
+
+/* ── COINS & HINTS SYSTEM ── */
+.coin-btn{display:flex;align-items:center;gap:4px;padding:0 10px;font-size:13px;font-weight:700;min-width:52px;}
+#coinCount{min-width:16px;}
+.coin-pop{position:fixed;z-index:9999;font-size:16px;font-weight:800;color:#f5c518;pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,.3);animation:coinPop 1.3s ease forwards;}
+@keyframes coinPop{0%{opacity:1;transform:translateY(0) scale(1);}80%{opacity:.7;transform:translateY(-50px) scale(1.2);}100%{opacity:0;transform:translateY(-70px) scale(1);}}
+#hintBar{display:flex;justify-content:center;padding:5px 0 3px;}
+#hintBtn{background:var(--tile-border,#d3d6da);border:none;border-radius:20px;padding:6px 18px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text,#1a1a1b);display:flex;align-items:center;gap:6px;transition:background .15s,transform .1s;}
+#hintBtn:hover{filter:brightness(.93);transform:scale(1.03);}
+.hint-overlay-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:800;align-items:center;justify-content:center;}
+.hint-overlay-bg.open{display:flex;}
+.hint-modal,.ad-modal,.coin-modal{background:#fff;border-radius:16px;padding:26px 22px 22px;max-width:340px;width:90%;position:relative;text-align:center;color:#1a1a1b;box-shadow:0 8px 32px rgba(0,0,0,.25);}
+body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#121213;color:#fff;}
+.hint-modal h2,.ad-modal h2,.coin-modal h2{margin:0 0 4px;font-size:19px;}
+.hint-sub{font-size:13px;color:#787c7e;margin-bottom:16px;}
+.hint-option{display:flex;align-items:center;justify-content:space-between;border:2px solid var(--tile-border,#d3d6da);border-radius:10px;padding:11px 13px;margin-bottom:9px;cursor:pointer;transition:border-color .15s,background .15s;}
+.hint-option:hover:not(.disabled){border-color:#f5c518;background:rgba(245,197,24,.08);}
+.hint-option.disabled{opacity:.35;cursor:not-allowed;}
+.ho-left{text-align:left;}
+.ho-title{font-weight:700;font-size:14px;}
+.ho-desc{font-size:12px;color:#787c7e;margin-top:2px;}
+.ho-cost{font-weight:700;font-size:13px;background:rgba(245,197,24,.18);border-radius:20px;padding:4px 10px;white-space:nowrap;flex-shrink:0;margin-left:10px;}
+.close-modal-btn{position:absolute;top:10px;right:12px;background:none;border:none;font-size:22px;cursor:pointer;color:#787c7e;line-height:1;padding:0;}
+.watch-ad-btn{background:none;border:2px solid var(--tile-border,#d3d6da);border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;color:inherit;transition:border-color .15s;margin-top:12px;}
+.watch-ad-btn:hover{border-color:#f5c518;}
+.ad-placeholder{background:var(--tile-border,#d3d6da);border-radius:8px;height:80px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#787c7e;margin:10px 0;}
+.ad-timer-bar{height:4px;background:var(--tile-border,#d3d6da);border-radius:4px;margin:12px 0;overflow:hidden;}
+.ad-timer-fill{height:100%;background:#f5c518;width:0%;transition:width .1s linear;border-radius:4px;}
+#adClaimBtn{width:100%;padding:12px;background:#f5c518;border:none;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;transition:opacity .2s;}
+#adClaimBtn:disabled{opacity:.5;cursor:not-allowed;}
+.earn-ways{text-align:left;margin:10px 0 14px;}
+.earn-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--tile-border,#d3d6da);font-size:13px;}
+.earn-row:last-child{border-bottom:none;}
+.earn-amount{font-weight:700;color:#f5c518;}
+.big-balance{font-size:38px;font-weight:800;color:#f5c518;margin:6px 0 2px;line-height:1;}
+.coin-ad-btn{width:100%;padding:11px;background:#f5c518;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -692,7 +921,7 @@ main {
   <span class="hard-badge" id="hardBadge">Hard</span>
   <a href="/" class="masthead" style="text-decoration:none;color:inherit;">The Daily Five</a>
   <div class="subhead">One word · Six tries · Every day</div>
-  <div class="header-btns">
+  <div class="header-btns"><button class="hbtn coin-btn" id="coinDisplay" onclick="openCoinModal()" title="My Coins" aria-label="Coins">🪙<span id="coinCount">10</span></button>
     <button class="hbtn" id="openLeaderboard" aria-label="Leaderboard" title="Leaderboard">🏆</button>
     <button class="hbtn" id="openStats" aria-label="Statistics" title="Statistics">▤</button>
     <button class="hbtn" id="openSettings" aria-label="Settings" title="Settings">⚙</button>
@@ -710,6 +939,7 @@ main {
 <main>
   <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="Wordle game board"></div></div>
   <div class="keyboard" id="keyboard" role="group" aria-label="Keyboard"></div>
+<div id="hintBar"><button id="hintBtn" onclick="openHintModal()">💡 Hint &nbsp;·&nbsp; <span id="hintCostTag">from 3🪙</span></button></div>
 </main>
 
 <!-- ═══ AD BANNER ═══ -->
@@ -1157,7 +1387,7 @@ function hardModeError(guess){
 function handleKey(k){
   if(gameStatus!=='playing') return;
   k=k.toUpperCase();
-  if(k==='DEL'||k==='BACKSPACE'){
+  if(letterCheckMode&&/^[A-Z]$/.test(k)){doLetterCheck(k);return;} if(k==='DEL'||k==='BACKSPACE'){
     if(!current.length) return;
     current=current.slice(0,-1);
     soundDelete(); vibrate(5);
@@ -1234,7 +1464,7 @@ function submitGuess(){
   var won = guess===ANSWER;
   if(won){
     gameStatus='won';
-    recordResult(true, guesses.length);
+    recordResult(true, guesses.length); if(!IS_PRACTICE) setTimeout(function(){awardDailyCoins(guesses.length);},totalReveal+2300);
     if(!IS_PRACTICE) setTimeout(function(){ submitScore(); }, totalReveal + 200);
     setTimeout(function(){
       row.classList.add('bounce');
@@ -1802,5 +2032,56 @@ if('serviceWorker' in navigator){
 
 })();
 </script>
+
+<!-- ═══ HINT MODAL ═══ -->
+<div id="hintOverlay" class="hint-overlay-bg">
+  <div class="hint-modal">
+    <button class="close-modal-btn" onclick="closeHintModal()">×</button>
+    <h2>💡 Use a Hint</h2>
+    <p class="hint-sub">You have <strong id="hintCoinBalance">0</strong> 🪙</p>
+    <div class="hint-option" data-cost="5" onclick="useHint('reveal')">
+      <div class="ho-left"><div class="ho-title">🔤 Reveal a Letter</div><div class="ho-desc">Shows one correct letter in position</div></div>
+      <span class="ho-cost">5 🪙</span>
+    </div>
+    <div class="hint-option" data-cost="3" onclick="useHint('check')">
+      <div class="ho-left"><div class="ho-title">💬 Check a Letter</div><div class="ho-desc">Tap any key — is it in the word?</div></div>
+      <span class="ho-cost">3 🪙</span>
+    </div>
+    <div class="hint-option" data-cost="8" onclick="useHint('extra')">
+      <div class="ho-left"><div class="ho-title">➕ Extra Guess</div><div class="ho-desc">Add one more row to your board</div></div>
+      <span class="ho-cost">8 🪙</span>
+    </div>
+    <button class="watch-ad-btn" onclick="openAdModal()">📺 Watch Ad for +5 🪙</button>
+  </div>
+</div>
+<!-- ═══ AD MODAL ═══ -->
+<div id="adOverlay" class="hint-overlay-bg">
+  <div class="ad-modal">
+    <button class="close-modal-btn" onclick="closeAdModal()">×</button>
+    <h2>📺 Watch &amp; Earn</h2>
+    <p style="font-size:13px;color:#787c7e;margin:4px 0 8px">Watch a short ad to earn 5 coins</p>
+    <div class="ad-placeholder">Advertisement</div>
+    <div class="ad-timer-bar"><div class="ad-timer-fill" id="adTimerFill"></div></div>
+    <button id="adClaimBtn" onclick="claimAdCoins()" disabled>Watching… (5s)</button>
+  </div>
+</div>
+<!-- ═══ COIN MODAL ═══ -->
+<div id="coinOverlay" class="hint-overlay-bg">
+  <div class="coin-modal">
+    <button class="close-modal-btn" onclick="closeCoinModal()">×</button>
+    <h2>🪙 Your Coins</h2>
+    <div class="big-balance" id="coinBalance">0</div>
+    <p style="font-size:13px;color:#787c7e;margin-bottom:12px">Spend coins on hints during the game</p>
+    <div class="earn-ways">
+      <div class="earn-row"><span>Win today's puzzle</span><span class="earn-amount">+10 🪙</span></div>
+      <div class="earn-row"><span>Solve in 1–2 guesses</span><span class="earn-amount">+10 bonus</span></div>
+      <div class="earn-row"><span>Solve in 3 guesses</span><span class="earn-amount">+5 bonus</span></div>
+      <div class="earn-row"><span>3-day streak</span><span class="earn-amount">+2 🪙</span></div>
+      <div class="earn-row"><span>7-day streak</span><span class="earn-amount">+5 🪙</span></div>
+      <div class="earn-row"><span>Watch an ad</span><span class="earn-amount">+5 🪙</span></div>
+    </div>
+    <button class="coin-ad-btn" onclick="openAdModal();closeCoinModal()">📺 Watch Ad for +5 🪙</button>
+  </div>
+</div>
 </body>
 </html>

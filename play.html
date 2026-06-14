@@ -1269,7 +1269,15 @@ function todayIdx(){ var d=new Date(); return Math.floor((new Date(d.getFullYear
 var DAY = todayIdx();
 var ANSWER = ANSWERS[((DAY*7919)%ANSWERS.length+ANSWERS.length)%ANSWERS.length].toUpperCase();
 var IS_PRACTICE = (typeof location!=="undefined" && location.search.indexOf("practice=1") > -1);
-if(IS_PRACTICE){ ANSWER = ANSWERS[Math.floor(Math.random()*ANSWERS.length)].toUpperCase(); }
+var PRACTICE_WORD = null;
+if(IS_PRACTICE){
+  var _sp = new URLSearchParams(location.search), _wp = (_sp.get('word')||'').toUpperCase();
+  if(_wp.length===5 && /^[A-Z]+$/.test(_wp)){
+    ANSWER = _wp; PRACTICE_WORD = _wp;
+  } else {
+    ANSWER = ANSWERS[Math.floor(Math.random()*ANSWERS.length)].toUpperCase();
+  }
+}
 
 /* ─────────────────────────────────────────
    GAME STATE
@@ -1359,7 +1367,8 @@ setTimeout(function(){
 (function(){
   var d=new Date();
   document.getElementById('dateText').textContent = d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase();
-  document.getElementById('puzzleNo').textContent = IS_PRACTICE ? "PRACTICE" : (DAY - 526);
+  document.getElementById('puzzleNo').textContent = IS_PRACTICE ? (PRACTICE_WORD ? "ARCHIVE" : "PRACTICE") : (DAY - 526);
+if(PRACTICE_WORD){var _ab=document.createElement('div');_ab.style.cssText='text-align:center;font-size:0.75rem;padding:4px 0 0;';_ab.innerHTML='<a href="archive.html" style="color:var(--green,#3f7a4f);text-decoration:none;font-weight:600;">← Back to Archive</a>';var _sh=document.querySelector('.subhead');if(_sh)_sh.after(_ab);else document.querySelector('header').append(_ab);}
 })();
 
 /* ─────────────────────────────────────────
@@ -1659,7 +1668,7 @@ function openStats(isEnd){
 
   document.getElementById('statsOverlay').classList.add('open');
   if(played && !IS_PRACTICE) startClock();
-  if(IS_PRACTICE && played){var _ea=document.getElementById("endActions");if(_ea)_ea.innerHTML='<a href="" onclick="location.reload();return false;" style="flex:1;text-align:center;padding:10px;background:var(--accent,#6aaa64);color:#fff;border-radius:8px;font-weight:600;font-size:0.9rem;text-decoration:none;display:block;">&#127918; Play Again</a>';}
+  if(IS_PRACTICE && played){var _ea=document.getElementById("endActions");if(_ea)_ea.innerHTML=(PRACTICE_WORD?'<a href="archive.html" style="flex:1;text-align:center;padding:10px;background:#6b7280;color:#fff;border-radius:8px;font-weight:600;font-size:0.9rem;text-decoration:none;display:block;">📚 Back to Archive</a> ':'')+' <a href="" onclick="location.reload();return false;" style="flex:1;text-align:center;padding:10px;background:var(--accent,#6aaa64);color:#fff;border-radius:8px;font-weight:600;font-size:0.9rem;text-decoration:none;display:block;">&#127918; Play Again</a>';}
 }
 
 document.getElementById('openStats').addEventListener('click',function(){ openStats(false); });

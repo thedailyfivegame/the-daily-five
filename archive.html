@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Word Archive — The Daily Five</title>
+<meta name="description" content="Browse every past daily word from The Daily Five. See all previous puzzles, their dates, and the hidden answer revealed.">
+<meta name="keywords" content="daily five archive, past words, daily word game history, five letter word archive">
+<meta property="og:title" content="Word Archive — The Daily Five">
+<meta property="og:description" content="Every past Daily Five puzzle — word, date and puzzle number.">
+<meta property="og:url" content="https://www.thedailyfive.net/archive.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://www.thedailyfive.net/archive.html">
+<link rel="icon" href="/assets/favicon.ico">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4efe4;color:#1a1a1b;min-height:100vh;}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:#f4efe4;border-bottom:1px solid #d3d6da;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;}
+.nav-logo{font-family:Georgia,serif;font-size:18px;font-weight:700;text-decoration:none;color:#1a1a1b;letter-spacing:-.01em;}
+.nav-links{display:flex;align-items:center;gap:20px;}
+.nav-links a{font-size:13px;color:#787c7e;text-decoration:none;transition:color .15s;}
+.nav-links a:hover,.nav-links a.active{color:#1a1a1b;font-weight:600;}
+.nav-play{background:#1a1a1b;color:#fff !important;border-radius:6px;padding:7px 16px;font-size:13px;font-weight:600 !important;}
+.nav-play:hover{background:#333 !important;}
+
+/* ── PAGE HEADER ── */
+.page-header{text-align:center;padding:48px 24px 32px;}
+.page-header h1{font-family:Georgia,serif;font-size:clamp(28px,5vw,42px);font-weight:700;color:#1a1a1b;margin-bottom:10px;}
+.page-header p{color:#787c7e;font-size:15px;max-width:480px;margin:0 auto;}
+
+/* ── SEARCH & FILTER ── */
+.controls{max-width:720px;margin:0 auto 24px;padding:0 16px;display:flex;gap:10px;flex-wrap:wrap;}
+.search-box{flex:1;min-width:160px;display:flex;align-items:center;background:#fff;border:1.5px solid #d3d6da;border-radius:8px;padding:0 12px;gap:8px;}
+.search-box input{border:none;outline:none;background:none;font-size:14px;padding:10px 0;color:#1a1a1b;width:100%;}
+.search-box input::placeholder{color:#aaa;}
+.filter-btn{background:#fff;border:1.5px solid #d3d6da;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;color:#1a1a1b;transition:all .15s;}
+.filter-btn.active,.filter-btn:hover{background:#1a1a1b;color:#fff;border-color:#1a1a1b;}
+.results-count{text-align:center;color:#787c7e;font-size:13px;margin-bottom:16px;}
+
+/* ── ARCHIVE TABLE ── */
+.archive-wrap{max-width:720px;margin:0 auto;padding:0 16px 64px;}
+.archive-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.archive-table thead th{background:#1a1a1b;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:12px 16px;text-align:left;}
+.archive-table thead th:last-child{text-align:right;}
+.archive-table tbody tr{border-bottom:1px solid #f4efe4;transition:background .1s;}
+.archive-table tbody tr:hover{background:#fdf9f2;}
+.archive-table tbody tr:last-child{border-bottom:none;}
+.archive-table td{padding:13px 16px;font-size:14px;vertical-align:middle;}
+.td-num{color:#787c7e;font-size:12px;font-weight:600;width:60px;}
+.td-date{color:#4a463c;width:130px;}
+.td-word{font-family:Georgia,serif;font-size:17px;font-weight:700;letter-spacing:.05em;color:#1a1a1b;}
+.td-word .tiles{display:flex;gap:3px;margin-top:4px;}
+.mini-tile{width:20px;height:20px;border-radius:3px;background:#538d4e;display:inline-block;}
+.td-action{text-align:right;}
+.practice-btn{background:transparent;border:1.5px solid #538d4e;color:#538d4e;border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .15s;display:inline-block;}
+.practice-btn:hover{background:#538d4e;color:#fff;}
+.today-badge{background:#c89a2b;color:#fff;font-size:10px;font-weight:700;border-radius:4px;padding:2px 6px;text-transform:uppercase;letter-spacing:.05em;margin-left:6px;vertical-align:middle;}
+
+/* ── LOAD MORE ── */
+.load-more-wrap{text-align:center;margin-top:20px;}
+.load-more-btn{background:#1a1a1b;color:#fff;border:none;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s;}
+.load-more-btn:hover{opacity:.85;}
+.load-more-btn:disabled{opacity:.4;cursor:default;}
+
+/* ── FOOTER ── */
+footer{background:#1a1a1b;color:rgba(255,255,255,.5);text-align:center;padding:24px 16px;font-size:12px;}
+footer a{color:rgba(255,255,255,.5);text-decoration:none;margin:0 8px;}
+footer a:hover{color:#fff;}
+
+@media(max-width:560px){
+  .archive-table thead th:nth-child(2){display:none;}
+  .archive-table td:nth-child(2){display:none;}
+  .archive-table .td-num{width:44px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">The Daily Five</a>
+  <div class="nav-links">
+    <a href="/archive.html" class="active">Archive</a>
+    <a href="/about.html">How to Play</a>
+    <a href="/play.html" class="nav-play">Play →</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>Word Archive</h1>
+  <p>Every past Daily Five puzzle — browse previous words and practise any you missed.</p>
+</div>
+
+<div class="controls">
+  <div class="search-box">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="searchInput" placeholder="Search a word…" oninput="filterWords()" autocomplete="off" spellcheck="false">
+  </div>
+</div>
+<div class="results-count" id="resultsCount"></div>
+
+<div class="archive-wrap">
+  <table class="archive-table">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Date</th>
+        <th>Word</th>
+        <th>Practice</th>
+      </tr>
+    </thead>
+    <tbody id="archiveBody"></tbody>
+  </table>
+  <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
+    <button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">Load more</button>
+  </div>
+</div>
+
+<footer>
+  <div>© 2025 The Daily Five &nbsp;·&nbsp;
+    <a href="/privacy.html">Privacy</a>
+    <a href="/terms.html">Terms</a>
+    <a href="/about.html">How to Play</a>
+  </div>
+</footer>
+
+<script>
+// ── Data ──
+var ANSWERS_B64 = 'WyJhbnN3ZSIsImFib3V0IiwiYWJvdmUiLCJhYnVzZSIsImFjdG9yIiwiYWN1dGUiLCJhZG1pdCIsImFkb3B0IiwiYWR1bHQiLCJhZnRlciIsImFnYWluIiwiYWdlbnQiLCJhZ3JlZSIsImFoZWFkIiwiYWxhcm0iLCJhbGJ1bSIsImFsZXJ0IiwiYWxpa2UiLCJhbGl2ZSIsImFsbG93IiwiYWxvbmUiLCJhbG9uZyIsImFsdGVyIiwiYW1vbmciLCJhbmdlciIsImFuZ2xlIiwiYW5ncnkiLCJhcGFydCIsImFwcGxlIiwiYXBwbHkiLCJhcmVuYSIsImFyZ3VlIiwiYXJpc2UiLCJhc2lkZSIsImFzc2V0IiwiYXVkaW8iLCJhdWRpdCIsImF2b2lkIiwiYXdhcmQiLCJhd2FyZSIsImJlYWNoIiwiYmVnYW4iLCJiZWdpbiIsImJlaW5nIiwiYmVsb3ciLCJiZW5jaCIsImJpcnRoIiwiYmxhY2siLCJibGFtZSIsImJsYW5rIiwiYmxhc3QiLCJibGluZCIsImJsb2NrIiwiYmxvb2QiLCJib2FyZCIsImJvb3N0IiwiYm9vdGgiLCJib3VuZCIsImJyYWluIiwiYnJhbmQiLCJicmF2ZSIsImJyZWFkIiwiYnJlYWsiLCJicmVlZCIsImJyaWVmIiwiYnJpbmciLCJicm9hZCIsImJyb2tlIiwiYnJvd24iLCJidWlsZCIsImJ1aWx0IiwiYnV5ZXIiLCJjYWJsZSIsImNhbmR5IiwiY2FyZ28iLCJjYXJyeSIsImNhdGNoIiwiY2F1c2UiLCJjaGFpbiIsImNoYWlyIiwiY2hhb3MiLCJjaGFybSIsImNoYXJ0IiwiY2hhc2UiLCJjaGVhcCIsImNoZWNrIiwiY2hlc3QiLCJjaGllZiIsImNoaWxkIiwiY2hvc2UiLCJjaXZpbCIsImNsYWltIiwiY2xlYW4iLCJjbGVhciIsImNsaWNrIiwiY2xpbWIiLCJjbG9jayIsImNsb3NlIiwiY2xvdWQiLCJjb2FjaCIsImNvYXN0IiwiY291bGQiLCJjb3VudCIsImNvdXJ0IiwiY292ZXIiLCJjcmFmdCIsImNyYXNoIiwiY3JhenkiLCJjcmVhbSIsImNyaW1lIiwiY3Jvc3MiLCJjcm93ZCIsImNyb3duIiwiY3J1ZGUiLCJjdXJ2ZSIsImN5Y2xlIiwiZGFpbHkiLCJkYW5jZSIsImRhdGVkIiwiZGVhbHQiLCJkZWF0aCIsImRlYnV0IiwiZGVsYXkiLCJkZXB0aCIsImRvaW5nIiwiZG91YnQiLCJkb3plbiIsImRyYWZ0IiwiZHJhbWEiLCJkcmFuayIsImRyZWFtIiwiZHJlc3MiLCJkcmlsbCIsImRyaW5rIiwiZHJpdmUiLCJkcm92ZSIsImR5aW5nIiwiZWFnZXIiLCJlYXJseSIsImVhcnRoIiwiZWlnaHQiLCJlbGl0ZSIsImVtcHR5IiwiZW5lbXkiLCJlbmpveSIsImVudGVyIiwiZW50cnkiLCJlcXVhbCIsImVycm9yIiwiZXZlbnQiLCJldmVyeSIsImV4YWN0IiwiZXhpc3QiLCJleHRyYSIsImZhaXRoIiwiZmF1bHQiLCJmaWJlciIsImZpZWxkIiwiZmlmdGgiLCJmaWZ0eSIsImZpZ2h0IiwiZmluYWwiLCJmaXJzdCIsImZpeGVkIiwiZmxhbWUiLCJmbGFzaCIsImZsZWV0IiwiZmxvb3IiLCJmbHVpZCIsImZvY3VzIiwiZm9yY2UiLCJmb3J0aCIsImZvcnR5IiwiZm9ydW0iLCJmb3VuZCIsImZyYW1lIiwiZnJhbmsiLCJmcmF1ZCIsImZyZXNoIiwiZnJvbnQiLCJmcnVpdCIsImZ1bGx5IiwiZnVubnkiLCJnaWFudCIsImdpdmVuIiwiZ2xhc3MiLCJnbG9iZSIsImdsb3J5IiwiZ29pbmciLCJncmFjZSIsImdyYWRlIiwiZ3JhaW4iLCJncmFuZCIsImdyYW50IiwiZ3Jhc3MiLCJncmVhdCIsImdyZWVuIiwiZ3Jvc3MiLCJncm91cCIsImdyb3duIiwiZ3VhcmQiLCJndWVzcyIsImd1ZXN0IiwiZ3VpZGUiLCJoYXBweSIsImhhcnNoIiwiaGVhcnQiLCJoZWF2eSIsImhlbmNlIiwiaG9yc2UiLCJob3RlbCIsImhvdXNlIiwiaHVtYW4iLCJpZGVhbCIsImltYWdlIiwiaW5kZXgiLCJpbm5lciIsImlucHV0IiwiaXNzdWUiLCJqb2ludCIsImp1ZGdlIiwia25vd24iLCJsYWJlbCIsImxhcmdlIiwibGFzZXIiLCJsYXRlciIsImxhdWdoIiwibGVhc2UiLCJsZWFzdCIsImxlYXZlIiwibGVnYWwiLCJsZXZlbCIsImxpZ2h0IiwibGltaXQiLCJsaW5rcyIsImxpdmVzIiwibG9jYWwiLCJsb2dpYyIsImxvb3NlIiwibG93ZXIiLCJsdWNreSIsImx1bmNoIiwibHlpbmciLCJtYWdpYyIsIm1ham9yIiwibWFrZXIiLCJtYXJjaCIsIm1hdGNoIiwibWF5YmUiLCJtYXlvciIsIm1lYW50IiwibWVkYWwiLCJtZWRpYSIsIm1ldGFsIiwibWlnaHQiLCJtaW5vciIsIm1pbnVzIiwibWl4ZWQiLCJtb2RlbCIsIm1vbmV5IiwibW9udGgiLCJtb3JhbCIsIm1vdG9yIiwibW91bnQiLCJtb3VzZSIsIm1vdXRoIiwibW92aWUiLCJtdXNpYyIsIm5lZWRzIiwibmVydmUiLCJuZXZlciIsIm5ld2x5IiwibmlnaHQiLCJub2JsZSIsIm5vaXNlIiwibm9ydGgiLCJub3RlZCIsIm5vdmVsIiwibnVyc2UiLCJvY2N1ciIsIm9jZWFuIiwib2ZmZXIiLCJvZnRlbiIsIm9yZGVyIiwib3RoZXIiLCJvdWdodCIsInBhaW50IiwicGFuZWwiLCJwYXBlciIsInBhcnR5IiwicGVhY2UiLCJwaGFzZSIsInBob25lIiwicGhvdG8iLCJwaWFubyIsInBpZWNlIiwicGlsb3QiLCJwaXRjaCIsInBsYWNlIiwicGxhaW4iLCJwbGFuZSIsInBsYW50IiwicGxhdGUiLCJwb2ludCIsInBvdW5kIiwicG93ZXIiLCJwcmVzcyIsInByaWNlIiwicHJpZGUiLCJwcmltZSIsInByaW50IiwicHJpb3IiLCJwcml6ZSIsInByb29mIiwicHJvdWQiLCJwcm92ZSIsInF1ZWVuIiwicXVpY2siLCJxdWlldCIsInF1aXRlIiwicmFkaW8iLCJyYWlzZSIsInJhbmdlIiwicmFwaWQiLCJyYXRpbyIsInJlYWNoIiwicmVhZHkiLCJyZWFsbSIsInJlYmVsIiwicmVmZXIiLCJyZWxheCIsInJlcGx5IiwicmlkZXIiLCJyaWRnZSIsInJpZ2h0IiwicmlnaWQiLCJyaXNreSIsInJpdmVyIiwicm9ib3QiLCJyb3VnaCIsInJvdW5kIiwicm91dGUiLCJyb3lhbCIsInJ1cmFsIiwic2NhbGUiLCJzY2VuZSIsInNjb3BlIiwic2NvcmUiLCJzZW5zZSIsInNlcnZlIiwic2V2ZW4iLCJzaGFsbCIsInNoYXBlIiwic2hhcmUiLCJzaGFycCIsInNoZWV0Iiwic2hlbGYiLCJzaGVsbCIsInNoaWZ0Iiwic2hpbmUiLCJzaGlydCIsInNob2NrIiwic2hvb3QiLCJzaG9ydCIsInNob3duIiwic2lnaHQiLCJzaWxseSIsInNpbmNlIiwic2l4dGgiLCJzaXh0eSIsInNpemVkIiwic2tpbGwiLCJzbGVlcCIsInNsaWRlIiwic21hbGwiLCJzbWFydCIsInNtaWxlIiwic21va2UiLCJzb2xpZCIsInNvbHZlIiwic29ycnkiLCJzb3VuZCIsInNvdXRoIiwic3BhY2UiLCJzcGFyZSIsInNwZWFrIiwic3BlZWQiLCJzcGVuZCIsInNwZW50Iiwic3BsaXQiLCJzcG9rZSIsInNwb3J0Iiwic3RhZmYiLCJzdGFnZSIsInN0YWtlIiwic3RhbmQiLCJzdGFydCIsInN0YXRlIiwic3RlYW0iLCJzdGVlbCIsInN0ZWVwIiwic3RpY2siLCJzdGlsbCIsInN0b2NrIiwic3RvbmUiLCJzdG9vZCIsInN0b3JlIiwic3Rvcm0iLCJzdG9yeSIsInN0cmlwIiwic3R1Y2siLCJzdHVkeSIsInN0dWZmIiwic3VnYXIiLCJzdWl0ZSIsInN1cGVyIiwic3dlZXQiLCJ0YWJsZSIsInRha2VuIiwidGFzdGUiLCJ0ZWFjaCIsInRlZXRoIiwidGhhbmsiLCJ0aGVmdCIsInRoZWlyIiwidGhlbWUiLCJ0aGVyZSIsInRoZXNlIiwidGhpY2siLCJ0aGluZyIsInRoaW5rIiwidGhpcmQiLCJ0aG9zZSIsInRocmVlIiwidGhyZXciLCJ0aHJvdyIsInRodW1iIiwidGlnZXIiLCJ0aWdodCIsInRpbWVyIiwidGl0bGUiLCJ0b2RheSIsInRvcGljIiwidG90YWwiLCJ0b3VjaCIsInRvdWdoIiwidG93ZXIiLCJ0cmFjayIsInRyYWRlIiwidHJhaW4iLCJ0cmVhdCIsInRyZW5kIiwidHJpYWwiLCJ0cmliZSIsInRyaWNrIiwidHJpZWQiLCJ0cmllcyIsInRydWNrIiwidHJ1bHkiLCJ0cnVzdCIsInRydXRoIiwidHdpY2UiLCJ0d2lzdCIsInVsdHJhIiwidW5jbGUiLCJ1bmRlciIsInVuZHVlIiwidW5pb24iLCJ1bml0eSIsInVudGlsIiwidXBwZXIiLCJ1cHNldCIsInVyYmFuIiwidXNhZ2UiLCJ1c3VhbCIsInZhbGlkIiwidmFsdWUiLCJ2aWRlbyIsInZpcnVzIiwidmlzaXQiLCJ2aXRhbCIsInZvY2FsIiwidm9pY2UiLCJ3YXN0ZSIsIndhdGNoIiwid2F0ZXIiLCJ3aGVlbCIsIndoaWNoIiwid2hpbGUiLCJ3aGl0ZSIsIndob2xlIiwid2hvc2UiLCJ3b21hbiIsIndvbWVuIiwid29ybGQiLCJ3b3JyeSIsIndvcnNlIiwid29yc3QiLCJ3b3J0aCIsIndvdWxkIiwid291bmQiLCJ3cml0ZSIsIndyb25nIiwid3JvdGUiLCJ5aWVsZCIsInlvdW5nIiwieW91dGgiXQ==';
+var ANSWERS = JSON.parse(decodeURIComponent(escape(atob(ANSWERS_B64))));
+var EPOCH = new Date(2025,0,1).getTime();
+var PAGE_SIZE = 30;
+var _filtered = [];
+var _shown = 0;
+
+function todayIdx(){
+  var d = new Date();
+  return Math.floor((new Date(d.getFullYear(),d.getMonth(),d.getDate()) - EPOCH) / 86400000);
+}
+
+function wordForDay(day){
+  var n = ANSWERS.length;
+  return ANSWERS[((day * 7919) % n + n) % n].toUpperCase();
+}
+
+function dateForDay(day){
+  var d = new Date(EPOCH + day * 86400000);
+  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+
+function buildArchive(){
+  var today = todayIdx();
+  var all = [];
+  for(var d = today - 1; d >= 0; d--){
+    all.push({ day: d, date: dateForDay(d), word: wordForDay(d) });
+  }
+  return all;
+}
+
+var ALL_ENTRIES = buildArchive();
+
+function filterWords(){
+  var q = document.getElementById('searchInput').value.trim().toUpperCase();
+  _filtered = q ? ALL_ENTRIES.filter(e => e.word.indexOf(q) !== -1) : ALL_ENTRIES.slice();
+  _shown = 0;
+  document.getElementById('archiveBody').innerHTML = '';
+  loadMore();
+  document.getElementById('resultsCount').textContent = _filtered.length + ' puzzle' + (_filtered.length !== 1 ? 's' : '');
+}
+
+function loadMore(){
+  var tbody = document.getElementById('archiveBody');
+  var batch = _filtered.slice(_shown, _shown + PAGE_SIZE);
+  batch.forEach(function(e){
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td class="td-num">#' + (e.day + 1) + '</td>' +
+      '<td class="td-date">' + e.date + '</td>' +
+      '<td class="td-word">' + e.word + '</td>' +
+      '<td class="td-action"><a class="practice-btn" href="/play.html?practice=1&word=' + e.word.toLowerCase() + '" title="Practice ' + e.word + '">Practice</a></td>';
+    tbody.appendChild(tr);
+  });
+  _shown += batch.length;
+  var wrap = document.getElementById('loadMoreWrap');
+  if (_shown < _filtered.length) {
+    wrap.style.display = 'block';
+    document.getElementById('loadMoreBtn').disabled = false;
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+// Init
+filterWords();
+</script>
+</body>
+</html>

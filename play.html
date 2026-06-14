@@ -1752,15 +1752,7 @@ function submitScore(){
     day: DAY, name: name, tries: tries, won: won,
     ts: firebase.firestore.FieldValue.serverTimestamp()
   }).catch(function(){});
-  // Monthly leaderboard (guard against double-counting in same session)
-  if(window._monthlyScoreDay !== DAY){
-    window._monthlyScoreDay = DAY;
-    var month = new Date().toISOString().slice(0,7);
-    var mDocId = month + '_' + name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
-    var mData = {month:month, name:name, played:firebase.firestore.FieldValue.increment(1), ts:firebase.firestore.FieldValue.serverTimestamp()};
-    if(won){ mData.wins=firebase.firestore.FieldValue.increment(1); mData.totalGuesses=firebase.firestore.FieldValue.increment(tries); }
-    window._db.collection('monthly_scores').doc(mDocId).set(mData,{merge:true}).catch(function(){});
-  }
+
 }
 
 function loadLeaderboard(){
@@ -1834,44 +1826,49 @@ function loadMonthlyLeaderboard(){
   var listEl=document.getElementById('monthlyList');
   if(!window._db){listEl.innerHTML='<div class="lb-loading">Leaderboard unavailable.</div>';return;}
   listEl.innerHTML='<div class="lb-loading">Loading…</div>';
-  var month=new Date().toISOString().slice(0,7);
+  var today=new Date();
+  var monthFirstDay=DAY-(today.getDate()-1);
+  var month=today.toISOString().slice(0,7);
   var myName=(S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
-  window._db.collection('monthly_scores')
-    .where('month','==',month)
-    .limit(50)
+  // Use existing scores collection (already has read access)
+  window._db.collection('scores')
+    .where('day','>=',monthFirstDay)
+    .limit(500)
     .get()
     .then(function(snap){
-      if(snap.empty){listEl.innerHTML='<div class="lb-loading">No scores yet this month — play to be first!</div>';return;}
-      var docs=snap.docs.map(function(d){return d.data();}).filter(function(d){return d.wins>0;});
-      docs.sort(function(a,b){
-        if(b.wins!==a.wins) return b.wins-a.wins;
-        var avgA=a.wins>0?a.totalGuesses/a.wins:99, avgB=b.wins>0?b.totalGuesses/b.wins:99;
-        return avgA-avgB;
+      // Aggregate wins per player client-side
+      var players={};
+      snap.docs.forEach(function(doc){
+        var d=doc.data();
+        if(!d.won||!d.name) return;
+        var slug=(d.name||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+        if(!players[slug]) players[slug]={name:d.name,wins:0,totalGuesses:0};
+        players[slug].wins++;
+        players[slug].totalGuesses+=(d.tries||6);
       });
+      var sorted=Object.values(players).filter(function(p){return p.wins>0;});
+      sorted.sort(function(a,b){
+        if(b.wins!==a.wins) return b.wins-a.wins;
+        return (a.totalGuesses/a.wins)-(b.totalGuesses/b.wins);
+      });
+      if(sorted.length===0){listEl.innerHTML='<div class="lb-loading">No wins yet this month — play to be first!</div>';return;}
       var medals=['🥇','🥈','🥉'];
       var html='<div style="text-align:center;font-weight:700;margin-bottom:8px">🏆 '+month.slice(0,4)+' / '+month.slice(5,7)+'</div>';
       var myRank=-1;
-      docs.slice(0,20).forEach(function(d,i){
-        var rank=i+1;
-        var slug=(d.name||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+      sorted.slice(0,20).forEach(function(p,i){
+        var slug=p.name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
         var isMe=myName&&slug===myName;
-        if(isMe) myRank=rank;
-        var avg=d.wins>0?(d.totalGuesses/d.wins).toFixed(1):'—';
+        if(isMe) myRank=i+1;
+        var avg=p.wins>0?(p.totalGuesses/p.wins).toFixed(1):'—';
         html+='<div class="lb-entry'+(isMe?' me':'')+'">'+
-          '<span class="lb-rank-cell">'+(medals[i]||rank)+'</span>'+
-          '<span class="lb-name'+(isMe?' me':'')+'">'+(d.name||'Anonymous')+'</span>'+
-          '<span class="lb-score">'+d.wins+'W</span>'+
+          '<span class="lb-rank-cell">'+(medals[i]||(i+1))+'</span>'+
+          '<span class="lb-name'+(isMe?' me':'')+'">'+(p.name||'Anonymous')+'</span>'+
+          '<span class="lb-score">'+p.wins+'W</span>'+
           '<span class="lb-tries">avg '+avg+'</span>'+
           '</div>';
       });
-      if(myRank===-1&&myName){
-        html+='<div class="lb-entry me" style="margin-top:8px;border-top:1px solid var(--line);padding-top:8px">'+
-          '<span class="lb-rank-cell">—</span>'+
-          '<span class="lb-name me">You</span>'+
-          '<span class="lb-score">0W</span><span class="lb-tries">—</span></div>';
-      }
       listEl.innerHTML=html;
-    }).catch(function(){listEl.innerHTML='<div class="lb-loading">Could not load.</div>';});
+    }).catch(function(e){console.log('Monthly LB err:',e.code,e.message);listEl.innerHTML='<div class="lb-loading">Could not load.</div>';});
 }
 
 var clockInt=null;

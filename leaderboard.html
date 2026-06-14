@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Rankings — The Daily Five</title>
+  <meta name="description" content="Monthly and daily leaderboard for The Daily Five word game."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script>
+  (function(){
+    var cfg={
+      apiKey:"AIzaSyAy0iARQPIZSeE4W_Qco7ctonY_758yvvU",
+      authDomain:"thedailyfive-f7103.firebaseapp.com",
+      projectId:"thedailyfive-f7103",
+      storageBucket:"thedailyfive-f7103.appspot.com"
+    };
+    try{
+      if(!firebase.apps.length) firebase.initializeApp(cfg);
+      window._db=firebase.firestore();
+    }catch(e){ window._db=null; }
+  })();
+  </script>
+  <style>
+    :root{
+      --paper:#f4efe4;--paper-2:#ede6d4;--paper-3:#e5dcc8;
+      --ink:#1c1a16;--ink-soft:#4a463c;--ink-muted:#8a8070;
+      --line:#cdc4ad;--green:#3f7a4f;--amber:#c89a2b;
+      --accent:#9e2b25;--radius:3px;--trans:.15s ease;
+    }
+    [data-theme="dark"]{
+      --paper:#12110e;--paper-2:#1c1a15;--paper-3:#242018;
+      --ink:#f0ebe0;--ink-soft:#a39b85;--ink-muted:#6b6356;
+      --line:#2e2a22;--green:#4a8f5e;--amber:#d4a830;--accent:#c0392b;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;}
+    body{
+      background:var(--paper);color:var(--ink);
+      font-family:'Hanken Grotesk',system-ui,sans-serif;
+      min-height:100dvh;overflow-x:hidden;
+      transition:background var(--trans),color var(--trans);
+    }
+    body::before{
+      content:'';position:fixed;inset:0;
+      background-image:radial-gradient(rgba(128,120,100,.04) 1px,transparent 1px);
+      background-size:4px 4px;pointer-events:none;z-index:0;
+    }
+    *{position:relative;z-index:1;}
+
+    /* ── Header ── */
+    header{
+      border-bottom:2px solid var(--ink);
+      padding:8px 14px 7px;text-align:center;
+      transition:border-color var(--trans);
+    }
+    .dateline{
+      font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
+      color:var(--ink-soft);font-weight:600;
+      display:flex;justify-content:space-between;align-items:center;
+      border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:4px;
+    }
+    .masthead{
+      font-family:'Fraunces',serif;font-weight:900;
+      font-size:clamp(22px,6vw,38px);line-height:.95;letter-spacing:-.02em;
+    }
+    .subhead{
+      font-size:9px;letter-spacing:.28em;text-transform:uppercase;
+      color:var(--ink-soft);margin-top:3px;font-weight:600;
+      font-family:'Fraunces',serif;font-style:italic;
+    }
+    .back-btn{
+      position:absolute;left:14px;top:50%;transform:translateY(-50%);
+      background:none;border:1.5px solid var(--line);cursor:pointer;
+      color:var(--ink);font-size:13px;font-weight:600;
+      padding:6px 12px;border-radius:var(--radius);
+      font-family:'Hanken Grotesk',sans-serif;
+      transition:background var(--trans),border-color var(--trans);
+      text-decoration:none;display:flex;align-items:center;gap:5px;
+    }
+    .back-btn:hover{background:var(--paper-2);border-color:var(--ink-soft);}
+    .theme-btn{
+      position:absolute;right:14px;top:50%;transform:translateY(-50%);
+      background:none;border:none;cursor:pointer;font-size:18px;padding:6px;
+      color:var(--ink);border-radius:var(--radius);
+    }
+
+    /* ── Page body ── */
+    .page{max-width:680px;margin:0 auto;padding:24px 16px 48px;}
+
+    /* ── Tabs ── */
+    .tabs{display:flex;border-bottom:2px solid var(--ink);margin-bottom:24px;}
+    .tab{
+      flex:1;padding:10px 0;font-size:13px;font-weight:700;letter-spacing:.08em;
+      text-transform:uppercase;background:none;border:none;cursor:pointer;
+      color:var(--ink-muted);transition:color var(--trans),border-color var(--trans);
+      border-bottom:3px solid transparent;margin-bottom:-2px;font-family:inherit;
+    }
+    .tab.active{color:var(--ink);border-bottom-color:var(--ink);}
+    .tab:hover:not(.active){color:var(--ink-soft);}
+
+    /* ── Month selector ── */
+    .month-nav{
+      display:flex;align-items:center;justify-content:center;gap:16px;
+      margin-bottom:20px;
+    }
+    .month-nav button{
+      background:none;border:1.5px solid var(--line);border-radius:var(--radius);
+      cursor:pointer;color:var(--ink);font-size:18px;padding:4px 10px;
+      transition:background var(--trans);
+    }
+    .month-nav button:hover{background:var(--paper-2);}
+    .month-nav button:disabled{opacity:.3;cursor:default;}
+    #monthLabel{
+      font-family:'Fraunces',serif;font-weight:700;font-size:18px;
+      min-width:140px;text-align:center;
+    }
+
+    /* ── Ranking list ── */
+    .rank-header{
+      display:grid;grid-template-columns:44px 1fr 72px 72px;
+      gap:0;padding:6px 12px;
+      font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+      color:var(--ink-muted);font-weight:700;border-bottom:1px solid var(--line);
+      margin-bottom:4px;
+    }
+    .rank-header span:last-child{text-align:right;}
+    .rank-header span:nth-child(3){text-align:right;}
+
+    .rank-row{
+      display:grid;grid-template-columns:44px 1fr 72px 72px;
+      gap:0;padding:11px 12px;border-bottom:1px solid var(--line);
+      align-items:center;transition:background var(--trans);
+    }
+    .rank-row:hover{background:var(--paper-2);}
+    .rank-row.me{background:var(--paper-3);font-weight:700;}
+    .rank-row.me .player-name{color:var(--accent);}
+    .rank-num{
+      font-family:'Fraunces',serif;font-weight:700;font-size:15px;
+      color:var(--ink-muted);
+    }
+    .rank-num.medal{font-size:20px;color:inherit;}
+    .player-name{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .player-sub{font-size:11px;color:var(--ink-muted);margin-top:1px;}
+    .stat-val{
+      font-family:'Fraunces',serif;font-weight:700;font-size:16px;
+      text-align:right;color:var(--green);
+    }
+    .stat-label{font-size:11px;color:var(--ink-muted);text-align:right;margin-top:1px;}
+
+    .empty{
+      text-align:center;padding:48px 24px;color:var(--ink-muted);font-size:15px;
+    }
+    .loading{
+      text-align:center;padding:48px 24px;color:var(--ink-muted);
+      font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    }
+
+    /* ── Daily view ── */
+    .daily-day{
+      font-family:'Fraunces',serif;font-weight:700;font-size:18px;
+      text-align:center;margin-bottom:20px;
+    }
+    .daily-row{
+      display:grid;grid-template-columns:44px 1fr 72px;
+      gap:0;padding:11px 12px;border-bottom:1px solid var(--line);
+      align-items:center;transition:background var(--trans);
+    }
+    .daily-row:hover{background:var(--paper-2);}
+    .daily-row.me{background:var(--paper-3);font-weight:700;}
+    .daily-row.me .player-name{color:var(--accent);}
+    .daily-header{
+      display:grid;grid-template-columns:44px 1fr 72px;
+      gap:0;padding:6px 12px;
+      font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+      color:var(--ink-muted);font-weight:700;border-bottom:1px solid var(--line);
+      margin-bottom:4px;
+    }
+    .daily-header span:last-child{text-align:right;}
+
+    /* ── Refresh btn ── */
+    .refresh-row{text-align:center;margin-top:24px;}
+    .refresh-btn{
+      background:none;border:1.5px solid var(--line);border-radius:var(--radius);
+      cursor:pointer;color:var(--ink-soft);font-size:13px;font-weight:600;
+      padding:8px 20px;font-family:inherit;transition:background var(--trans),border-color var(--trans);
+    }
+    .refresh-btn:hover{background:var(--paper-2);border-color:var(--ink-soft);}
+    .last-updated{font-size:11px;color:var(--ink-muted);margin-top:8px;}
+  </style>
+</head>
+<body>
+<header>
+  <a class="back-btn" href="play.html">← Game</a>
+  <div class="dateline">
+    <span id="headerDate"></span>
+    <span class="edition">Rankings</span>
+    <span id="headerEdition"></span>
+  </div>
+  <div class="masthead">The Daily Five</div>
+  <div class="subhead">Leaderboard</div>
+  <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">🌙</button>
+</header>
+
+<div class="page">
+  <div class="tabs">
+    <button class="tab active" id="tabMonthly" onclick="showTab('monthly')">🏆 Monthly</button>
+    <button class="tab" id="tabDaily" onclick="showTab('daily')">📅 Today</button>
+  </div>
+
+  <!-- ── Monthly ── -->
+  <div id="monthlyView">
+    <div class="month-nav">
+      <button id="prevMonthBtn" onclick="changeMonth(-1)">‹</button>
+      <div id="monthLabel">Loading…</div>
+      <button id="nextMonthBtn" onclick="changeMonth(1)" disabled>›</button>
+    </div>
+    <div class="rank-header">
+      <span>Rank</span><span>Player</span><span style="text-align:right">Wins</span><span style="text-align:right">Avg</span>
+    </div>
+    <div id="monthlyList"><div class="loading">Loading…</div></div>
+    <div class="refresh-row">
+      <button class="refresh-btn" onclick="loadMonthly()">↻ Refresh</button>
+      <div class="last-updated" id="lastUpdated"></div>
+    </div>
+  </div>
+
+  <!-- ── Daily ── -->
+  <div id="dailyView" style="display:none">
+    <div class="daily-day" id="dailyDayLabel"></div>
+    <div class="daily-header">
+      <span>Rank</span><span>Player</span><span style="text-align:right">Guesses</span>
+    </div>
+    <div id="dailyList"><div class="loading">Loading…</div></div>
+    <div class="refresh-row">
+      <button class="refresh-btn" onclick="loadDaily()">↻ Refresh</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Helpers ──
+var MEDALS = ['🥇','🥈','🥉'];
+var S = {
+  get: function(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set: function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+};
+var myName = '';
+
+function getMyName(){
+  return (S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+}
+
+// ── Theme ──
+(function(){
+  var t = S.get('df_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('themeBtn').textContent = t === 'dark' ? '☀️' : '🌙';
+})();
+document.getElementById('themeBtn').onclick = function(){
+  var cur = document.documentElement.getAttribute('data-theme');
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  S.set('df_theme', next);
+  this.textContent = next === 'dark' ? '☀️' : '🌙';
+};
+
+// ── Header date ──
+(function(){
+  var d = new Date();
+  var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('headerDate').textContent = days[d.getDay()]+', '+months[d.getMonth()]+' '+d.getDate();
+  document.getElementById('headerEdition').textContent = 'Est. 2024';
+})();
+
+// ── Month state ──
+var today = new Date();
+var viewYear = today.getFullYear();
+var viewMonth = today.getMonth(); // 0-indexed
+
+function monthKey(y, m){ return y+'-'+(m+1<10?'0':'')+(m+1); }
+function monthLabel(y, m){
+  var names=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return names[m]+' '+y;
+}
+
+function changeMonth(dir){
+  viewMonth += dir;
+  if(viewMonth < 0){ viewMonth = 11; viewYear--; }
+  if(viewMonth > 11){ viewMonth = 0; viewYear++; }
+  updateMonthNav();
+  loadMonthly();
+}
+
+function updateMonthNav(){
+  document.getElementById('monthLabel').textContent = monthLabel(viewYear, viewMonth);
+  // Disable next if viewing current month
+  var isCurrentMonth = (viewYear === today.getFullYear() && viewMonth === today.getMonth());
+  document.getElementById('nextMonthBtn').disabled = isCurrentMonth;
+}
+
+// ── Tab switching ──
+function showTab(t){
+  document.getElementById('monthlyView').style.display = t==='monthly' ? '' : 'none';
+  document.getElementById('dailyView').style.display = t==='daily' ? '' : 'none';
+  document.getElementById('tabMonthly').classList.toggle('active', t==='monthly');
+  document.getElementById('tabDaily').classList.toggle('active', t==='daily');
+  if(t==='daily') loadDaily();
+}
+
+// ── Day index (matches game's todayIdx) ──
+function todayIdx(){
+  var epoch = new Date('2025-01-01T00:00:00');
+  return Math.floor((Date.now() - epoch.getTime()) / 86400000);
+}
+
+// ── Monthly leaderboard ──
+function loadMonthly(){
+  if(!window._db){
+    document.getElementById('monthlyList').innerHTML='<div class="empty">Leaderboard unavailable.</div>';
+    return;
+  }
+  document.getElementById('monthlyList').innerHTML='<div class="loading">Loading…</div>';
+  myName = getMyName();
+
+  // Calculate day range for the viewed month
+  var firstDay = new Date(viewYear, viewMonth, 1);
+  var epoch = new Date('2025-01-01T00:00:00');
+  var monthFirstDayIdx = Math.floor((firstDay.getTime() - epoch.getTime()) / 86400000);
+  var lastDay = new Date(viewYear, viewMonth + 1, 0);
+  var monthLastDayIdx = Math.floor((lastDay.getTime() - epoch.getTime()) / 86400000);
+
+  window._db.collection('scores')
+    .where('day','>=', monthFirstDayIdx)
+    .where('day','<=', monthLastDayIdx)
+    .limit(1000)
+    .get()
+    .then(function(snap){
+      var players = {};
+      snap.docs.forEach(function(doc){
+        var d = doc.data();
+        if(!d.won || !d.name) return;
+        var slug = d.name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+        if(!players[slug]) players[slug] = {name:d.name, wins:0, totalGuesses:0, best:99};
+        players[slug].wins++;
+        players[slug].totalGuesses += (d.tries||6);
+        if(d.tries < players[slug].best) players[slug].best = d.tries;
+      });
+
+      var sorted = Object.values(players).filter(function(p){ return p.wins>0; });
+      sorted.sort(function(a,b){
+        if(b.wins !== a.wins) return b.wins - a.wins;
+        return (a.totalGuesses/a.wins) - (b.totalGuesses/b.wins);
+      });
+
+      if(sorted.length === 0){
+        document.getElementById('monthlyList').innerHTML='<div class="empty">No wins yet for '+monthLabel(viewYear,viewMonth)+'.<br>Play to be the first! 🎯</div>';
+        return;
+      }
+
+      var html = '';
+      var myRank = -1;
+      sorted.forEach(function(p, i){
+        var slug = p.name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+        var isMe = myName && slug === myName;
+        if(isMe) myRank = i+1;
+        var avg = (p.totalGuesses/p.wins).toFixed(1);
+        var rankCell = i < 3 ? '<span class="rank-num medal">'+MEDALS[i]+'</span>' : '<span class="rank-num">'+(i+1)+'</span>';
+        html += '<div class="rank-row'+(isMe?' me':'')+'">'+
+          rankCell+
+          '<div><div class="player-name">'+(p.name||'Anonymous')+'</div>'+
+          '<div class="player-sub">best: '+p.best+' guess'+(p.best===1?'':'es')+'</div></div>'+
+          '<div><div class="stat-val">'+p.wins+'W</div><div class="stat-label">wins</div></div>'+
+          '<div><div class="stat-val" style="color:var(--amber)">'+avg+'</div><div class="stat-label">avg guesses</div></div>'+
+          '</div>';
+      });
+
+      document.getElementById('monthlyList').innerHTML = html;
+      document.getElementById('lastUpdated').textContent = 'Updated at '+new Date().toLocaleTimeString();
+
+      // Scroll to own entry
+      if(myRank > 0){
+        setTimeout(function(){
+          var rows = document.querySelectorAll('#monthlyList .rank-row.me');
+          if(rows[0]) rows[0].scrollIntoView({behavior:'smooth', block:'nearest'});
+        }, 100);
+      }
+    })
+    .catch(function(e){
+      document.getElementById('monthlyList').innerHTML='<div class="empty">Could not load rankings.<br><small>'+e.message+'</small></div>';
+    });
+}
+
+// ── Daily leaderboard ──
+function loadDaily(){
+  if(!window._db){
+    document.getElementById('dailyList').innerHTML='<div class="empty">Leaderboard unavailable.</div>';
+    return;
+  }
+  document.getElementById('dailyList').innerHTML='<div class="loading">Loading…</div>';
+  myName = getMyName();
+
+  var DAY = todayIdx();
+  var d = new Date();
+  document.getElementById('dailyDayLabel').textContent =
+    ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()]+
+    ', '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]+
+    ' '+d.getDate()+' — Day #'+DAY;
+
+  window._db.collection('scores')
+    .where('day','==',DAY)
+    .where('won','==',true)
+    .limit(100)
+    .get()
+    .then(function(snap){
+      if(snap.empty){
+        document.getElementById('dailyList').innerHTML='<div class="empty">No wins yet today.<br>Play to be first! 🎯</div>';
+        return;
+      }
+      var docs = snap.docs.map(function(d){ return {id:d.id, data:d.data()}; });
+      docs.sort(function(a,b){
+        var da=a.data, db=b.data;
+        return (da.tries-db.tries)||((da.ts&&db.ts)?(da.ts.seconds-db.ts.seconds):0);
+      });
+
+      var html = '';
+      docs.forEach(function(item, i){
+        var d = item.data;
+        var slug = (d.name||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+        var isMe = myName && item.id.indexOf(myName) > -1;
+        var rankCell = i < 3 ? '<span class="rank-num medal">'+MEDALS[i]+'</span>' : '<span class="rank-num">'+(i+1)+'</span>';
+        html += '<div class="daily-row'+(isMe?' me':'')+'">'+
+          rankCell+
+          '<div class="player-name">'+(d.name||'Anonymous')+'</div>'+
+          '<div><div class="stat-val" style="font-size:14px">'+d.tries+'</div><div class="stat-label">'+(d.tries===1?'guess':'guesses')+'</div></div>'+
+          '</div>';
+      });
+      document.getElementById('dailyList').innerHTML = html;
+    })
+    .catch(function(e){
+      document.getElementById('dailyList').innerHTML='<div class="empty">Could not load.<br><small>'+e.message+'</small></div>';
+    });
+}
+
+// ── Init ──
+updateMonthNav();
+loadMonthly();
+</script>
+</body>
+</html>

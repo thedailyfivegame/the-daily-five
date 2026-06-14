@@ -1034,6 +1034,7 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
     <div class="modal-tabs">
       <button class="modal-tab active" id="tabStats" aria-selected="true">Statistics</button>
       <button class="modal-tab" id="tabLb" aria-selected="false">Leaderboard</button>
+      <button class="modal-tab" id="tabMonthly" aria-selected="false">This Month 🏆</button>
     </div>
 
     <!-- Stats pane -->
@@ -1097,7 +1098,11 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
         <div id="lbMyEntry"></div>
       </div>
       <div id="lbList"><div class="lb-loading">Loading…</div></div>
-    </div>
+    </div
+    <!-- Monthly leaderboard pane -->
+    <div id="monthlyPane" style="display:none">
+      <div id="monthlyList"><div class="lb-loading">Loading…</div></div>
+    </div>>
   </div>
 </div>
 
@@ -1554,7 +1559,7 @@ function submitGuess(){
     setTimeout(initEmailCapture, totalReveal+2600);
   } else if(guesses.length>=ROWS){
     gameStatus='lost'; showIgPrompt();
-    recordResult(false,0);
+    recordResult(false,0); if(!IS_PRACTICE) setTimeout(function(){ submitScore(); }, totalReveal + 200);
     soundWrong(); vibrate([80,40,80]);
     setTimeout(function(){ toast(ANSWER, 2500); }, totalReveal);
     setTimeout(function(){ openStats(true); }, totalReveal+2000);
@@ -1586,6 +1591,18 @@ function paintKeys(){
 function saveGame(){
   if(IS_PRACTICE) return;
   S.setObj('df_game',{day:DAY, guesses:guesses, status:gameStatus});
+  // Cross-device sync: persist completed game to Firestore for logged-in users
+  if(window._db&&(gameStatus==='won'||gameStatus==='lost')){
+    try{
+      var _u=firebase.auth&&firebase.auth().currentUser;
+      if(_u){
+        window._db.collection('userGames').doc(_u.uid+'_day'+DAY).set({
+          uid:_u.uid, day:DAY, guesses:guesses, status:gameStatus,
+          ts:firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(function(){});
+      }
+    }catch(e){}
+  }
 }
 function loadGame(){
   if(IS_PRACTICE) return;
@@ -1682,19 +1699,18 @@ document.getElementById('statsOverlay').addEventListener('click',function(e){ if
    LEADERBOARD
 ───────────────────────────────────────── */
 // Tab switching
-document.getElementById('tabStats').addEventListener('click',function(){
-  document.getElementById('statsPane').style.display='';
-  document.getElementById('lbPane').style.display='none';
-  document.getElementById('tabStats').classList.add('active');
-  document.getElementById('tabLb').classList.remove('active');
-});
-document.getElementById('tabLb').addEventListener('click',function(){
-  document.getElementById('statsPane').style.display='none';
-  document.getElementById('lbPane').style.display='';
-  document.getElementById('tabStats').classList.remove('active');
-  document.getElementById('tabLb').classList.add('active');
-  loadLeaderboard();
-});
+function setActiveTab(t){
+  var tabs={tabStats:'statsPane',tabLb:'lbPane',tabMonthly:'monthlyPane'};
+  Object.keys(tabs).forEach(function(id){
+    var el=document.getElementById(id),pane=document.getElementById(tabs[id]);
+    if(!el||!pane) return;
+    if(id===t){el.classList.add('active');el.setAttribute('aria-selected','true');pane.style.display='';}  
+    else{el.classList.remove('active');el.setAttribute('aria-selected','false');pane.style.display='none';}
+  });
+}
+document.getElementById('tabStats').addEventListener('click',function(){ setActiveTab('tabStats'); });
+document.getElementById('tabLb').addEventListener('click',function(){ setActiveTab('tabLb'); loadLeaderboard(); });
+document.getElementById('tabMonthly').addEventListener('click',function(){ setActiveTab('tabMonthly'); loadMonthlyLeaderboard(); });
 
 // Open straight to leaderboard tab
 document.getElementById('openLeaderboard').addEventListener('click',function(){
@@ -1728,15 +1744,23 @@ function submitScore(){
   var name = S.get('df_lb_name');
   if(!name) return;
   if(gameStatus === 'playing') return;
-  var tries = gameStatus === 'won' ? guesses.length : 7;
+  var won = gameStatus === 'won';
+  var tries = won ? guesses.length : 7;
+  // Daily leaderboard
   var docId = 'day' + DAY + '_' + name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
   window._db.collection('scores').doc(docId).set({
-    day: DAY,
-    name: name,
-    tries: tries,
-    won: gameStatus === 'won',
+    day: DAY, name: name, tries: tries, won: won,
     ts: firebase.firestore.FieldValue.serverTimestamp()
   }).catch(function(){});
+  // Monthly leaderboard (guard against double-counting in same session)
+  if(window._monthlyScoreDay !== DAY){
+    window._monthlyScoreDay = DAY;
+    var month = new Date().toISOString().slice(0,7);
+    var mDocId = month + '_' + name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+    var mData = {month:month, name:name, played:firebase.firestore.FieldValue.increment(1), ts:firebase.firestore.FieldValue.serverTimestamp()};
+    if(won){ mData.wins=firebase.firestore.FieldValue.increment(1); mData.totalGuesses=firebase.firestore.FieldValue.increment(tries); }
+    window._db.collection('monthly_scores').doc(mDocId).set(mData,{merge:true}).catch(function(){});
+  }
 }
 
 function loadLeaderboard(){
@@ -1806,6 +1830,50 @@ document.getElementById('settingsOverlay').addEventListener('click',function(e){
 /* ─────────────────────────────────────────
    COUNTDOWN
 ───────────────────────────────────────── */
+function loadMonthlyLeaderboard(){
+  var listEl=document.getElementById('monthlyList');
+  if(!window._db){listEl.innerHTML='<div class="lb-loading">Leaderboard unavailable.</div>';return;}
+  listEl.innerHTML='<div class="lb-loading">Loading…</div>';
+  var month=new Date().toISOString().slice(0,7);
+  var myName=(S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+  window._db.collection('monthly_scores')
+    .where('month','==',month)
+    .limit(50)
+    .get()
+    .then(function(snap){
+      if(snap.empty){listEl.innerHTML='<div class="lb-loading">No scores yet this month — play to be first!</div>';return;}
+      var docs=snap.docs.map(function(d){return d.data();}).filter(function(d){return d.wins>0;});
+      docs.sort(function(a,b){
+        if(b.wins!==a.wins) return b.wins-a.wins;
+        var avgA=a.wins>0?a.totalGuesses/a.wins:99, avgB=b.wins>0?b.totalGuesses/b.wins:99;
+        return avgA-avgB;
+      });
+      var medals=['🥇','🥈','🥉'];
+      var html='<div style="text-align:center;font-weight:700;margin-bottom:8px">🏆 '+month.slice(0,4)+' / '+month.slice(5,7)+'</div>';
+      var myRank=-1;
+      docs.slice(0,20).forEach(function(d,i){
+        var rank=i+1;
+        var slug=(d.name||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+        var isMe=myName&&slug===myName;
+        if(isMe) myRank=rank;
+        var avg=d.wins>0?(d.totalGuesses/d.wins).toFixed(1):'—';
+        html+='<div class="lb-entry'+(isMe?' me':'')+'">'+
+          '<span class="lb-rank-cell">'+(medals[i]||rank)+'</span>'+
+          '<span class="lb-name'+(isMe?' me':'')+'">'+(d.name||'Anonymous')+'</span>'+
+          '<span class="lb-score">'+d.wins+'W</span>'+
+          '<span class="lb-tries">avg '+avg+'</span>'+
+          '</div>';
+      });
+      if(myRank===-1&&myName){
+        html+='<div class="lb-entry me" style="margin-top:8px;border-top:1px solid var(--line);padding-top:8px">'+
+          '<span class="lb-rank-cell">—</span>'+
+          '<span class="lb-name me">You</span>'+
+          '<span class="lb-score">0W</span><span class="lb-tries">—</span></div>';
+      }
+      listEl.innerHTML=html;
+    }).catch(function(){listEl.innerHTML='<div class="lb-loading">Could not load.</div>';});
+}
+
 var clockInt=null;
 function startClock(){
   if(clockInt) clearInterval(clockInt);
@@ -1914,6 +1982,24 @@ document.addEventListener('keydown',function(e){
 ───────────────────────────────────────── */
 loadGame();
 renderCurrent();
+// Cross-device sync: if logged in and haven't played today, check Firestore
+if(!IS_PRACTICE&&window._db){
+  try{
+    firebase.auth&&firebase.auth().onAuthStateChanged(function(_syncUser){
+      if(!_syncUser) return;
+      var _lg=S.getObj('df_game',null);
+      var _done=_lg&&_lg.day===DAY&&_lg.status!=='playing';
+      if(!_done){
+        window._db.collection('userGames').doc(_syncUser.uid+'_day'+DAY).get().then(function(doc){
+          if(doc.exists&&doc.data().day===DAY&&doc.data().status!=='playing'){
+            S.setObj('df_game',{day:DAY,guesses:doc.data().guesses,status:doc.data().status});
+            window.location.reload();
+          }
+        }).catch(function(){});
+      }
+    });
+  }catch(e){}
+}
 
 // Board entrance animation — tiles cascade in
 (function(){

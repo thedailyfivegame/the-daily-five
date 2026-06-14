@@ -1,6 +1,6 @@
 // Service Worker — The Daily Five
-// v4 — cache all game-critical assets for full offline support
-const CACHE = 'df-v5';
+// v6 — cache all pages including archive and about
+const CACHE = 'df-v6';
 
 const PRECACHE = [
   '/',
@@ -11,6 +11,8 @@ const PRECACHE = [
   '/favicon.svg',
   '/og-image.png',
   '/splash.png',
+  '/archive.html',
+  '/about.html',
 ];
 
 // ── Install: pre-cache everything ──────────────────────────────

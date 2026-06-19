@@ -3,242 +3,180 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>The Daily Five — Daily Word Puzzles & Games</title>
+  <title>The Daily Five &#8212; Daily Word Puzzles &amp; Games</title>
   <meta name="description" content="Five free daily word puzzles. Play The Daily Five word game, The Daily Scramble, and more. No sign-up needed."/>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    :root{
-      --paper:#f4efe4;--paper-2:#ede6d4;--paper-3:#e5dcc8;
-      --ink:#1c1a16;--ink-soft:#4a463c;--ink-muted:#8a8070;
-      --line:#cdc4ad;--green:#3f7a4f;--amber:#c89a2b;
-      --accent:#9e2b25;--radius:3px;--trans:.18s ease;
-    }
-    [data-theme="dark"]{
-      --paper:#12110e;--paper-2:#1c1a15;--paper-3:#242018;
-      --ink:#f0ebe0;--ink-soft:#a39b85;--ink-muted:#6b6356;
-      --line:#2e2a22;--green:#4a8f5e;--amber:#d4a830;--accent:#c0392b;
-    }
+    :root{--paper:#f4efe4;--paper-2:#ede6d4;--paper-3:#e5dcc8;--ink:#1c1a16;--ink-soft:#4a463c;--ink-muted:#8a8070;--line:#cdc4ad;--green:#3f7a4f;--amber:#c89a2b;--accent:#9e2b25;--radius:3px;--trans:.18s ease;}
+    [data-theme="dark"]{--paper:#12110e;--paper-2:#1c1a15;--paper-3:#242018;--ink:#f0ebe0;--ink-soft:#a39b85;--ink-muted:#6b6356;--line:#2e2a22;--green:#4a8f5e;--amber:#d4a830;--accent:#c0392b;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{min-height:100%;}
-    body{
-      background:var(--paper);color:var(--ink);
-      font-family:'Hanken Grotesk',system-ui,sans-serif;
-      transition:background var(--trans),color var(--trans);
-      overflow-x:hidden;
-    }
-    body::before{
-      content:'';position:fixed;inset:0;
-      background-image:radial-gradient(rgba(128,120,100,.04) 1px,transparent 1px);
-      background-size:4px 4px;pointer-events:none;z-index:0;
-    }
+    body{background:var(--paper);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;transition:background var(--trans),color var(--trans);overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(128,120,100,.04) 1px,transparent 1px);background-size:4px 4px;pointer-events:none;z-index:0;}
     *{position:relative;z-index:1;}
-
-    /* ── Header ── */
-    header{
-      border-bottom:3px solid var(--ink);
-      padding:10px 20px 0;
-      transition:border-color var(--trans);
-    }
-    .dateline{
-      font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
-      color:var(--ink-soft);font-weight:600;
-      display:flex;justify-content:space-between;align-items:center;
-      border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:8px;
-    }
-    .header-top{
-      display:flex;align-items:center;justify-content:center;
-      padding-bottom:10px;
-      position:relative;
-    }
-    .masthead{
-      font-family:'Fraunces',serif;font-weight:900;
-      font-size:clamp(34px,8vw,64px);line-height:.93;letter-spacing:-.02em;
-      text-align:center;
-    }
-    .subhead{
-      font-size:10px;letter-spacing:.28em;text-transform:uppercase;
-      color:var(--ink-soft);margin-top:5px;font-weight:600;
-      font-family:'Fraunces',serif;font-style:italic;text-align:center;
-    }
-    .theme-btn{
-      position:absolute;right:0;top:50%;transform:translateY(-50%);
-      background:none;border:none;cursor:pointer;font-size:20px;padding:6px;
-      color:var(--ink);border-radius:var(--radius);
-    }
-
-    /* ── Rule lines ── */
-    .rule{
-      display:flex;align-items:center;gap:0;
-      border-top:1.5px solid var(--ink);
-      border-bottom:1px solid var(--ink);
-      padding:4px 20px;
-      font-size:9px;letter-spacing:.25em;text-transform:uppercase;
-      font-weight:700;color:var(--ink-soft);
-      justify-content:space-between;
-    }
+    /* Header */
+    header{border-bottom:3px solid var(--ink);padding:10px 20px 0;transition:border-color var(--trans);}
+    .dateline{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:8px;}
+    .header-top{display:flex;align-items:center;justify-content:center;padding-bottom:10px;position:relative;}
+    .masthead{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(34px,8vw,64px);line-height:.93;letter-spacing:-.02em;text-align:center;}
+    .subhead{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-soft);margin-top:5px;font-weight:600;font-family:'Fraunces',serif;font-style:italic;text-align:center;}
+    .header-actions{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:8px;}
+    .theme-btn{background:none;border:none;cursor:pointer;font-size:20px;padding:6px;color:var(--ink);border-radius:var(--radius);}
+    .auth-btn{background:var(--ink);color:var(--paper);border:none;cursor:pointer;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border-radius:var(--radius);font-family:'Hanken Grotesk',sans-serif;transition:background var(--trans);white-space:nowrap;}
+    .auth-btn:hover{background:var(--accent);}
+    .user-chip{display:none;align-items:center;gap:6px;cursor:pointer;padding:4px 10px 4px 4px;border:1px solid var(--line);border-radius:20px;background:var(--paper-2);position:relative;}
+    .user-avatar{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;overflow:hidden;}
+    .user-avatar img{width:100%;height:100%;object-fit:cover;}
+    .user-name{font-size:10px;font-weight:600;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .user-coins{font-size:10px;color:var(--amber);font-weight:700;}
+    .user-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:var(--paper);border:1.5px solid var(--line);border-radius:4px;min-width:190px;z-index:200;box-shadow:0 6px 24px rgba(0,0,0,.15);}
+    .user-dropdown.open{display:block;}
+    .dropdown-header{padding:10px 14px 6px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .dropdown-divider{height:1px;background:var(--line);}
+    .dropdown-item{display:block;width:100%;text-align:left;padding:10px 14px;font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;border:none;background:none;font-family:'Hanken Grotesk',sans-serif;transition:background var(--trans),color var(--trans);}
+    .dropdown-item:hover{background:var(--paper-2);color:var(--ink);}
+    .dropdown-item.danger{color:var(--accent);}
+    /* Rule bar */
+    .rule{display:flex;align-items:center;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--ink);padding:4px 20px;font-size:9px;letter-spacing:.25em;text-transform:uppercase;font-weight:700;color:var(--ink-soft);justify-content:space-between;}
     .rule span{white-space:nowrap;}
-
-    /* ── Hero ── */
-    .hero{
-      display:grid;
-      grid-template-columns:1fr 1px 1fr;
-      gap:0;
-      max-width:1100px;
-      margin:0 auto;
-      padding:28px 20px;
-      border-bottom:1.5px solid var(--line);
-    }
-    .hero-left{
-      padding-right:28px;
-      display:flex;flex-direction:column;justify-content:center;
-    }
-    .hero-divider{
-      background:var(--line);width:1px;
-    }
-    .hero-right{
-      padding-left:28px;
-      display:flex;flex-direction:column;justify-content:center;
-    }
-    .hero-badge{
-      font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;
-      font-weight:700;color:var(--accent);
-      border:1px solid var(--accent);padding:2px 7px;
-      border-radius:2px;display:inline-block;margin-bottom:12px;
-    }
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;max-width:1100px;margin:0 auto;padding:28px 20px;border-bottom:1.5px solid var(--line);}
+    .hero-left{padding-right:28px;display:flex;flex-direction:column;justify-content:center;}
+    .hero-divider{background:var(--line);width:1px;}
+    .hero-right{padding-left:28px;display:flex;flex-direction:column;justify-content:center;}
+    .hero-badge{font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--accent);border:1px solid var(--accent);padding:2px 7px;border-radius:2px;display:inline-block;margin-bottom:12px;}
     .hero-badge.new{color:var(--green);border-color:var(--green);}
-    .hero-headline{
-      font-family:'Fraunces',serif;font-weight:900;
-      font-size:clamp(28px,4vw,44px);line-height:1.0;
-      letter-spacing:-.02em;margin-bottom:10px;
-    }
-    .hero-body{
-      font-size:14px;color:var(--ink-soft);line-height:1.6;
-      margin-bottom:18px;
-    }
-    .play-btn{
-      display:inline-flex;align-items:center;gap:8px;
-      background:var(--ink);color:var(--paper);
-      font-family:'Hanken Grotesk',sans-serif;font-weight:700;
-      font-size:12px;letter-spacing:.1em;text-transform:uppercase;
-      padding:12px 22px;border-radius:var(--radius);
-      text-decoration:none;border:2px solid var(--ink);
-      transition:background var(--trans),color var(--trans);
-      align-self:flex-start;
-    }
+    .hero-headline{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(28px,4vw,44px);line-height:1.0;letter-spacing:-.02em;margin-bottom:10px;}
+    .hero-body{font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:18px;}
+    .play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:12px 22px;border-radius:var(--radius);text-decoration:none;border:2px solid var(--ink);transition:background var(--trans),color var(--trans),border-color var(--trans);align-self:flex-start;}
     .play-btn:hover{background:var(--accent);border-color:var(--accent);}
-    .play-btn.outline{
-      background:none;color:var(--ink);
-    }
+    .play-btn.outline{background:none;color:var(--ink);}
     .play-btn.outline:hover{background:var(--paper-2);border-color:var(--ink-soft);}
-
-    /* ── Game preview tiles ── */
-    .tile-preview{
-      margin-bottom:20px;
-      display:flex;flex-direction:column;gap:6px;
-    }
-    .tile-row{
-      display:flex;gap:5px;
-    }
-    .tp{
-      width:42px;height:42px;border:1.5px solid var(--line);
-      border-radius:3px;display:flex;align-items:center;justify-content:center;
-      font-family:'Fraunces',serif;font-weight:700;font-size:18px;
-      background:var(--paper-2);
-      transition:background var(--trans),border-color var(--trans);
-    }
+    /* Tile previews */
+    .tile-preview{margin-bottom:20px;display:flex;flex-direction:column;gap:6px;}
+    .tile-row{display:flex;gap:5px;}
+    .tp{width:42px;height:42px;border:1.5px solid var(--line);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:18px;background:var(--paper-2);transition:background var(--trans),border-color var(--trans);}
     .tp.g{background:#4a8f5e;border-color:#4a8f5e;color:#fff;}
     .tp.y{background:#c89a2b;border-color:#c89a2b;color:#fff;}
     .tp.empty{background:var(--paper);opacity:.4;}
-
-    /* Scramble tiles */
-    .scramble-preview{
-      display:flex;gap:6px;margin-bottom:16px;
-    }
-    .sp{
-      width:48px;height:52px;border:2px solid var(--ink);
-      border-radius:3px;display:flex;align-items:center;justify-content:center;
-      font-family:'Fraunces',serif;font-weight:700;font-size:20px;
-      background:var(--paper-2);
-    }
+    .scramble-preview{display:flex;gap:6px;margin-bottom:16px;}
+    .sp{width:48px;height:52px;border:2px solid var(--ink);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:20px;background:var(--paper-2);}
     .sp.slot{border-color:var(--line);background:var(--paper);opacity:.5;}
-
-    /* ── Status pill ── */
-    .status-row{
-      display:flex;align-items:center;gap:6px;
-      font-size:11px;font-weight:600;margin-bottom:14px;
-    }
-    .dot{
-      width:7px;height:7px;border-radius:50%;
-      background:var(--line);display:inline-block;flex-shrink:0;
-    }
+    /* Status */
+    .status-row{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;margin-bottom:14px;}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--line);display:inline-block;flex-shrink:0;}
     .dot.played{background:var(--green);}
     .status-text{color:var(--ink-muted);}
     .status-text.played{color:var(--green);}
-
-    /* ── Section label ── */
-    .section-label{
-      display:flex;align-items:center;gap:12px;
-      padding:12px 20px;
-      border-bottom:1px solid var(--line);
-      max-width:1100px;margin:0 auto;
-    }
-    .section-label span{
-      font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
-      font-weight:700;color:var(--ink-muted);white-space:nowrap;
-    }
-    .section-label::before,.section-label::after{
-      content:'';flex:1;height:1px;background:var(--line);
-    }
-
-    /* ── More games grid ── */
-    .games-section{
-      max-width:1100px;margin:0 auto;
-      padding:0 20px 48px;
-    }
-    .coming-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-      gap:12px;margin-top:20px;
-    }
-    .mini-card{
-      background:var(--paper-2);border:1.5px solid var(--line);
-      border-radius:4px;padding:20px 18px;opacity:.55;
-    }
+    /* Section label */
+    .section-label{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line);max-width:1100px;margin:0 auto;}
+    .section-label span{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--ink-muted);white-space:nowrap;}
+    .section-label::before,.section-label::after{content:'';flex:1;height:1px;background:var(--line);}
+    /* How to Play */
+    .how-to-section{max-width:1100px;margin:0 auto;padding:24px 20px 32px;}
+    .how-tabs{display:flex;border-bottom:2px solid var(--line);margin-bottom:24px;}
+    .how-tab{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--ink-muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color var(--trans),border-color var(--trans);font-family:'Hanken Grotesk',sans-serif;}
+    .how-tab.active{color:var(--ink);border-bottom-color:var(--ink);}
+    .how-panel{display:none;}
+    .how-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+    .how-col h4{font-family:'Fraunces',serif;font-weight:700;font-size:15px;margin-bottom:14px;color:var(--ink);}
+    .how-step{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start;}
+    .step-num{min-width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;}
+    .step-text{font-size:14px;color:var(--ink-soft);line-height:1.5;}
+    .step-text strong{color:var(--ink);}
+    .legend-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+    .legend-tile{width:38px;height:38px;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:17px;}
+    .legend-tile.g{background:#4a8f5e;color:#fff;}
+    .legend-tile.y{background:#c89a2b;color:#fff;}
+    .legend-tile.x{background:var(--paper-3);color:var(--ink-muted);border:1.5px solid var(--line);}
+    .legend-desc{font-size:13px;color:var(--ink-soft);line-height:1.4;}
+    .tip-box{background:var(--paper-2);border:1px solid var(--line);border-radius:4px;padding:14px 16px;font-size:13px;color:var(--ink-soft);line-height:1.6;margin-top:8px;}
+    .tip-box strong{color:var(--ink);}
+    /* Coming soon */
+    .games-section{max-width:1100px;margin:0 auto;padding:0 20px 48px;}
+    .coming-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:20px;}
+    .mini-card{background:var(--paper-2);border:1.5px solid var(--line);border-radius:4px;padding:20px 18px;opacity:.55;}
     .mini-icon{font-size:24px;margin-bottom:10px;}
-    .mini-name{
-      font-family:'Fraunces',serif;font-weight:700;font-size:15px;
-      margin-bottom:4px;
-    }
+    .mini-name{font-family:'Fraunces',serif;font-weight:700;font-size:15px;margin-bottom:4px;}
     .mini-desc{font-size:12px;color:var(--ink-muted);line-height:1.4;margin-bottom:8px;}
-    .mini-badge{
-      font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;
-      font-weight:700;color:var(--ink-muted);
-      border:1px solid var(--line);padding:2px 6px;border-radius:2px;
-      display:inline-block;
-    }
-
-    /* ── Footer ── */
-    footer{
-      border-top:2px solid var(--ink);padding:16px 20px;
-      text-align:center;font-size:10px;color:var(--ink-muted);
-      letter-spacing:.06em;text-transform:uppercase;
-    }
-
+    .mini-badge{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-muted);border:1px solid var(--line);padding:2px 6px;border-radius:2px;display:inline-block;}
+    /* Footer */
+    footer{border-top:2px solid var(--ink);padding:18px 20px 14px;text-align:center;}
+    .footer-links{display:flex;justify-content:center;align-items:center;gap:6px 16px;flex-wrap:wrap;margin-bottom:10px;}
+    .footer-links a{color:var(--ink-muted);text-decoration:none;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;display:inline-flex;align-items:center;gap:5px;transition:color var(--trans);}
+    .footer-links a:hover{color:var(--ink);}
+    .footer-sep{color:var(--line);font-size:12px;}
+    .footer-copy{font-size:10px;color:var(--ink-muted);letter-spacing:.06em;text-transform:uppercase;}
+    /* Login modal */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;padding:20px;}
+    .modal-overlay.open{display:flex;}
+    .modal{background:var(--paper);border:2px solid var(--ink);border-radius:4px;padding:32px 28px;width:min(420px,100%);position:relative;animation:modalIn .15s ease;}
+    @keyframes modalIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    .modal-close{position:absolute;top:12px;right:14px;background:none;border:none;cursor:pointer;font-size:22px;color:var(--ink-muted);line-height:1;}
+    .modal-logo{font-family:'Fraunces',serif;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px;}
+    .modal-title{font-family:'Fraunces',serif;font-weight:900;font-size:24px;margin-bottom:4px;}
+    .modal-sub{font-size:12px;color:var(--ink-muted);margin-bottom:20px;line-height:1.5;}
+    .modal-tabs{display:flex;border:1.5px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
+    .modal-tab{flex:1;padding:9px;background:none;border:none;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-family:'Hanken Grotesk',sans-serif;color:var(--ink-muted);transition:background var(--trans),color var(--trans);}
+    .modal-tab.active{background:var(--ink);color:var(--paper);}
+    .google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:11px;border:1.5px solid var(--line);border-radius:var(--radius);background:var(--paper-2);cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);font-family:'Hanken Grotesk',sans-serif;transition:background var(--trans);margin-bottom:16px;}
+    .google-btn:hover{background:var(--paper-3);}
+    .or-divider{text-align:center;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-muted);position:relative;margin-bottom:16px;}
+    .or-divider::before,.or-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--line);}
+    .or-divider::before{left:0;}.or-divider::after{right:0;}
+    .form-group{margin-bottom:12px;}
+    .form-group label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:5px;color:var(--ink-soft);}
+    .form-group input{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--radius);background:var(--paper-2);color:var(--ink);font-size:13px;font-family:'Hanken Grotesk',sans-serif;outline:none;transition:border-color var(--trans);}
+    .form-group input:focus{border-color:var(--ink);}
+    .form-submit{width:100%;padding:12px;margin-top:6px;background:var(--ink);color:var(--paper);border:none;cursor:pointer;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:var(--radius);font-family:'Hanken Grotesk',sans-serif;transition:background var(--trans);}
+    .form-submit:hover{background:var(--accent);}
+    .modal-error{font-size:12px;color:var(--accent);text-align:center;min-height:18px;margin-top:10px;}
+    .modal-note{text-align:center;font-size:11px;color:var(--ink-muted);margin-top:14px;line-height:1.5;}
+    .modal-note a{color:var(--ink-soft);font-weight:600;}
+    /* Responsive */
     @media(max-width:640px){
-      .hero{
-        grid-template-columns:1fr;
-        padding:20px 16px;
-      }
-      .hero-left{padding-right:0;padding-bottom:20px;border-bottom:1px solid var(--line);}
+      .hero{grid-template-columns:1fr;padding:20px 16px;}
+      .hero-left{padding-right:0;padding-bottom:22px;border-bottom:1px solid var(--line);}
       .hero-divider{display:none;}
-      .hero-right{padding-left:0;padding-top:20px;}
+      .hero-right{padding-left:0;padding-top:22px;}
       .hero-headline{font-size:clamp(24px,7vw,34px);}
+      .how-panel.active{grid-template-columns:1fr;}
+      .user-name{display:none;}
+      .auth-btn{padding:7px 10px;font-size:9px;}
     }
   </style>
 </head>
 <body>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">&#215;</button>
+    <div class="modal-logo">The Daily Five</div>
+    <div class="modal-title" id="modalTitle">Welcome back</div>
+    <div class="modal-sub">Sign in to track your scores across all games and earn coins.</div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tabSignIn">Sign In</button>
+      <button class="modal-tab" id="tabSignUp">Create Account</button>
+    </div>
+    <button class="google-btn" id="googleBtn">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-21.5 0-1.4-.1-2.7-.5-4.5z"/></svg>
+      Continue with Google
+    </button>
+    <div class="or-divider">or</div>
+    <div class="form-group"><label for="emailInput">Email</label><input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email"/></div>
+    <div class="form-group"><label for="passwordInput">Password</label><input type="password" id="passwordInput" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password"/></div>
+    <button class="form-submit" id="emailAuthBtn">Sign In</button>
+    <div class="modal-error" id="authError"></div>
+    <div class="modal-note">By signing in you agree to our <a href="/terms.html">Terms</a> and <a href="/privacy.html">Privacy Policy</a>.</div>
+  </div>
+</div>
+
+<!-- HEADER -->
 <header>
   <div class="dateline">
     <span id="headerDate"></span>
@@ -250,7 +188,25 @@
       <div class="masthead">The Daily Five</div>
       <div class="subhead">Daily Puzzles &amp; Games</div>
     </div>
-    <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">&#127769;</button>
+    <div class="header-actions">
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">&#127769;</button>
+      <div style="position:relative;">
+        <button class="auth-btn" id="signInBtn">Sign In</button>
+        <div class="user-chip" id="userChip">
+          <div class="user-avatar" id="userAvatar"></div>
+          <span class="user-name" id="userName"></span>
+          <span class="user-coins" id="userCoins"></span>
+          <div class="user-dropdown" id="userDropdown">
+            <div class="dropdown-header" id="dropdownName">My Account</div>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" onclick="location.href='play.html'">&#9654; The Daily Five</button>
+            <button class="dropdown-item" onclick="location.href='scramble.html'">&#9654; The Daily Scramble</button>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item danger" id="signOutBtn">Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -259,140 +215,169 @@
   <span id="editionLabel"></span>
 </div>
 
-<!-- Hero: two featured games side by side -->
+<!-- HERO -->
 <div class="hero">
-  <!-- The Daily Five -->
   <div class="hero-left">
     <span class="hero-badge">Live Today</span>
     <h1 class="hero-headline">The Daily<br>Five</h1>
-    <div class="tile-preview" id="wordPreview">
-      <div class="tile-row">
-        <div class="tp g">C</div><div class="tp y">R</div><div class="tp">A</div><div class="tp">N</div><div class="tp">E</div>
-      </div>
-      <div class="tile-row">
-        <div class="tp g">C</div><div class="tp g">O</div><div class="tp y">U</div><div class="tp">R</div><div class="tp">T</div>
-      </div>
-      <div class="tile-row">
-        <div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div>
-      </div>
+    <div class="tile-preview">
+      <div class="tile-row"><div class="tp g">C</div><div class="tp y">R</div><div class="tp">A</div><div class="tp">N</div><div class="tp">E</div></div>
+      <div class="tile-row"><div class="tp g">C</div><div class="tp g">O</div><div class="tp y">U</div><div class="tp">R</div><div class="tp">T</div></div>
+      <div class="tile-row"><div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div></div>
     </div>
-    <div class="status-row">
-      <span class="dot" id="wordDot"></span>
-      <span class="status-text" id="wordStatusText">Ready to play</span>
-    </div>
+    <div class="status-row"><span class="dot" id="wordDot"></span><span class="status-text" id="wordStatusText">Ready to play</span></div>
     <p class="hero-body">Guess the hidden 5-letter word in six tries. A new word drops every day at midnight.</p>
     <a class="play-btn" href="play.html">Play Now &#8594;</a>
   </div>
-
   <div class="hero-divider"></div>
-
-  <!-- The Daily Scramble -->
   <div class="hero-right">
     <span class="hero-badge new">New Game</span>
     <h2 class="hero-headline" style="font-size:clamp(24px,3.5vw,38px);">The Daily<br>Scramble</h2>
-    <div class="scramble-preview">
-      <div class="sp">F</div><div class="sp">A</div><div class="sp">T</div><div class="sp">E</div><div class="sp">R</div>
-    </div>
-    <div style="display:flex;gap:5px;margin-bottom:16px;">
-      <div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div>
-    </div>
-    <div class="status-row">
-      <span class="dot" id="scrambleDot"></span>
-      <span class="status-text" id="scrambleStatusText">Ready to play</span>
-    </div>
+    <div class="scramble-preview"><div class="sp">F</div><div class="sp">A</div><div class="sp">T</div><div class="sp">E</div><div class="sp">R</div></div>
+    <div style="display:flex;gap:5px;margin-bottom:16px;"><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div></div>
+    <div class="status-row"><span class="dot" id="scrambleDot"></span><span class="status-text" id="scrambleStatusText">Ready to play</span></div>
     <p class="hero-body">Five letters, all mixed up. Tap them in the right order as fast as you can. Timer starts on first tap.</p>
     <a class="play-btn outline" href="scramble.html">Play Now &#8594;</a>
   </div>
 </div>
 
-<!-- Coming soon section -->
-<div class="section-label"><span>Coming Soon</span></div>
-
-<div class="games-section">
-  <div class="coming-grid">
-    <div class="mini-card">
-      <div class="mini-icon">&#128290;</div>
-      <div class="mini-name">The Daily Number</div>
-      <div class="mini-desc">Crack the hidden 4-digit code. One number, limited guesses.</div>
-      <span class="mini-badge">Coming Soon</span>
+<!-- HOW TO PLAY -->
+<div class="section-label"><span>How to Play</span></div>
+<div class="how-to-section">
+  <div class="how-tabs">
+    <button class="how-tab active" data-panel="five">The Daily Five</button>
+    <button class="how-tab" data-panel="scramble">The Daily Scramble</button>
+  </div>
+  <div class="how-panel active" id="panel-five">
+    <div class="how-col">
+      <h4>Rules</h4>
+      <div class="how-step"><div class="step-num">1</div><div class="step-text">You have <strong>6 attempts</strong> to guess the secret 5-letter word.</div></div>
+      <div class="how-step"><div class="step-num">2</div><div class="step-text">Type any valid word and press <strong>Enter</strong> to submit your guess.</div></div>
+      <div class="how-step"><div class="step-num">3</div><div class="step-text">After each guess, tile colours show how close you are to the answer.</div></div>
+      <div class="how-step"><div class="step-num">4</div><div class="step-text">One puzzle per day &mdash; a new word drops at <strong>midnight</strong>.</div></div>
+      <div class="how-step"><div class="step-num">5</div><div class="step-text">Sign in to appear on the <strong>leaderboard</strong> and earn coins.</div></div>
     </div>
-    <div class="mini-card">
-      <div class="mini-icon">&#129299;</div>
-      <div class="mini-name">The Daily Connections</div>
-      <div class="mini-desc">Group sixteen words into four secret categories.</div>
-      <span class="mini-badge">Coming Soon</span>
+    <div class="how-col">
+      <h4>Tile Colours</h4>
+      <div class="legend-row"><div class="legend-tile g">W</div><div class="legend-desc"><strong>Green</strong> &mdash; right letter, right position</div></div>
+      <div class="legend-row"><div class="legend-tile y">A</div><div class="legend-desc"><strong>Yellow</strong> &mdash; letter is in the word, wrong spot</div></div>
+      <div class="legend-row"><div class="legend-tile x">T</div><div class="legend-desc"><strong>Grey</strong> &mdash; letter is not in the word</div></div>
+      <div class="tip-box" style="margin-top:16px;"><strong>Tip:</strong> Start with words that use many common letters &mdash; like CRANE, AUDIO, or STARE.</div>
     </div>
-    <div class="mini-card">
-      <div class="mini-icon">&#10067;</div>
-      <div class="mini-name">The Daily Trivia</div>
-      <div class="mini-desc">One question. One shot. Can you get it right?</div>
-      <span class="mini-badge">Coming Soon</span>
+  </div>
+  <div class="how-panel" id="panel-scramble">
+    <div class="how-col">
+      <h4>Rules</h4>
+      <div class="how-step"><div class="step-num">1</div><div class="step-text">You are shown <strong>5 scrambled letter tiles</strong> &mdash; unscramble them to find the word.</div></div>
+      <div class="how-step"><div class="step-num">2</div><div class="step-text"><strong>Tap a tile</strong> to place it in the next answer slot. The timer starts on your first tap.</div></div>
+      <div class="how-step"><div class="step-num">3</div><div class="step-text">Tap a filled slot to <strong>remove</strong> letters from that position onwards.</div></div>
+      <div class="how-step"><div class="step-num">4</div><div class="step-text">Once all 5 slots are filled, your answer submits automatically.</div></div>
+      <div class="how-step"><div class="step-num">5</div><div class="step-text">Your final <strong>time</strong> is your score &mdash; the lower the better!</div></div>
     </div>
-    <div class="mini-card">
-      <div class="mini-icon">&#128202;</div>
-      <div class="mini-name">The Daily Rank</div>
-      <div class="mini-desc">Sort five things in order. No wrong order, just worse ones.</div>
-      <span class="mini-badge">Coming Soon</span>
-    </div>
-    <div class="mini-card">
-      <div class="mini-icon">&#128444;</div>
-      <div class="mini-name">The Daily Sketch</div>
-      <div class="mini-desc">Guess the blurry image before it comes into focus.</div>
-      <span class="mini-badge">Coming Soon</span>
+    <div class="how-col">
+      <h4>Good to Know</h4>
+      <div class="tip-box">All words are common 5-letter English words &mdash; no obscure vocabulary.</div>
+      <div class="tip-box">A new scramble is available every day at <strong>midnight</strong>.</div>
+      <div class="tip-box">Complete the daily scramble to earn <strong style="color:var(--amber);">&#127922; 6 coins</strong>.</div>
     </div>
   </div>
 </div>
 
+<!-- COMING SOON -->
+<div class="section-label"><span>Coming Soon</span></div>
+<div class="games-section">
+  <div class="coming-grid">
+    <div class="mini-card"><div class="mini-icon">&#128290;</div><div class="mini-name">The Daily Number</div><div class="mini-desc">Crack the hidden 4-digit code. One number, limited guesses.</div><span class="mini-badge">Coming Soon</span></div>
+    <div class="mini-card"><div class="mini-icon">&#129299;</div><div class="mini-name">The Daily Connections</div><div class="mini-desc">Group sixteen words into four secret categories.</div><span class="mini-badge">Coming Soon</span></div>
+    <div class="mini-card"><div class="mini-icon">&#10067;</div><div class="mini-name">The Daily Trivia</div><div class="mini-desc">One question. One shot. Can you get it right?</div><span class="mini-badge">Coming Soon</span></div>
+    <div class="mini-card"><div class="mini-icon">&#128202;</div><div class="mini-name">The Daily Rank</div><div class="mini-desc">Sort five things in order. No wrong order, just worse ones.</div><span class="mini-badge">Coming Soon</span></div>
+    <div class="mini-card"><div class="mini-icon">&#128444;</div><div class="mini-name">The Daily Sketch</div><div class="mini-desc">Guess the blurry image before it comes into focus.</div><span class="mini-badge">Coming Soon</span></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
 <footer>
-  &copy; 2024 The Daily Five &mdash; Free daily word puzzles &middot; New games every day
+  <div class="footer-links">
+    <a href="/privacy.html">Privacy Policy</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="/terms.html">Terms of Service</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="https://www.instagram.com/thedailyfivegame" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      Instagram
+    </a>
+    <span class="footer-sep">&middot;</span>
+    <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">&copy; 2024 The Daily Five &mdash; Free daily word puzzles &middot; New games every day</div>
 </footer>
 
+<!-- FIREBASE + SCRIPTS -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script>
-// ── Theme ──
-(function(){
-  var t=localStorage.getItem('df_theme')||'light';
-  document.documentElement.setAttribute('data-theme',t);
-  document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';
-})();
-document.getElementById('themeBtn').onclick=function(){
-  var cur=document.documentElement.getAttribute('data-theme');
-  var next=cur==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',next);
-  localStorage.setItem('df_theme',next);
-  this.textContent=next==='dark'?'☀️':'🌙';
-};
+var _fbCfg={apiKey:"AIzaSyAy0iARQPIZSeE4W_Qco7ctonY_758yvvU",authDomain:"thedailyfive-f7103.firebaseapp.com",projectId:"thedailyfive-f7103",storageBucket:"thedailyfive-f7103.appspot.com"};
+firebase.initializeApp(_fbCfg);
+var _auth=firebase.auth();
 
-// ── Header ──
-(function(){
-  var d=new Date();
-  var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  document.getElementById('headerDate').textContent=days[d.getDay()]+', '+months[d.getMonth()]+' '+d.getDate();
-  var epoch=new Date('2025-01-01T00:00:00');
-  var dayIdx=Math.floor((Date.now()-epoch.getTime())/86400000);
-  document.getElementById('editionLabel').textContent='Day #'+dayIdx;
-})();
+// Theme
+(function(){var t=localStorage.getItem('df_theme')||'light';document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';})();
+document.getElementById('themeBtn').onclick=function(){var c=document.documentElement.getAttribute('data-theme');var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('df_theme',n);this.textContent=n==='dark'?'☀️':'🌙';};
 
-// ── Status checks ──
-function todayKey(){
-  var d=new Date();
-  return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-}
-var tk=todayKey();
+// Header date + edition
+(function(){var d=new Date();var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];var mos=['January','February','March','April','May','June','July','August','September','October','November','December'];document.getElementById('headerDate').textContent=days[d.getDay()]+', '+mos[d.getMonth()]+' '+d.getDate();var epoch=new Date('2025-01-01T00:00:00');var idx=Math.floor((Date.now()-epoch.getTime())/86400000);document.getElementById('editionLabel').textContent='Day #'+idx;})();
 
-var wordPlayed=localStorage.getItem('df_played_'+tk)==='1';
-if(wordPlayed){
-  document.getElementById('wordDot').classList.add('played');
-  document.getElementById('wordStatusText').textContent='Played today ✓';
-  document.getElementById('wordStatusText').classList.add('played');
-}
+// Status checks
+(function(){var d=new Date();var tk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(localStorage.getItem('df_played_'+tk)==='1'){document.getElementById('wordDot').classList.add('played');document.getElementById('wordStatusText').textContent='Played today ✓';document.getElementById('wordStatusText').classList.add('played');}if(localStorage.getItem('ds_played_'+tk)==='1'){document.getElementById('scrambleDot').classList.add('played');document.getElementById('scrambleStatusText').textContent='Played today ✓';document.getElementById('scrambleStatusText').classList.add('played');}})();
 
-var scramblePlayed=localStorage.getItem('ds_played_'+tk)==='1';
-if(scramblePlayed){
-  document.getElementById('scrambleDot').classList.add('played');
-  document.getElementById('scrambleStatusText').textContent='Played today ✓';
-  document.getElementById('scrambleStatusText').classList.add('played');
-}
+// Auth modal
+var _modal=document.getElementById('authModal');
+var _isSignUp=false;
+function _openModal(){_modal.classList.add('open');document.getElementById('authError').textContent='';}
+function _closeModal(){_modal.classList.remove('open');}
+document.getElementById('signInBtn').onclick=_openModal;
+document.getElementById('modalClose').onclick=_closeModal;
+_modal.onclick=function(e){if(e.target===_modal)_closeModal();};
+
+// Sign In / Create Account tabs
+var _tSI=document.getElementById('tabSignIn');
+var _tSU=document.getElementById('tabSignUp');
+function _setMode(su){_isSignUp=su;_tSI.classList.toggle('active',!su);_tSU.classList.toggle('active',su);document.getElementById('emailAuthBtn').textContent=su?'Create Account':'Sign In';document.getElementById('modalTitle').textContent=su?'Create account':'Welcome back';document.getElementById('passwordInput').autocomplete=su?'new-password':'current-password';document.getElementById('authError').textContent='';}
+_tSI.onclick=function(){_setMode(false);};
+_tSU.onclick=function(){_setMode(true);};
+
+// Google sign-in
+document.getElementById('googleBtn').onclick=function(){document.getElementById('authError').textContent='';var p=new firebase.auth.GoogleAuthProvider();_auth.signInWithPopup(p).catch(function(e){document.getElementById('authError').textContent=e.message;});};
+
+// Email sign-in
+document.getElementById('emailAuthBtn').onclick=function(){var em=document.getElementById('emailInput').value.trim();var pw=document.getElementById('passwordInput').value;if(!em||!pw){document.getElementById('authError').textContent='Please enter your email and password.';return;}document.getElementById('authError').textContent='';var p=_isSignUp?_auth.createUserWithEmailAndPassword(em,pw):_auth.signInWithEmailAndPassword(em,pw);p.catch(function(e){document.getElementById('authError').textContent=e.message;});};
+document.getElementById('emailInput').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('emailAuthBtn').click();});
+document.getElementById('passwordInput').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('emailAuthBtn').click();});
+
+// User chip dropdown
+document.getElementById('userChip').addEventListener('click',function(e){e.stopPropagation();document.getElementById('userDropdown').classList.toggle('open');});
+document.addEventListener('click',function(){document.getElementById('userDropdown').classList.remove('open');});
+document.getElementById('signOutBtn').onclick=function(){_auth.signOut();};
+
+// Auth state
+_auth.onAuthStateChanged(function(user){
+  var sib=document.getElementById('signInBtn');
+  var uc=document.getElementById('userChip');
+  if(user){
+    _closeModal();sib.style.display='none';uc.style.display='flex';
+    var av=document.getElementById('userAvatar');
+    if(user.photoURL){av.innerHTML='<img src="'+user.photoURL+'" alt=""/>';}else{av.textContent=((user.displayName||user.email||'?')[0]).toUpperCase();}
+    var name=user.displayName||(user.email?user.email.split('@')[0]:'Player');
+    document.getElementById('userName').textContent=name;
+    localStorage.setItem('df_lb_name',name);
+    document.getElementById('dropdownName').textContent=user.email||name;
+    var coins=parseInt(localStorage.getItem('df_coins')||'0');
+    document.getElementById('userCoins').textContent=coins>0?('🪙'+coins):'';
+  }else{sib.style.display='';uc.style.display='none';}
+});
+
+// How to Play tabs
+document.querySelectorAll('.how-tab').forEach(function(btn){btn.addEventListener('click',function(){document.querySelectorAll('.how-tab').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.how-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');var t=document.getElementById('panel-'+btn.dataset.panel);if(t)t.classList.add('active');});});
 </script>
 </body>
 </html>

@@ -86,16 +86,15 @@
     <a href="/privacy.html">Privacy Policy</a>
     <span class="footer-sep">&middot;</span>
     <a href="/terms.html">Terms of Service</a>
-    
+    <span class="footer-sep">&middot;</span>
+    <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a>
     <span class="footer-sep">&middot;</span>
     <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
   </div>
-  <div class="footer-copy">&copy; 2024 The Daily Five</div>
+  <div class="footer-copy">&copy; <span id="footerYear"></span> The Daily Five</div>
+<script>(function(){var y=document.getElementById('footerYear');if(y)y.textContent=new Date().getFullYear();})();</script>
 </footer>
 
 <script>
 (function(){var t=localStorage.getItem('df_theme')||'light';document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';})();
-document.getElementById('themeBtn').onclick=function(){var c=document.documentElement.getAttribute('data-theme');var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('df_theme',n);this.textContent=n==='dark'?'☀️':'🌙';};
-</script>
-</body>
-</html>
+document.getEl

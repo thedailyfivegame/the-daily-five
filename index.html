@@ -155,6 +155,9 @@
       .how-panel.active{grid-template-columns:1fr;}
       .user-name{display:none;}
       .auth-btn{padding:7px 10px;font-size:9px;}
+      .trivia-card{grid-template-columns:1fr!important;}
+      .trivia-card-divider{display:none!important;}
+      .trivia-card-right{padding:16px 20px!important;border-top:1.5px solid var(--line);}
     }
   </style>
 </head>
@@ -189,7 +192,7 @@
   <div class="dateline">
     <span id="headerDate"></span>
     <span>The Daily Five</span>
-    <span>Est. 2024</span>
+    <span id="headerEst"></span>
   </div>
   <div class="header-top">
     <div>
@@ -209,6 +212,7 @@
             <div class="dropdown-divider"></div>
             <button class="dropdown-item" onclick="location.href='play.html'">&#9654; The Daily Five</button>
             <button class="dropdown-item" onclick="location.href='scramble.html'">&#9654; The Daily Scramble</button>
+            <button class="dropdown-item" onclick="location.href='trivia.html'">&#9654; The Daily Trivia</button>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item danger" id="signOutBtn">Sign Out</button>
           </div>
@@ -226,7 +230,6 @@
 <!-- HERO -->
 <div class="hero">
   <div class="hero-left">
-    <span class="hero-badge">Live Today</span>
     <h1 class="hero-headline">The Daily<br>Five</h1>
     <div class="tile-preview">
       <div class="tile-row"><div class="tp g">C</div><div class="tp y">R</div><div class="tp">A</div><div class="tp">N</div><div class="tp">E</div></div>
@@ -239,7 +242,6 @@
   </div>
   <div class="hero-divider"></div>
   <div class="hero-right">
-    <span class="hero-badge new">New Game</span>
     <h2 class="hero-headline" style="font-size:clamp(24px,3.5vw,38px);">The Daily<br>Scramble</h2>
     <div class="scramble-preview"><div class="sp">F</div><div class="sp">A</div><div class="sp">T</div><div class="sp">E</div><div class="sp">R</div></div>
     <div style="display:flex;gap:5px;margin-bottom:16px;"><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div></div>
@@ -252,7 +254,7 @@
 <!-- TRIVIA LIVE CARD -->
 <div class="section-label"><span>More Games</span></div>
 <div style="max-width:1100px;margin:0 auto;padding:24px 20px;">
-  <div style="display:grid;grid-template-columns:1fr 2px 1fr;gap:0;border:1.5px solid var(--line);border-radius:4px;overflow:hidden;">
+  <div class="trivia-card" style="display:grid;grid-template-columns:1fr 2px 1fr;gap:0;border:1.5px solid var(--line);border-radius:4px;overflow:hidden;">
     <div style="padding:28px 32px;display:flex;flex-direction:column;justify-content:center;">
       <h2 style="font-family:'Fraunces',serif;font-weight:900;font-size:clamp(22px,3.5vw,34px);line-height:1.0;letter-spacing:-.02em;margin-bottom:10px;">The Daily<br>Trivia</h2>
       <div id="triviaStatusRow" style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;margin-bottom:14px;">
@@ -262,8 +264,8 @@
       <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:18px;">One trivia question per day. One shot to answer. Get it right and earn coins.</p>
       <a class="play-btn" href="trivia.html" style="align-self:flex-start;">Play Now &#8594;</a>
     </div>
-    <div style="background:var(--line);width:2px;"></div>
-    <div style="padding:28px 32px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+    <div class="trivia-card-divider" style="background:var(--line);width:2px;"></div>
+    <div class="trivia-card-right" style="padding:28px 32px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
       <div style="font-size:72px;margin-bottom:12px;">&#10067;</div>
       <div style="font-size:13px;color:var(--ink-muted);text-align:center;line-height:1.5;font-weight:600;">Today&rsquo;s category:<br><span id="triviaCategory" style="color:var(--ink);">Loading...</span></div>
     </div>
@@ -366,7 +368,7 @@ var _auth=firebase.auth();
 document.getElementById('themeBtn').onclick=function(){var c=document.documentElement.getAttribute('data-theme');var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('df_theme',n);this.textContent=n==='dark'?'☀️':'🌙';};
 
 // Header date + edition
-(function(){var d=new Date();var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];var mos=['January','February','March','April','May','June','July','August','September','October','November','December'];document.getElementById('headerDate').textContent=days[d.getDay()]+', '+mos[d.getMonth()]+' '+d.getDate();var epoch=new Date('2025-01-01T00:00:00');var idx=Math.floor((Date.now()-epoch.getTime())/86400000);document.getElementById('editionLabel').textContent='Day #'+idx;})();
+(function(){var d=new Date();var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];var mos=['January','February','March','April','May','June','July','August','September','October','November','December'];document.getElementById('headerDate').textContent=days[d.getDay()]+', '+mos[d.getMonth()]+' '+d.getDate();var epoch=new Date('2025-01-01T00:00:00');var idx=Math.floor((Date.now()-epoch.getTime())/86400000);document.getElementById('editionLabel').textContent='Day #'+idx;document.getElementById('headerEst').textContent='Day #'+idx;})();
 
 // Status checks
 (function(){var d=new Date();var tk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(localStorage.getItem('df_played_'+tk)==='1'){document.getElementById('wordDot').classList.add('played');document.getElementById('wordStatusText').textContent='Played today ✓';document.getElementById('wordStatusText').classList.add('played');}if(localStorage.getItem('ds_played_'+tk)==='1'){document.getElementById('scrambleDot').classList.add('played');document.getElementById('scrambleStatusText').textContent='Played today ✓';document.getElementById('scrambleStatusText').classList.add('played');}})();
@@ -428,10 +430,4 @@ _auth.onAuthStateChanged(function(user){
     {c:"Geography"},{c:"Pop Culture"},{c:"Science"},{c:"History"},{c:"Mathematics"},
     {c:"Geography"},{c:"Science"},{c:"History"},{c:"Pop Culture"},{c:"Science"},
     {c:"Geography"},{c:"Language"},{c:"Science"},{c:"History"},{c:"Pop Culture"},
-    {c:"Mathematics"},{c:"Geography"},{c:"Science"},{c:"History"},{c:"Pop Culture"},
-    {c:"Science"},{c:"Mathematics"},{c:"Geography"},{c:"History"},{c:"Pop Culture"},
-    {c:"Science"},{c:"Language"},{c:"History"},{c:"Geography"},{c:"Mathematics"}
-  ];
-  var d=new Date();
-  var epoch=new Date('2025-01-01T00:00:00');
-  var idx=Math.floor((Date.now()-epoch.getTime())/86400000)%QUESTIONS.
+    {c:"Mathematics"},{c:"Geograp

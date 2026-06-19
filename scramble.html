@@ -232,6 +232,9 @@
   .footer-links a:hover{color:var(--ink);}
   .footer-sep{color:var(--line);font-size:12px;}
   .footer-copy{font-size:10px;color:var(--ink-muted);letter-spacing:.06em;text-transform:uppercase;}
+.ig-follow-banner{margin-top:14px;background:var(--paper-2);border:1.5px solid var(--line);border-radius:var(--radius);padding:13px 18px;text-align:center;}
+.ig-follow-banner a{color:var(--accent);text-decoration:none;font-weight:700;font-size:13px;}
+.ig-follow-banner p{font-size:13px;color:var(--ink-soft);}
 </style>
 </head>
 <body>
@@ -286,6 +289,11 @@
       <span>Rank</span><span>Player</span><span style="text-align:right">Time</span>
     </div>
     <div id="lbList"><div class="loading">Loading&#8230;</div></div>
+  </div>
+
+  <!-- Instagram follow banner -->
+  <div class="ig-follow-banner" id="igFollowBanner" style="display:none">
+    <p>📸 Follow <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">@thedailyfive.game</a> for daily updates &amp; behind the scenes</p>
   </div>
 </div>
 
@@ -573,7 +581,7 @@ function showResult(won, elapsed, guess){
       '<div class="result-sub">You guessed <strong>'+guess+'</strong>, the word was <strong>'+WORD+'</strong></div>';
   }
   el.classList.add('show');
-  document.getElementById('lbSection').style.display='';
+  document.getElementById('lbSection').style.display='';document.getElementById('igFollowBanner').style.display='';
   loadLeaderboard();
 }
 
@@ -649,7 +657,7 @@ function loadLeaderboard(){
       +'<div class="result-title">Already played today!</div>'
       +'<div class="result-sub">The word was <strong>'+WORD+'</strong>. Come back tomorrow for a new word.</div>';
     el.classList.add('show');
-    document.getElementById('lbSection').style.display='';
+    document.getElementById('lbSection').style.display='';document.getElementById('igFollowBanner').style.display='';
     loadLeaderboard();
     return;
   }

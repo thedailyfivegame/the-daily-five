@@ -7,6 +7,15 @@
   <meta name="description" content="One trivia question per day. One shot to get it right. Free daily trivia game from The Daily Five."/>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script>
+  (function(){
+    var cfg={apiKey:"AIzaSyAy0iARQPIZSeE4W_Qco7ctonY_758yvvU",authDomain:"thedailyfive-f7103.firebaseapp.com",projectId:"thedailyfive-f7103",storageBucket:"thedailyfive-f7103.appspot.com"};
+    try{if(!firebase.apps.length)firebase.initializeApp(cfg);window._db=firebase.firestore();}catch(e){window._db=null;}
+  })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -76,6 +85,11 @@
     .footer-links a:hover{color:var(--ink);}
     .footer-sep{color:var(--line);font-size:12px;}
     .footer-copy{font-size:10px;color:var(--ink-muted);letter-spacing:.06em;text-transform:uppercase;}
+    /* Instagram follow banner */
+    .ig-follow-banner{display:none;margin-top:18px;background:var(--paper-2);border:1.5px solid var(--line);border-radius:4px;padding:13px 18px;text-align:center;}
+    .ig-follow-banner a{color:var(--accent);text-decoration:none;font-weight:700;font-size:13px;}
+    .ig-follow-banner a:hover{text-decoration:underline;}
+    .ig-follow-banner p{font-size:13px;color:var(--ink-soft);}
     @media(max-width:480px){
       .header-actions .home-btn{display:none;}
     }
@@ -132,6 +146,11 @@
   <div class="countdown-wrap" id="countdownWrap" style="display:none;">
     <div class="countdown-label">Next question in</div>
     <div class="countdown-val" id="countdownVal">--:--:--</div>
+  </div>
+
+  <!-- Instagram follow banner -->
+  <div class="ig-follow-banner" id="igFollowBanner">
+    <p>📸 Follow <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">@thedailyfive.game</a> for daily updates &amp; behind the scenes</p>
   </div>
 </div>
 
@@ -290,6 +309,16 @@ function _answer(chosen) {
   var result = {correct: correct, chosen: chosen};
   localStorage.setItem(_storageKey, JSON.stringify(result));
 
+  // Write to Firestore
+  if(window._db){
+    try{
+      var tName=localStorage.getItem('df_lb_name')||'Anonymous';
+      var tDoc={day:_dayIdx,name:tName,correct:correct,ts:firebase.firestore.FieldValue.serverTimestamp()};
+      var tId=tName.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+'_'+_dayIdx;
+      window._db.collection('trivia_scores').doc(tId).set(tDoc).catch(function(){});
+    }catch(e){}
+  }
+
   // Award coins
   if (correct) {
     var coins = parseInt(localStorage.getItem('df_coins') || '0');
@@ -311,58 +340,4 @@ function _showResult(correct, chosen, animate) {
 
   body.innerHTML = '<strong>Did you know?</strong> ' + _q.f;
 
-  if (correct && animate) {
-    coinsEl.textContent = '🪙 +3 coins earned!';
-  } else {
-    coinsEl.textContent = correct ? '🪙 +3 coins' : 'The answer was: ' + _q.o[_q.a];
-  }
-
-  panel.classList.add('show');
-}
-
-// ── SHARE ────────────────────────────────────────────────────────────────────
-document.getElementById('shareBtn').onclick = function(){
-  var res = JSON.parse(localStorage.getItem(_storageKey) || '{}');
-  var correct = res.correct;
-  var text = 'The Daily Trivia #' + (_dayIdx + 1) + '\n' +
-    (correct ? '✅ Got it!' : '❌ Missed it') + '\n\n' +
-    '📚 ' + _q.c + '\n' +
-    'the-daily-five-v3.vercel.app/trivia.html';
-  if (navigator.share) {
-    navigator.share({title:'The Daily Trivia', text:text}).catch(function(){});
-  } else {
-    navigator.clipboard.writeText(text).then(function(){
-      var btn = document.getElementById('shareBtn');
-      btn.textContent = '✓ Copied!';
-      setTimeout(function(){ btn.innerHTML = '&#128279; Share Result'; }, 2000);
-    });
-  }
-};
-
-// ── COUNTDOWN ────────────────────────────────────────────────────────────────
-function _startCountdown() {
-  document.getElementById('countdownWrap').style.display = 'block';
-  function tick() {
-    var now = new Date();
-    var tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-    var diff = tomorrow - now;
-    var h = Math.floor(diff / 3600000);
-    var m = Math.floor((diff % 3600000) / 60000);
-    var s = Math.floor((diff % 60000) / 1000);
-    document.getElementById('countdownVal').textContent =
-      String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-  }
-  tick();
-  setInterval(tick, 1000);
-}
-
-// Header est + footer year
-(function(){
-  var epoch=new Date('2025-01-01T00:00:00');
-  var idx=Math.floor((Date.now()-epoch.getTime())/86400000);
-  var he=document.getElementById('headerEst');if(he)he.textContent='Day #'+idx;
-  var fy=document.getElementById('footerYear');if(fy)fy.textContent=new Date().getFullYear();
-})();
-</script>
-</body>
-</html>
+  if (correct && animate

@@ -977,6 +977,9 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 .ig-follow-btn:hover{opacity:.9;}
 .ig-dismiss{background:none;border:none;font-size:18px;color:#aaa;cursor:pointer;padding:4px;flex-shrink:0;line-height:1;}
 .ig-dismiss:hover{color:#555;}
+.ig-follow-banner{margin-top:14px;background:var(--paper-2);border:1.5px solid var(--line);border-radius:var(--radius);padding:13px 18px;text-align:center;}
+.ig-follow-banner a{color:var(--accent);text-decoration:none;font-weight:700;font-size:13px;}
+.ig-follow-banner p{font-size:13px;color:var(--ink-soft);}
 </style>
 </head>
 <body>
@@ -1067,6 +1070,11 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
           <div class="countdown-clock" id="clock">--:--:--</div>
         </div>
         <button class="share-btn" id="shareBtn">Share ⇪</button>
+      </div>
+
+      <!-- Instagram follow banner -->
+      <div class="ig-follow-banner" id="igFollowBanner" style="display:none">
+        <p>📸 Follow <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">@thedailyfive.game</a> for daily updates &amp; behind the scenes</p>
       </div>
 
       <!-- EMAIL CAPTURE -->
@@ -1690,6 +1698,7 @@ function openStats(isEnd){
 
   var played=gameStatus!=='playing';
   document.getElementById('endActions').classList.toggle('show', played);
+  var _igb=document.getElementById('igFollowBanner');if(_igb)_igb.style.display=played?'block':'none';
   document.getElementById('howList').style.display=(s.played===0&&!played)?'block':'none';
   document.getElementById('statsTitle').textContent=played?(gameStatus==='won'?'Solved it 🎉':'So close.'): 'Statistics';
   var sub='';

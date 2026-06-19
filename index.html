@@ -430,4 +430,27 @@ _auth.onAuthStateChanged(function(user){
     {c:"Geography"},{c:"Pop Culture"},{c:"Science"},{c:"History"},{c:"Mathematics"},
     {c:"Geography"},{c:"Science"},{c:"History"},{c:"Pop Culture"},{c:"Science"},
     {c:"Geography"},{c:"Language"},{c:"Science"},{c:"History"},{c:"Pop Culture"},
-    {c:"Mathematics"},{c:"Geograp
+    {c:"Mathematics"},{c:"Geography"},{c:"Science"},{c:"History"},{c:"Pop Culture"},
+    {c:"Science"},{c:"Mathematics"},{c:"Geography"},{c:"History"},{c:"Pop Culture"},
+    {c:"Science"},{c:"Language"},{c:"History"},{c:"Geography"},{c:"Mathematics"}
+  ];
+  var d=new Date();
+  var epoch=new Date('2025-01-01T00:00:00');
+  var idx=Math.floor((Date.now()-epoch.getTime())/86400000)%QUESTIONS.length;
+  var tk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+  var cat=document.getElementById('triviaCategory');
+  if(cat) cat.textContent=QUESTIONS[idx].c;
+  if(localStorage.getItem('dt_played_'+tk)){
+    var dot=document.getElementById('triviaDot');
+    var txt=document.getElementById('triviaStatusText');
+    if(dot){dot.classList.add('played');}
+    if(txt){txt.textContent='Played today ✓';txt.classList.add('played');}
+  }
+})();
+
+// How to Play tabs
+document.querySelectorAll('.how-tab').forEach(function(btn){btn.addEventListener('click',function(){document.querySelectorAll('.how-tab').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.how-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');var t=document.getElementById('panel-'+btn.dataset.panel);if(t)t.classList.add('active');});});
+
+</script>
+</body>
+</html>

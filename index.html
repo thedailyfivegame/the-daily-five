@@ -292,12 +292,35 @@
 </div>
 
 <!-- COMING SOON -->
+
+<!-- TRIVIA LIVE CARD -->
+<div class="section-label"><span>Also Live Today</span></div>
+<div style="max-width:1100px;margin:0 auto;padding:24px 20px;">
+  <div style="display:grid;grid-template-columns:1fr 2px 1fr;gap:0;border:1.5px solid var(--line);border-radius:4px;overflow:hidden;">
+    <div style="padding:28px 32px;display:flex;flex-direction:column;justify-content:center;">
+      <span style="font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--accent);border:1px solid var(--accent);padding:2px 7px;border-radius:2px;display:inline-block;margin-bottom:12px;align-self:flex-start;">Live Today</span>
+      <h2 style="font-family:'Fraunces',serif;font-weight:900;font-size:clamp(22px,3.5vw,34px);line-height:1.0;letter-spacing:-.02em;margin-bottom:10px;">The Daily<br>Trivia</h2>
+      <div id="triviaStatusRow" style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;margin-bottom:14px;">
+        <span class="dot" id="triviaDot"></span>
+        <span class="status-text" id="triviaStatusText">Ready to play</span>
+      </div>
+      <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:18px;">One trivia question per day. One shot to answer. Get it right and earn coins.</p>
+      <a class="play-btn" href="trivia.html" style="align-self:flex-start;">Play Now &#8594;</a>
+    </div>
+    <div style="background:var(--line);width:2px;"></div>
+    <div style="padding:28px 32px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+      <div style="font-size:72px;margin-bottom:12px;">&#10067;</div>
+      <div style="font-size:13px;color:var(--ink-muted);text-align:center;line-height:1.5;font-weight:600;">Today&rsquo;s category:<br><span id="triviaCategory" style="color:var(--ink);">Loading...</span></div>
+    </div>
+  </div>
+</div>
+
 <div class="section-label"><span>Coming Soon</span></div>
 <div class="games-section">
   <div class="coming-grid">
     <div class="mini-card"><div class="mini-icon">&#128290;</div><div class="mini-name">The Daily Number</div><div class="mini-desc">Crack the hidden 4-digit code. One number, limited guesses.</div><span class="mini-badge">Coming Soon</span></div>
     <div class="mini-card"><div class="mini-icon">&#129299;</div><div class="mini-name">The Daily Connections</div><div class="mini-desc">Group sixteen words into four secret categories.</div><span class="mini-badge">Coming Soon</span></div>
-    <div class="mini-card" style="opacity:1;cursor:pointer;" onclick="location.href='trivia.html'"><div class="mini-icon">&#10067;</div><div class="mini-name">The Daily Trivia</div><div class="mini-desc">One question. One shot. Can you get it right?</div><span class="mini-badge" style="color:var(--green);border-color:var(--green);">Play Now</span></div>
+    <div class="mini-card" style="opacity:1;cursor:pointer;" onclick="location.href='trivia.html'"><div class="mini-icon">&#10067;</div><div class="mini-name">The Daily Trivia</div><div class="mini-desc">One question. One shot. Can you get it right?</div><span class="mini-badge" style="color:var(--green);border-color:var(--green);">&#9654; Play Now</span></div>
     <div class="mini-card"><div class="mini-icon">&#128202;</div><div class="mini-name">The Daily Rank</div><div class="mini-desc">Sort five things in order. No wrong order, just worse ones.</div><span class="mini-badge">Coming Soon</span></div>
     <div class="mini-card"><div class="mini-icon">&#128444;</div><div class="mini-name">The Daily Sketch</div><div class="mini-desc">Guess the blurry image before it comes into focus.</div><span class="mini-badge">Coming Soon</span></div>
   </div>
@@ -309,12 +332,6 @@
     <a href="/privacy.html">Privacy Policy</a>
     <span class="footer-sep">&middot;</span>
     <a href="/terms.html">Terms of Service</a>
-    <span class="footer-sep">&middot;</span>
-    <a href="https://www.instagram.com/thedailyfivegame" target="_blank" rel="noopener">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-      Instagram
-    </a>
-    <span class="footer-sep">&middot;</span>
     <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
   </div>
   <div class="footer-copy">&copy; 2024 The Daily Five &mdash; Free daily word puzzles &middot; New games every day</div>
@@ -383,6 +400,35 @@ _auth.onAuthStateChanged(function(user){
     document.getElementById('userCoins').textContent=coins>0?('🪙'+coins):'';
   }else{sib.style.display='';uc.style.display='none';}
 });
+
+
+// Trivia status
+(function(){
+  var QUESTIONS=[
+    {c:"Geography"},{c:"Science"},{c:"History"},{c:"Science"},{c:"Pop Culture"},
+    {c:"Geography"},{c:"Science"},{c:"History"},{c:"Language"},{c:"Science"},
+    {c:"Geography"},{c:"History"},{c:"Science"},{c:"Pop Culture"},{c:"Mathematics"},
+    {c:"Geography"},{c:"Science"},{c:"History"},{c:"Language"},{c:"Science"},
+    {c:"Geography"},{c:"Pop Culture"},{c:"Science"},{c:"History"},{c:"Mathematics"},
+    {c:"Geography"},{c:"Science"},{c:"History"},{c:"Pop Culture"},{c:"Science"},
+    {c:"Geography"},{c:"Language"},{c:"Science"},{c:"History"},{c:"Pop Culture"},
+    {c:"Mathematics"},{c:"Geography"},{c:"Science"},{c:"History"},{c:"Pop Culture"},
+    {c:"Science"},{c:"Mathematics"},{c:"Geography"},{c:"History"},{c:"Pop Culture"},
+    {c:"Science"},{c:"Language"},{c:"History"},{c:"Geography"},{c:"Mathematics"}
+  ];
+  var d=new Date();
+  var epoch=new Date('2025-01-01T00:00:00');
+  var idx=Math.floor((Date.now()-epoch.getTime())/86400000)%QUESTIONS.length;
+  var tk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+  var cat=document.getElementById('triviaCategory');
+  if(cat) cat.textContent=QUESTIONS[idx].c;
+  if(localStorage.getItem('dt_played_'+tk)){
+    var dot=document.getElementById('triviaDot');
+    var txt=document.getElementById('triviaStatusText');
+    if(dot){dot.classList.add('played');}
+    if(txt){txt.textContent='Played today ✓';txt.classList.add('played');}
+  }
+})();
 
 // How to Play tabs
 document.querySelectorAll('.how-tab').forEach(function(btn){btn.addEventListener('click',function(){document.querySelectorAll('.how-tab').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.how-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');var t=document.getElementById('panel-'+btn.dataset.panel);if(t)t.classList.add('active');});});

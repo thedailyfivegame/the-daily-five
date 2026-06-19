@@ -140,11 +140,12 @@
     <a href="/privacy.html">Privacy Policy</a>
     <span class="footer-sep">&middot;</span>
     <a href="/terms.html">Terms of Service</a>
-    
+    <span class="footer-sep">&middot;</span>
+    <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a>
     <span class="footer-sep">&middot;</span>
     <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
   </div>
-  <div class="footer-copy">&copy; 2024 The Daily Five &mdash; Free daily word puzzles &middot; New games every day</div>
+  <div class="footer-copy">&copy; <span id="footerYear"></span> The Daily Five &mdash; Free daily word puzzles &middot; New games every day</div>
 </footer>
 
 <script>
@@ -348,11 +349,4 @@ function _startCountdown() {
     var m = Math.floor((diff % 3600000) / 60000);
     var s = Math.floor((diff % 60000) / 1000);
     document.getElementById('countdownVal').textContent =
-      String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-  }
-  tick();
-  setInterval(tick, 1000);
-}
-</script>
-</body>
-</html>
+ 

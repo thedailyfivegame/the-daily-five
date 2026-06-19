@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>The Daily Trivia — One Question. One Shot.</title>
+  <meta name="description" content="One trivia question per day. One shot to get it right. Free daily trivia game from The Daily Five."/>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--paper:#f4efe4;--paper-2:#ede6d4;--paper-3:#e5dcc8;--ink:#1c1a16;--ink-soft:#4a463c;--ink-muted:#8a8070;--line:#cdc4ad;--green:#3f7a4f;--amber:#c89a2b;--accent:#9e2b25;--radius:3px;--trans:.18s ease;}
+    [data-theme="dark"]{--paper:#12110e;--paper-2:#1c1a15;--paper-3:#242018;--ink:#f0ebe0;--ink-soft:#a39b85;--ink-muted:#6b6356;--line:#2e2a22;--green:#4a8f5e;--amber:#d4a830;--accent:#c0392b;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{min-height:100%;}
+    body{background:var(--paper);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;transition:background var(--trans),color var(--trans);overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(128,120,100,.04) 1px,transparent 1px);background-size:4px 4px;pointer-events:none;z-index:0;}
+    *{position:relative;z-index:1;}
+    /* Header */
+    header{border-bottom:3px solid var(--ink);padding:10px 20px 0;transition:border-color var(--trans);}
+    .dateline{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:8px;}
+    .header-top{display:flex;align-items:center;justify-content:center;padding-bottom:10px;position:relative;}
+    .masthead{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(28px,6vw,48px);line-height:.93;letter-spacing:-.02em;text-align:center;}
+    .masthead a{text-decoration:none;color:inherit;}
+    .subhead{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-soft);margin-top:5px;font-weight:600;font-family:'Fraunces',serif;font-style:italic;text-align:center;}
+    .header-actions{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:8px;}
+    .theme-btn{background:none;border:none;cursor:pointer;font-size:20px;padding:6px;color:var(--ink);border-radius:var(--radius);}
+    .home-btn{background:var(--ink);color:var(--paper);border:none;cursor:pointer;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border-radius:var(--radius);font-family:'Hanken Grotesk',sans-serif;text-decoration:none;transition:background var(--trans);white-space:nowrap;}
+    .home-btn:hover{background:var(--accent);}
+    /* Rule */
+    .rule{display:flex;align-items:center;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--ink);padding:4px 20px;font-size:9px;letter-spacing:.25em;text-transform:uppercase;font-weight:700;color:var(--ink-soft);justify-content:space-between;}
+    .rule span{white-space:nowrap;}
+    /* Main game area */
+    .game-wrap{max-width:680px;margin:0 auto;padding:36px 20px 64px;}
+    /* Category badge */
+    .category-badge{font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--accent);border:1px solid var(--accent);padding:3px 9px;border-radius:2px;display:inline-block;margin-bottom:16px;}
+    /* Question */
+    .question-num{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-muted);font-weight:600;margin-bottom:10px;}
+    .question-text{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(20px,3.5vw,28px);line-height:1.25;margin-bottom:28px;color:var(--ink);}
+    /* Options */
+    .options{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+    .option-btn{display:flex;align-items:center;gap:14px;width:100%;padding:14px 18px;border:1.5px solid var(--line);border-radius:4px;background:var(--paper-2);cursor:pointer;font-family:'Hanken Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--ink-soft);text-align:left;transition:background var(--trans),border-color var(--trans),color var(--trans);}
+    .option-btn:hover:not(:disabled){background:var(--paper-3);border-color:var(--ink-muted);color:var(--ink);}
+    .option-btn:disabled{cursor:default;}
+    .option-btn.correct{background:#4a8f5e;border-color:#4a8f5e;color:#fff;}
+    .option-btn.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+    .option-btn.reveal{background:var(--paper-3);border-color:#4a8f5e;color:var(--ink);}
+    .option-letter{width:26px;height:26px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;opacity:.7;}
+    .option-btn.correct .option-letter,.option-btn.wrong .option-letter,.option-btn.reveal .option-letter{opacity:1;}
+    /* Result panel */
+    .result-panel{display:none;background:var(--paper-2);border:1.5px solid var(--line);border-radius:4px;padding:20px 22px;margin-bottom:20px;}
+    .result-panel.show{display:block;}
+    .result-headline{font-family:'Fraunces',serif;font-weight:900;font-size:22px;margin-bottom:6px;}
+    .result-headline.win{color:var(--green);}
+    .result-headline.lose{color:var(--accent);}
+    .result-body{font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:14px;}
+    .result-body strong{color:var(--ink);}
+    .result-coins{font-size:13px;font-weight:700;color:var(--amber);margin-bottom:14px;}
+    .share-btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;border-radius:var(--radius);border:none;cursor:pointer;transition:background var(--trans);}
+    .share-btn:hover{background:var(--accent);}
+    /* Already played */
+    .played-banner{background:var(--paper-2);border:1.5px solid var(--green);border-radius:4px;padding:20px 22px;margin-bottom:24px;display:none;}
+    .played-banner.show{display:block;}
+    .played-title{font-family:'Fraunces',serif;font-weight:700;font-size:17px;color:var(--green);margin-bottom:6px;}
+    .played-sub{font-size:13px;color:var(--ink-soft);}
+    /* Countdown */
+    .countdown-wrap{text-align:center;margin-top:24px;}
+    .countdown-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-muted);font-weight:600;margin-bottom:4px;}
+    .countdown-val{font-family:'Fraunces',serif;font-weight:700;font-size:26px;color:var(--ink);}
+    /* Footer */
+    footer{border-top:2px solid var(--ink);padding:18px 20px 14px;text-align:center;}
+    .footer-links{display:flex;justify-content:center;align-items:center;gap:6px 16px;flex-wrap:wrap;margin-bottom:10px;}
+    .footer-links a{color:var(--ink-muted);text-decoration:none;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:color var(--trans);}
+    .footer-links a:hover{color:var(--ink);}
+    .footer-sep{color:var(--line);font-size:12px;}
+    .footer-copy{font-size:10px;color:var(--ink-muted);letter-spacing:.06em;text-transform:uppercase;}
+    @media(max-width:480px){
+      .header-actions .home-btn{display:none;}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="dateline">
+    <span id="headerDate"></span>
+    <span>The Daily Five</span>
+    <span>Est. 2024</span>
+  </div>
+  <div class="header-top">
+    <div>
+      <div class="masthead"><a href="/">The Daily Five</a></div>
+      <div class="subhead">Daily Trivia</div>
+    </div>
+    <div class="header-actions">
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">&#127769;</button>
+      <a class="home-btn" href="/">&#8592; Home</a>
+    </div>
+  </div>
+</header>
+
+<div class="rule">
+  <span>One Question &middot; One Shot &middot; Daily</span>
+  <span id="editionLabel"></span>
+</div>
+
+<div class="game-wrap">
+  <!-- Already played banner -->
+  <div class="played-banner" id="playedBanner">
+    <div class="played-title">You already played today ✓</div>
+    <div class="played-sub" id="playedSub">Come back tomorrow for a new question.</div>
+  </div>
+
+  <!-- Question area -->
+  <div id="questionArea">
+    <div class="category-badge" id="categoryBadge">Trivia</div>
+    <div class="question-num" id="questionNum">Question #1</div>
+    <div class="question-text" id="questionText">Loading today's question...</div>
+    <div class="options" id="optionsWrap"></div>
+  </div>
+
+  <!-- Result panel -->
+  <div class="result-panel" id="resultPanel">
+    <div class="result-headline" id="resultHeadline">Correct!</div>
+    <div class="result-body" id="resultBody"></div>
+    <div class="result-coins" id="resultCoins"></div>
+    <button class="share-btn" id="shareBtn">&#128279; Share Result</button>
+  </div>
+
+  <!-- Countdown to next -->
+  <div class="countdown-wrap" id="countdownWrap" style="display:none;">
+    <div class="countdown-label">Next question in</div>
+    <div class="countdown-val" id="countdownVal">--:--:--</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="/privacy.html">Privacy Policy</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="/terms.html">Terms of Service</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="https://www.instagram.com/thedailyfivegame" target="_blank" rel="noopener">Instagram</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">&copy; 2024 The Daily Five &mdash; Free daily word puzzles &middot; New games every day</div>
+</footer>
+
+<script>
+// ── TRIVIA BANK ──────────────────────────────────────────────────────────────
+// 365 questions cycling by day index from 2025-01-01
+var QUESTIONS = [
+  {c:"Geography",q:"What is the capital of Australia?",a:2,o:["Sydney","Melbourne","Canberra","Brisbane"],f:"Many people guess Sydney, but Canberra has been the capital since 1913."},
+  {c:"Science",q:"What planet is known as the Red Planet?",a:1,o:["Venus","Mars","Jupiter","Saturn"],f:"Mars gets its reddish colour from iron oxide (rust) on its surface."},
+  {c:"History",q:"In what year did World War II end?",a:2,o:["1943","1944","1945","1946"],f:"WWII ended in 1945 — VE Day (Europe) in May and VJ Day (Japan) in September."},
+  {c:"Science",q:"What is the chemical symbol for gold?",a:1,o:["Go","Au","Gd","Ag"],f:"Au comes from the Latin word 'aurum', meaning gold."},
+  {c:"Pop Culture",q:"Which streaming service produced 'Stranger Things'?",a:0,o:["Netflix","HBO","Amazon","Disney+"],f:"Stranger Things has been a Netflix original since its debut in 2016."},
+  {c:"Geography",q:"Which country has the most natural lakes?",a:2,o:["Russia","USA","Canada","Finland"],f:"Canada has over 60% of the world's freshwater lakes — about 2 million."},
+  {c:"Science",q:"How many bones are in the adult human body?",a:1,o:["196","206","216","226"],f:"Adults have 206 bones. Babies are born with around 270, which fuse over time."},
+  {c:"History",q:"Who painted the Mona Lisa?",a:0,o:["Leonardo da Vinci","Michelangelo","Raphael","Botticelli"],f:"Leonardo da Vinci painted the Mona Lisa, likely between 1503 and 1519."},
+  {c:"Language",q:"What is the most spoken language in the world by native speakers?",a:2,o:["English","Spanish","Mandarin Chinese","Hindi"],f:"Mandarin Chinese has the most native speakers, with nearly 1 billion."},
+  {c:"Science",q:"What is the speed of light in a vacuum (approximately)?",a:1,o:["200,000 km/s","300,000 km/s","400,000 km/s","150,000 km/s"],f:"Light travels at approximately 299,792 km/s — about 186,000 miles per second."},
+  {c:"Geography",q:"Which ocean is the largest?",a:0,o:["Pacific","Atlantic","Indian","Arctic"],f:"The Pacific Ocean covers more than 30% of Earth's surface."},
+  {c:"History",q:"Who was the first person to walk on the Moon?",a:2,o:["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","John Glenn"],f:"Neil Armstrong took his historic first step on July 21, 1969."},
+  {c:"Science",q:"What gas do plants absorb from the atmosphere?",a:1,o:["Oxygen","Carbon dioxide","Nitrogen","Hydrogen"],f:"Plants absorb CO₂ and release oxygen through photosynthesis."},
+  {c:"Pop Culture",q:"Which city hosts the Cannes Film Festival?",a:0,o:["Cannes","Paris","Nice","Lyon"],f:"The Cannes Film Festival has been held in Cannes, France since 1946."},
+  {c:"Mathematics",q:"What is the value of Pi to two decimal places?",a:2,o:["3.12","3.13","3.14","3.16"],f:"Pi is approximately 3.14159265... — an irrational number that never repeats."},
+  {c:"Geography",q:"What is the longest river in the world?",a:1,o:["Amazon","Nile","Yangtze","Mississippi"],f:"The Nile is generally considered the longest river at about 6,650 km."},
+  {c:"Science",q:"What is the hardest natural substance on Earth?",a:0,o:["Diamond","Graphene","Quartz","Sapphire"],f:"Diamond rates 10 on the Mohs hardness scale — the maximum."},
+  {c:"History",q:"Which empire was ruled by Julius Caesar?",a:1,o:["Greek Empire","Roman Empire","Ottoman Empire","Persian Empire"],f:"Julius Caesar was a pivotal figure in the Roman Empire's rise to power."},
+  {c:"Language",q:"How many letters are in the English alphabet?",a:2,o:["24","25","26","27"],f:"The modern English alphabet has 26 letters, adopted from the Latin alphabet."},
+  {c:"Science",q:"Which planet has the most moons?",a:1,o:["Jupiter","Saturn","Uranus","Neptune"],f:"Saturn has over 140 confirmed moons — more than any other planet in our solar system."},
+  {c:"Geography",q:"What is the smallest country in the world?",a:0,o:["Vatican City","Monaco","San Marino","Liechtenstein"],f:"Vatican City, at just 0.44 km², is the world's smallest independent state."},
+  {c:"Pop Culture",q:"Which band released the album 'Thriller' in 1982?",a:2,o:["Prince","The Beatles","Michael Jackson","Madonna"],f:"Michael Jackson's Thriller remains the best-selling album of all time."},
+  {c:"Science",q:"What element has the atomic number 1?",a:1,o:["Helium","Hydrogen","Carbon","Oxygen"],f:"Hydrogen is the lightest and most abundant element in the universe."},
+  {c:"History",q:"In which city was the Titanic built?",a:0,o:["Belfast","Dublin","Liverpool","Southampton"],f:"The Titanic was built in Belfast, Northern Ireland, at the Harland and Wolff shipyard."},
+  {c:"Mathematics",q:"What is 12 squared?",a:2,o:["124","134","144","154"],f:"12 × 12 = 144. A perfect square!"},
+  {c:"Geography",q:"Which continent is the Sahara Desert located on?",a:1,o:["Asia","Africa","Australia","South America"],f:"The Sahara is the world's largest hot desert, spanning North Africa."},
+  {c:"Science",q:"What is the powerhouse of the cell?",a:0,o:["Mitochondria","Nucleus","Ribosome","Chloroplast"],f:"The mitochondria produce ATP — the energy currency of the cell."},
+  {c:"Pop Culture",q:"Who wrote the Harry Potter series?",a:2,o:["Stephenie Meyer","Suzanne Collins","J.K. Rowling","Philip Pullman"],f:"J.K. Rowling published the first Harry Potter book in 1997."},
+  {c:"History",q:"Which country gifted the Statue of Liberty to the USA?",a:1,o:["England","France","Spain","Germany"],f:"France gifted the Statue of Liberty in 1886 as a symbol of friendship."},
+  {c:"Science",q:"How many planets are in our solar system?",a:2,o:["7","7","8","9"],f:"There are 8 planets. Pluto was reclassified as a dwarf planet in 2006."},
+  {c:"Geography",q:"What is the capital of Japan?",a:0,o:["Tokyo","Osaka","Kyoto","Hiroshima"],f:"Tokyo has been Japan's capital since 1869, when it was known as Edo."},
+  {c:"Language",q:"What language is spoken in Brazil?",a:1,o:["Spanish","Portuguese","Brazilian","French"],f:"Brazil was colonised by Portugal, so Portuguese is the official language."},
+  {c:"Science",q:"What is H₂O more commonly known as?",a:0,o:["Water","Hydrogen gas","Oxygen","Steam"],f:"H₂O is the chemical formula for water — two hydrogen atoms and one oxygen."},
+  {c:"History",q:"Who invented the telephone?",a:2,o:["Thomas Edison","Nikola Tesla","Alexander Graham Bell","Samuel Morse"],f:"Alexander Graham Bell received the first patent for the telephone in 1876."},
+  {c:"Pop Culture",q:"Which country does LEGO originate from?",a:1,o:["Sweden","Denmark","Norway","Finland"],f:"LEGO was founded in Billund, Denmark in 1932 by Ole Kirk Christiansen."},
+  {c:"Mathematics",q:"What is the next prime number after 7?",a:0,o:["11","9","10","13"],f:"11 is prime — divisible only by 1 and itself. 9 = 3×3, 10 = 2×5."},
+  {c:"Geography",q:"Which mountain is the tallest in the world?",a:2,o:["K2","Kangchenjunga","Mount Everest","Makalu"],f:"Mount Everest stands at 8,848.86 metres above sea level."},
+  {c:"Science",q:"What is the largest organ in the human body?",a:1,o:["Brain","Skin","Liver","Lungs"],f:"The skin is the largest organ — an average adult has about 2 square metres of it."},
+  {c:"History",q:"Which ancient wonder was located in Alexandria?",a:0,o:["The Lighthouse","The Colossus","The Mausoleum","The Temple of Artemis"],f:"The Lighthouse of Alexandria was one of the tallest man-made structures for centuries."},
+  {c:"Pop Culture",q:"What colour is the famous London phone box?",a:1,o:["Blue","Red","Green","Yellow"],f:"The iconic London phone box is bright red — introduced in 1924 by Sir Giles Gilbert Scott."},
+  {c:"Science",q:"Which gas makes up most of Earth's atmosphere?",a:0,o:["Nitrogen","Oxygen","Carbon dioxide","Argon"],f:"Nitrogen makes up about 78% of Earth's atmosphere. Oxygen is about 21%."},
+  {c:"Mathematics",q:"What is 15% of 200?",a:2,o:["25","20","30","35"],f:"15% of 200 = 0.15 × 200 = 30."},
+  {c:"Geography",q:"Which country has the longest coastline in the world?",a:1,o:["Russia","Canada","Australia","Norway"],f:"Canada has the longest coastline at over 202,000 km — including its many islands."},
+  {c:"History",q:"What year did the Berlin Wall fall?",a:0,o:["1989","1991","1987","1993"],f:"The Berlin Wall fell on November 9, 1989, reuniting East and West Germany."},
+  {c:"Pop Culture",q:"Who plays Iron Man in the Marvel Cinematic Universe?",a:2,o:["Chris Evans","Chris Hemsworth","Robert Downey Jr.","Mark Ruffalo"],f:"Robert Downey Jr. debuted as Tony Stark / Iron Man in 2008."},
+  {c:"Science",q:"What is the closest star to Earth?",a:1,o:["Sirius","The Sun","Proxima Centauri","Alpha Centauri A"],f:"Our Sun is the closest star at about 150 million km. Proxima Centauri is the closest other star."},
+  {c:"Language",q:"What is a word that reads the same forwards and backwards called?",a:0,o:["Palindrome","Anagram","Homophone","Acronym"],f:"'Racecar', 'level', and 'madam' are all palindromes."},
+  {c:"History",q:"Who discovered penicillin?",a:2,o:["Marie Curie","Louis Pasteur","Alexander Fleming","Robert Koch"],f:"Alexander Fleming discovered penicillin in 1928, revolutionising medicine."},
+  {c:"Geography",q:"What is the currency of Japan?",a:1,o:["Yuan","Yen","Won","Baht"],f:"The Japanese Yen (¥) has been Japan's currency since 1871."},
+  {c:"Mathematics",q:"How many sides does a hexagon have?",a:2,o:["5","7","6","8"],f:"Hex means six — a hexagon has 6 sides and 6 angles."}
+];
+
+// ── DATE + INDEX ─────────────────────────────────────────────────────────────
+var _today = new Date();
+var _epoch = new Date('2025-01-01T00:00:00');
+var _dayIdx = Math.floor((Date.now() - _epoch.getTime()) / 86400000);
+var _qIdx = _dayIdx % QUESTIONS.length;
+var _q = QUESTIONS[_qIdx];
+var _dateKey = _today.getFullYear() + '-' + (_today.getMonth()+1) + '-' + _today.getDate();
+var _storageKey = 'dt_played_' + _dateKey;
+
+// ── HEADER ───────────────────────────────────────────────────────────────────
+(function(){
+  var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var mos=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('headerDate').textContent = days[_today.getDay()] + ', ' + mos[_today.getMonth()] + ' ' + _today.getDate();
+  document.getElementById('editionLabel').textContent = 'Question #' + (_dayIdx + 1);
+  document.getElementById('questionNum').textContent = 'Question #' + (_dayIdx + 1);
+})();
+
+// ── THEME ────────────────────────────────────────────────────────────────────
+(function(){
+  var t=localStorage.getItem('df_theme')||'light';
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';
+})();
+document.getElementById('themeBtn').onclick=function(){
+  var c=document.documentElement.getAttribute('data-theme');
+  var n=c==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  localStorage.setItem('df_theme',n);
+  this.textContent=n==='dark'?'☀️':'🌙';
+};
+
+// ── RENDER QUESTION ──────────────────────────────────────────────────────────
+document.getElementById('categoryBadge').textContent = _q.c;
+document.getElementById('questionText').textContent = _q.q;
+
+var _letters = ['A','B','C','D'];
+var _optWrap = document.getElementById('optionsWrap');
+_q.o.forEach(function(opt, i){
+  var btn = document.createElement('button');
+  btn.className = 'option-btn';
+  btn.dataset.idx = i;
+  btn.innerHTML = '<span class="option-letter">' + _letters[i] + '</span><span>' + opt + '</span>';
+  btn.onclick = function(){ _answer(i); };
+  _optWrap.appendChild(btn);
+});
+
+// ── CHECK IF ALREADY PLAYED ───────────────────────────────────────────────────
+var _savedResult = localStorage.getItem(_storageKey);
+if (_savedResult) {
+  _showAlreadyPlayed(JSON.parse(_savedResult));
+}
+
+function _showAlreadyPlayed(res) {
+  // Disable all options, highlight correct/chosen
+  var btns = _optWrap.querySelectorAll('.option-btn');
+  btns.forEach(function(b, i){
+    b.disabled = true;
+    if (i === _q.a) b.classList.add('correct');
+    else if (i === res.chosen) b.classList.add('wrong');
+    else b.style.opacity = '.4';
+  });
+  document.getElementById('playedBanner').classList.add('show');
+  document.getElementById('playedSub').textContent = res.correct
+    ? '✓ You got it right! Come back tomorrow for a new question.'
+    : 'The answer was ' + _q.o[_q.a] + '. Better luck tomorrow!';
+  _showResult(res.correct, res.chosen, false);
+  _startCountdown();
+}
+
+// ── ANSWER ───────────────────────────────────────────────────────────────────
+function _answer(chosen) {
+  var correct = (chosen === _q.a);
+  var btns = _optWrap.querySelectorAll('.option-btn');
+  btns.forEach(function(b, i){
+    b.disabled = true;
+    if (i === _q.a) b.classList.add('correct');
+    else if (i === chosen && !correct) b.classList.add('wrong');
+    else b.style.opacity = '.4';
+  });
+
+  // Save result
+  var result = {correct: correct, chosen: chosen};
+  localStorage.setItem(_storageKey, JSON.stringify(result));
+
+  // Award coins
+  if (correct) {
+    var coins = parseInt(localStorage.getItem('df_coins') || '0');
+    localStorage.setItem('df_coins', coins + 3);
+  }
+
+  _showResult(correct, chosen, true);
+  _startCountdown();
+}
+
+function _showResult(correct, chosen, animate) {
+  var panel = document.getElementById('resultPanel');
+  var headline = document.getElementById('resultHeadline');
+  var body = document.getElementById('resultBody');
+  var coinsEl = document.getElementById('resultCoins');
+
+  headline.textContent = correct ? 'Correct! 🎉' : 'Not quite...';
+  headline.className = 'result-headline ' + (correct ? 'win' : 'lose');
+
+  body.innerHTML = '<strong>Did you know?</strong> ' + _q.f;
+
+  if (correct && animate) {
+    coinsEl.textContent = '🪙 +3 coins earned!';
+  } else {
+    coinsEl.textContent = correct ? '🪙 +3 coins' : 'The answer was: ' + _q.o[_q.a];
+  }
+
+  panel.classList.add('show');
+}
+
+// ── SHARE ────────────────────────────────────────────────────────────────────
+document.getElementById('shareBtn').onclick = function(){
+  var res = JSON.parse(localStorage.getItem(_storageKey) || '{}');
+  var correct = res.correct;
+  var text = 'The Daily Trivia #' + (_dayIdx + 1) + '\n' +
+    (correct ? '✅ Got it!' : '❌ Missed it') + '\n\n' +
+    '📚 ' + _q.c + '\n' +
+    'the-daily-five-v3.vercel.app/trivia.html';
+  if (navigator.share) {
+    navigator.share({title:'The Daily Trivia', text:text}).catch(function(){});
+  } else {
+    navigator.clipboard.writeText(text).then(function(){
+      var btn = document.getElementById('shareBtn');
+      btn.textContent = '✓ Copied!';
+      setTimeout(function(){ btn.innerHTML = '&#128279; Share Result'; }, 2000);
+    });
+  }
+};
+
+// ── COUNTDOWN ────────────────────────────────────────────────────────────────
+function _startCountdown() {
+  document.getElementById('countdownWrap').style.display = 'block';
+  function tick() {
+    var now = new Date();
+    var tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    var diff = tomorrow - now;
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('countdownVal').textContent =
+      String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+</script>
+</body>
+</html>

@@ -249,12 +249,34 @@
   </div>
 </div>
 
+<!-- TRIVIA LIVE CARD -->
+<div class="section-label"><span>More Games</span></div>
+<div style="max-width:1100px;margin:0 auto;padding:24px 20px;">
+  <div style="display:grid;grid-template-columns:1fr 2px 1fr;gap:0;border:1.5px solid var(--line);border-radius:4px;overflow:hidden;">
+    <div style="padding:28px 32px;display:flex;flex-direction:column;justify-content:center;">
+      <h2 style="font-family:'Fraunces',serif;font-weight:900;font-size:clamp(22px,3.5vw,34px);line-height:1.0;letter-spacing:-.02em;margin-bottom:10px;">The Daily<br>Trivia</h2>
+      <div id="triviaStatusRow" style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;margin-bottom:14px;">
+        <span class="dot" id="triviaDot"></span>
+        <span class="status-text" id="triviaStatusText">Ready to play</span>
+      </div>
+      <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:18px;">One trivia question per day. One shot to answer. Get it right and earn coins.</p>
+      <a class="play-btn" href="trivia.html" style="align-self:flex-start;">Play Now &#8594;</a>
+    </div>
+    <div style="background:var(--line);width:2px;"></div>
+    <div style="padding:28px 32px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+      <div style="font-size:72px;margin-bottom:12px;">&#10067;</div>
+      <div style="font-size:13px;color:var(--ink-muted);text-align:center;line-height:1.5;font-weight:600;">Today&rsquo;s category:<br><span id="triviaCategory" style="color:var(--ink);">Loading...</span></div>
+    </div>
+  </div>
+</div>
+
 <!-- HOW TO PLAY -->
 <div class="section-label"><span>How to Play</span></div>
 <div class="how-to-section">
   <div class="how-tabs">
     <button class="how-tab active" data-panel="five">The Daily Five</button>
     <button class="how-tab" data-panel="scramble">The Daily Scramble</button>
+    <button class="how-tab" data-panel="trivia">The Daily Trivia</button>
   </div>
   <div class="how-panel active" id="panel-five">
     <div class="how-col">
@@ -289,39 +311,30 @@
       <div class="tip-box">Complete the daily scramble to earn <strong style="color:var(--amber);">&#127922; 6 coins</strong>.</div>
     </div>
   </div>
-</div>
-
-<!-- COMING SOON -->
-
-<!-- TRIVIA LIVE CARD -->
-<div class="section-label"><span>Also Live Today</span></div>
-<div style="max-width:1100px;margin:0 auto;padding:24px 20px;">
-  <div style="display:grid;grid-template-columns:1fr 2px 1fr;gap:0;border:1.5px solid var(--line);border-radius:4px;overflow:hidden;">
-    <div style="padding:28px 32px;display:flex;flex-direction:column;justify-content:center;">
-      <span style="font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--accent);border:1px solid var(--accent);padding:2px 7px;border-radius:2px;display:inline-block;margin-bottom:12px;align-self:flex-start;">Live Today</span>
-      <h2 style="font-family:'Fraunces',serif;font-weight:900;font-size:clamp(22px,3.5vw,34px);line-height:1.0;letter-spacing:-.02em;margin-bottom:10px;">The Daily<br>Trivia</h2>
-      <div id="triviaStatusRow" style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;margin-bottom:14px;">
-        <span class="dot" id="triviaDot"></span>
-        <span class="status-text" id="triviaStatusText">Ready to play</span>
-      </div>
-      <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:18px;">One trivia question per day. One shot to answer. Get it right and earn coins.</p>
-      <a class="play-btn" href="trivia.html" style="align-self:flex-start;">Play Now &#8594;</a>
+  <div class="how-panel" id="panel-trivia">
+    <div class="how-col">
+      <h4>Rules</h4>
+      <div class="how-step"><div class="step-num">1</div><div class="step-text">One trivia question drops every day at <strong>midnight</strong>.</div></div>
+      <div class="how-step"><div class="step-num">2</div><div class="step-text">You get <strong>one shot</strong> &mdash; pick your answer from four options. No going back.</div></div>
+      <div class="how-step"><div class="step-num">3</div><div class="step-text">Get it right to earn <strong style="color:var(--amber);">&#127922; 3 coins</strong> and unlock the fun fact.</div></div>
+      <div class="how-step"><div class="step-num">4</div><div class="step-text">Questions rotate through <strong>Geography, Science, History, Pop Culture</strong>, and more.</div></div>
     </div>
-    <div style="background:var(--line);width:2px;"></div>
-    <div style="padding:28px 32px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
-      <div style="font-size:72px;margin-bottom:12px;">&#10067;</div>
-      <div style="font-size:13px;color:var(--ink-muted);text-align:center;line-height:1.5;font-weight:600;">Today&rsquo;s category:<br><span id="triviaCategory" style="color:var(--ink);">Loading...</span></div>
+    <div class="how-col">
+      <h4>Good to Know</h4>
+      <div class="tip-box">Each question has a <strong>fun fact</strong> that reveals after you answer &mdash; win or lose.</div>
+      <div class="tip-box">No sign-in required &mdash; your result is saved locally on your device.</div>
+      <div class="tip-box">Come back tomorrow for a brand new question. The streak is all yours.</div>
     </div>
   </div>
 </div>
 
+<!-- COMING SOON -->
 <div class="section-label"><span>Coming Soon</span></div>
 <div class="games-section">
   <div class="coming-grid">
     <div class="mini-card"><div class="mini-icon">&#128290;</div><div class="mini-name">The Daily Number</div><div class="mini-desc">Crack the hidden 4-digit code. One number, limited guesses.</div><span class="mini-badge">Coming Soon</span></div>
     <div class="mini-card"><div class="mini-icon">&#129299;</div><div class="mini-name">The Daily Connections</div><div class="mini-desc">Group sixteen words into four secret categories.</div><span class="mini-badge">Coming Soon</span></div>
-    <div class="mini-card" style="opacity:1;cursor:pointer;" onclick="location.href='trivia.html'"><div class="mini-icon">&#10067;</div><div class="mini-name">The Daily Trivia</div><div class="mini-desc">One question. One shot. Can you get it right?</div><span class="mini-badge" style="color:var(--green);border-color:var(--green);">&#9654; Play Now</span></div>
-    <div class="mini-card"><div class="mini-icon">&#128202;</div><div class="mini-name">The Daily Rank</div><div class="mini-desc">Sort five things in order. No wrong order, just worse ones.</div><span class="mini-badge">Coming Soon</span></div>
+<div class="mini-card"><div class="mini-icon">&#128202;</div><div class="mini-name">The Daily Rank</div><div class="mini-desc">Sort five things in order. No wrong order, just worse ones.</div><span class="mini-badge">Coming Soon</span></div>
     <div class="mini-card"><div class="mini-icon">&#128444;</div><div class="mini-name">The Daily Sketch</div><div class="mini-desc">Guess the blurry image before it comes into focus.</div><span class="mini-badge">Coming Soon</span></div>
   </div>
 </div>
@@ -332,9 +345,12 @@
     <a href="/privacy.html">Privacy Policy</a>
     <span class="footer-sep">&middot;</span>
     <a href="/terms.html">Terms of Service</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a>
+    <span class="footer-sep">&middot;</span>
     <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
   </div>
-  <div class="footer-copy">&copy; 2024 The Daily Five &mdash; Free daily word puzzles &middot; New games every day</div>
+  <div class="footer-copy">&copy; <span id="footerYear"></span> The Daily Five &mdash; Free daily word puzzles &middot; New games every day</div>
 </footer>
 
 <!-- FIREBASE + SCRIPTS -->
@@ -418,20 +434,4 @@ _auth.onAuthStateChanged(function(user){
   ];
   var d=new Date();
   var epoch=new Date('2025-01-01T00:00:00');
-  var idx=Math.floor((Date.now()-epoch.getTime())/86400000)%QUESTIONS.length;
-  var tk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-  var cat=document.getElementById('triviaCategory');
-  if(cat) cat.textContent=QUESTIONS[idx].c;
-  if(localStorage.getItem('dt_played_'+tk)){
-    var dot=document.getElementById('triviaDot');
-    var txt=document.getElementById('triviaStatusText');
-    if(dot){dot.classList.add('played');}
-    if(txt){txt.textContent='Played today ✓';txt.classList.add('played');}
-  }
-})();
-
-// How to Play tabs
-document.querySelectorAll('.how-tab').forEach(function(btn){btn.addEventListener('click',function(){document.querySelectorAll('.how-tab').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.how-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');var t=document.getElementById('panel-'+btn.dataset.panel);if(t)t.classList.add('active');});});
-</script>
-</body>
-</html>
+  var idx=Math.floor((Date.now()-epoch.getTime())/86400000)%QUESTIONS.

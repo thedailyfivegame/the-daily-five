@@ -13,7 +13,7 @@
       --paper:#f4efe4;--paper-2:#ede6d4;--paper-3:#e5dcc8;
       --ink:#1c1a16;--ink-soft:#4a463c;--ink-muted:#8a8070;
       --line:#cdc4ad;--green:#3f7a4f;--amber:#c89a2b;
-      --accent:#9e2b25;--radius:3px;--trans:.15s ease;
+      --accent:#9e2b25;--radius:3px;--trans:.18s ease;
     }
     [data-theme="dark"]{
       --paper:#12110e;--paper-2:#1c1a15;--paper-3:#242018;
@@ -37,155 +37,204 @@
 
     /* ── Header ── */
     header{
-      border-bottom:2px solid var(--ink);
-      padding:10px 20px 9px;
+      border-bottom:3px solid var(--ink);
+      padding:10px 20px 0;
       transition:border-color var(--trans);
     }
     .dateline{
       font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
       color:var(--ink-soft);font-weight:600;
       display:flex;justify-content:space-between;align-items:center;
-      border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:6px;
+      border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:8px;
     }
     .header-top{
       display:flex;align-items:center;justify-content:center;
+      padding-bottom:10px;
       position:relative;
     }
     .masthead{
       font-family:'Fraunces',serif;font-weight:900;
-      font-size:clamp(30px,7vw,52px);line-height:.95;letter-spacing:-.02em;
+      font-size:clamp(34px,8vw,64px);line-height:.93;letter-spacing:-.02em;
       text-align:center;
     }
     .subhead{
       font-size:10px;letter-spacing:.28em;text-transform:uppercase;
-      color:var(--ink-soft);margin-top:4px;font-weight:600;
+      color:var(--ink-soft);margin-top:5px;font-weight:600;
       font-family:'Fraunces',serif;font-style:italic;text-align:center;
     }
     .theme-btn{
-      position:absolute;right:0;
+      position:absolute;right:0;top:50%;transform:translateY(-50%);
       background:none;border:none;cursor:pointer;font-size:20px;padding:6px;
       color:var(--ink);border-radius:var(--radius);
     }
 
-    /* ── Page ── */
-    .page{max-width:860px;margin:0 auto;padding:32px 16px 64px;}
-
-    .intro{
-      text-align:center;font-size:15px;color:var(--ink-soft);
-      margin-bottom:36px;letter-spacing:.01em;line-height:1.6;
+    /* ── Rule lines ── */
+    .rule{
+      display:flex;align-items:center;gap:0;
+      border-top:1.5px solid var(--ink);
+      border-bottom:1px solid var(--ink);
+      padding:4px 20px;
+      font-size:9px;letter-spacing:.25em;text-transform:uppercase;
+      font-weight:700;color:var(--ink-soft);
+      justify-content:space-between;
     }
-    .intro strong{color:var(--ink);}
+    .rule span{white-space:nowrap;}
 
-    /* ── Divider ── */
+    /* ── Hero ── */
+    .hero{
+      display:grid;
+      grid-template-columns:1fr 1px 1fr;
+      gap:0;
+      max-width:1100px;
+      margin:0 auto;
+      padding:28px 20px;
+      border-bottom:1.5px solid var(--line);
+    }
+    .hero-left{
+      padding-right:28px;
+      display:flex;flex-direction:column;justify-content:center;
+    }
+    .hero-divider{
+      background:var(--line);width:1px;
+    }
+    .hero-right{
+      padding-left:28px;
+      display:flex;flex-direction:column;justify-content:center;
+    }
+    .hero-badge{
+      font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;
+      font-weight:700;color:var(--accent);
+      border:1px solid var(--accent);padding:2px 7px;
+      border-radius:2px;display:inline-block;margin-bottom:12px;
+    }
+    .hero-badge.new{color:var(--green);border-color:var(--green);}
+    .hero-headline{
+      font-family:'Fraunces',serif;font-weight:900;
+      font-size:clamp(28px,4vw,44px);line-height:1.0;
+      letter-spacing:-.02em;margin-bottom:10px;
+    }
+    .hero-body{
+      font-size:14px;color:var(--ink-soft);line-height:1.6;
+      margin-bottom:18px;
+    }
+    .play-btn{
+      display:inline-flex;align-items:center;gap:8px;
+      background:var(--ink);color:var(--paper);
+      font-family:'Hanken Grotesk',sans-serif;font-weight:700;
+      font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+      padding:12px 22px;border-radius:var(--radius);
+      text-decoration:none;border:2px solid var(--ink);
+      transition:background var(--trans),color var(--trans);
+      align-self:flex-start;
+    }
+    .play-btn:hover{background:var(--accent);border-color:var(--accent);}
+    .play-btn.outline{
+      background:none;color:var(--ink);
+    }
+    .play-btn.outline:hover{background:var(--paper-2);border-color:var(--ink-soft);}
+
+    /* ── Game preview tiles ── */
+    .tile-preview{
+      margin-bottom:20px;
+      display:flex;flex-direction:column;gap:6px;
+    }
+    .tile-row{
+      display:flex;gap:5px;
+    }
+    .tp{
+      width:42px;height:42px;border:1.5px solid var(--line);
+      border-radius:3px;display:flex;align-items:center;justify-content:center;
+      font-family:'Fraunces',serif;font-weight:700;font-size:18px;
+      background:var(--paper-2);
+      transition:background var(--trans),border-color var(--trans);
+    }
+    .tp.g{background:#4a8f5e;border-color:#4a8f5e;color:#fff;}
+    .tp.y{background:#c89a2b;border-color:#c89a2b;color:#fff;}
+    .tp.empty{background:var(--paper);opacity:.4;}
+
+    /* Scramble tiles */
+    .scramble-preview{
+      display:flex;gap:6px;margin-bottom:16px;
+    }
+    .sp{
+      width:48px;height:52px;border:2px solid var(--ink);
+      border-radius:3px;display:flex;align-items:center;justify-content:center;
+      font-family:'Fraunces',serif;font-weight:700;font-size:20px;
+      background:var(--paper-2);
+    }
+    .sp.slot{border-color:var(--line);background:var(--paper);opacity:.5;}
+
+    /* ── Status pill ── */
+    .status-row{
+      display:flex;align-items:center;gap:6px;
+      font-size:11px;font-weight:600;margin-bottom:14px;
+    }
+    .dot{
+      width:7px;height:7px;border-radius:50%;
+      background:var(--line);display:inline-block;flex-shrink:0;
+    }
+    .dot.played{background:var(--green);}
+    .status-text{color:var(--ink-muted);}
+    .status-text.played{color:var(--green);}
+
+    /* ── Section label ── */
     .section-label{
-      display:flex;align-items:center;gap:12px;margin-bottom:20px;
+      display:flex;align-items:center;gap:12px;
+      padding:12px 20px;
+      border-bottom:1px solid var(--line);
+      max-width:1100px;margin:0 auto;
     }
     .section-label span{
-      font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+      font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
       font-weight:700;color:var(--ink-muted);white-space:nowrap;
     }
     .section-label::before,.section-label::after{
       content:'';flex:1;height:1px;background:var(--line);
     }
 
-    /* ── Games grid ── */
-    .games-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-      gap:16px;
+    /* ── More games grid ── */
+    .games-section{
+      max-width:1100px;margin:0 auto;
+      padding:0 20px 48px;
     }
-
-    /* ── Game card ── */
-    .game-card{
-      display:flex;flex-direction:column;
-      background:var(--paper-2);border:1.5px solid var(--line);
-      border-radius:4px;padding:24px 20px 20px;
-      text-decoration:none;color:inherit;
-      transition:border-color var(--trans),background var(--trans),transform .1s ease;
-      cursor:pointer;
-    }
-    a.game-card:hover{
-      border-color:var(--ink-soft);background:var(--paper-3);
-      transform:translateY(-2px);
-    }
-    .game-card.coming-soon{
-      opacity:.6;cursor:default;
-    }
-    .card-top{
-      display:flex;align-items:flex-start;justify-content:space-between;
-      margin-bottom:14px;
-    }
-    .game-icon{font-size:28px;line-height:1;}
-    .card-badge{
-      font-size:9px;letter-spacing:.15em;text-transform:uppercase;
-      font-weight:700;color:var(--ink-muted);
-      border:1px solid var(--line);border-radius:2px;
-      padding:2px 6px;white-space:nowrap;
-    }
-    .card-badge.new{
-      color:var(--green);border-color:var(--green);
-    }
-    .card-badge.soon{
-      color:var(--ink-muted);
-    }
-    .game-name{
-      font-family:'Fraunces',serif;font-weight:700;font-size:18px;
-      margin-bottom:6px;line-height:1.1;
-    }
-    .game-desc{
-      font-size:13px;color:var(--ink-soft);line-height:1.5;flex:1;
-      margin-bottom:18px;
-    }
-    .card-footer{
-      display:flex;align-items:center;justify-content:space-between;
-      border-top:1px solid var(--line);padding-top:14px;margin-top:auto;
-    }
-    .card-status{
-      font-size:11px;font-weight:600;color:var(--ink-muted);
-      display:flex;align-items:center;gap:5px;
-    }
-    .card-status.played{color:var(--green);}
-    .status-dot{
-      width:7px;height:7px;border-radius:50%;
-      background:var(--line);display:inline-block;
-    }
-    .status-dot.played{background:var(--green);}
-    .card-cta{
-      font-size:12px;font-weight:700;letter-spacing:.05em;
-      color:var(--ink);text-transform:uppercase;
-    }
-    a.game-card:hover .card-cta{color:var(--accent);}
-
-    /* ── Coming soon games: smaller row ── */
     .coming-grid{
       display:grid;
       grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-      gap:12px;
-      margin-top:12px;
+      gap:12px;margin-top:20px;
     }
     .mini-card{
       background:var(--paper-2);border:1.5px solid var(--line);
-      border-radius:4px;padding:16px;opacity:.55;
-      display:flex;align-items:center;gap:14px;
+      border-radius:4px;padding:20px 18px;opacity:.55;
     }
-    .mini-icon{font-size:22px;}
-    .mini-name{font-family:'Fraunces',serif;font-weight:700;font-size:14px;margin-bottom:2px;}
-    .mini-desc{font-size:11px;color:var(--ink-muted);}
+    .mini-icon{font-size:24px;margin-bottom:10px;}
+    .mini-name{
+      font-family:'Fraunces',serif;font-weight:700;font-size:15px;
+      margin-bottom:4px;
+    }
+    .mini-desc{font-size:12px;color:var(--ink-muted);line-height:1.4;margin-bottom:8px;}
     .mini-badge{
       font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;
-      font-weight:700;color:var(--ink-muted);margin-top:4px;
+      font-weight:700;color:var(--ink-muted);
+      border:1px solid var(--line);padding:2px 6px;border-radius:2px;
+      display:inline-block;
     }
 
     /* ── Footer ── */
     footer{
-      border-top:1px solid var(--line);padding:20px;
-      text-align:center;font-size:11px;color:var(--ink-muted);
-      letter-spacing:.05em;margin-top:48px;
+      border-top:2px solid var(--ink);padding:16px 20px;
+      text-align:center;font-size:10px;color:var(--ink-muted);
+      letter-spacing:.06em;text-transform:uppercase;
     }
 
-    @media(max-width:480px){
-      .games-grid{grid-template-columns:1fr;}
-      .coming-grid{grid-template-columns:1fr;}
+    @media(max-width:640px){
+      .hero{
+        grid-template-columns:1fr;
+        padding:20px 16px;
+      }
+      .hero-left{padding-right:0;padding-bottom:20px;border-bottom:1px solid var(--line);}
+      .hero-divider{display:none;}
+      .hero-right{padding-left:0;padding-top:20px;}
+      .hero-headline{font-size:clamp(24px,7vw,34px);}
     }
   </style>
 </head>
@@ -205,77 +254,97 @@
   </div>
 </header>
 
-<div class="page">
-  <p class="intro">Five free daily word puzzles. <strong>One new challenge every day.</strong><br>No sign-up needed &mdash; just play.</p>
+<div class="rule">
+  <span>Free &middot; No Sign-up &middot; New Every Day</span>
+  <span id="editionLabel"></span>
+</div>
 
-  <div class="section-label"><span>Play Today</span></div>
-
-  <div class="games-grid">
-    <a class="game-card" href="play.html">
-      <div class="card-top">
-        <div class="game-icon">&#128288;</div>
-        <div class="card-badge new">Live</div>
+<!-- Hero: two featured games side by side -->
+<div class="hero">
+  <!-- The Daily Five -->
+  <div class="hero-left">
+    <span class="hero-badge">Live Today</span>
+    <h1 class="hero-headline">The Daily<br>Five</h1>
+    <div class="tile-preview" id="wordPreview">
+      <div class="tile-row">
+        <div class="tp g">C</div><div class="tp y">R</div><div class="tp">A</div><div class="tp">N</div><div class="tp">E</div>
       </div>
-      <div class="game-name">The Daily Five</div>
-      <div class="game-desc">Guess the hidden 5-letter word in six tries. New word every day.</div>
-      <div class="card-footer">
-        <div class="card-status" id="wordStatus">
-          <span class="status-dot" id="wordDot"></span>
-          <span id="wordStatusText">Ready to play</span>
-        </div>
-        <div class="card-cta">Play &rarr;</div>
+      <div class="tile-row">
+        <div class="tp g">C</div><div class="tp g">O</div><div class="tp y">U</div><div class="tp">R</div><div class="tp">T</div>
       </div>
-    </a>
-
-    <a class="game-card" href="scramble.html">
-      <div class="card-top">
-        <div class="game-icon">&#128260;</div>
-        <div class="card-badge new">New</div>
+      <div class="tile-row">
+        <div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div>
       </div>
-      <div class="game-name">The Daily Scramble</div>
-      <div class="game-desc">Five letters, all mixed up. Unscramble them as fast as you can.</div>
-      <div class="card-footer">
-        <div class="card-status" id="scrambleStatus">
-          <span class="status-dot" id="scrambleDot"></span>
-          <span id="scrambleStatusText">Ready to play</span>
-        </div>
-        <div class="card-cta">Play &rarr;</div>
-      </div>
-    </a>
+    </div>
+    <div class="status-row">
+      <span class="dot" id="wordDot"></span>
+      <span class="status-text" id="wordStatusText">Ready to play</span>
+    </div>
+    <p class="hero-body">Guess the hidden 5-letter word in six tries. A new word drops every day at midnight.</p>
+    <a class="play-btn" href="play.html">Play Now &#8594;</a>
   </div>
 
-  <div class="section-label" style="margin-top:36px;"><span>Coming Soon</span></div>
+  <div class="hero-divider"></div>
 
+  <!-- The Daily Scramble -->
+  <div class="hero-right">
+    <span class="hero-badge new">New Game</span>
+    <h2 class="hero-headline" style="font-size:clamp(24px,3.5vw,38px);">The Daily<br>Scramble</h2>
+    <div class="scramble-preview">
+      <div class="sp">F</div><div class="sp">A</div><div class="sp">T</div><div class="sp">E</div><div class="sp">R</div>
+    </div>
+    <div style="display:flex;gap:5px;margin-bottom:16px;">
+      <div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div>
+    </div>
+    <div class="status-row">
+      <span class="dot" id="scrambleDot"></span>
+      <span class="status-text" id="scrambleStatusText">Ready to play</span>
+    </div>
+    <p class="hero-body">Five letters, all mixed up. Tap them in the right order as fast as you can. Timer starts on first tap.</p>
+    <a class="play-btn outline" href="scramble.html">Play Now &#8594;</a>
+  </div>
+</div>
+
+<!-- Coming soon section -->
+<div class="section-label"><span>Coming Soon</span></div>
+
+<div class="games-section">
   <div class="coming-grid">
     <div class="mini-card">
       <div class="mini-icon">&#128290;</div>
-      <div>
-        <div class="mini-name">The Daily Number</div>
-        <div class="mini-desc">Crack the hidden 4-digit code</div>
-        <div class="mini-badge">Coming Soon</div>
-      </div>
+      <div class="mini-name">The Daily Number</div>
+      <div class="mini-desc">Crack the hidden 4-digit code. One number, limited guesses.</div>
+      <span class="mini-badge">Coming Soon</span>
     </div>
     <div class="mini-card">
-      <div class="mini-icon">&#129513;</div>
-      <div>
-        <div class="mini-name">The Daily Connections</div>
-        <div class="mini-desc">Group the words into four categories</div>
-        <div class="mini-badge">Coming Soon</div>
-      </div>
+      <div class="mini-icon">&#129299;</div>
+      <div class="mini-name">The Daily Connections</div>
+      <div class="mini-desc">Group sixteen words into four secret categories.</div>
+      <span class="mini-badge">Coming Soon</span>
     </div>
     <div class="mini-card">
       <div class="mini-icon">&#10067;</div>
-      <div>
-        <div class="mini-name">The Daily Trivia</div>
-        <div class="mini-desc">One question. One shot. Can you get it?</div>
-        <div class="mini-badge">Coming Soon</div>
-      </div>
+      <div class="mini-name">The Daily Trivia</div>
+      <div class="mini-desc">One question. One shot. Can you get it right?</div>
+      <span class="mini-badge">Coming Soon</span>
+    </div>
+    <div class="mini-card">
+      <div class="mini-icon">&#128202;</div>
+      <div class="mini-name">The Daily Rank</div>
+      <div class="mini-desc">Sort five things in order. No wrong order, just worse ones.</div>
+      <span class="mini-badge">Coming Soon</span>
+    </div>
+    <div class="mini-card">
+      <div class="mini-icon">&#128444;</div>
+      <div class="mini-name">The Daily Sketch</div>
+      <div class="mini-desc">Guess the blurry image before it comes into focus.</div>
+      <span class="mini-badge">Coming Soon</span>
     </div>
   </div>
 </div>
 
 <footer>
-  &copy; 2024 The Daily Five &mdash; Free daily word puzzles
+  &copy; 2024 The Daily Five &mdash; Free daily word puzzles &middot; New games every day
 </footer>
 
 <script>
@@ -293,39 +362,37 @@ document.getElementById('themeBtn').onclick=function(){
   this.textContent=next==='dark'?'☀️':'🌙';
 };
 
-// ── Header date ──
+// ── Header ──
 (function(){
   var d=new Date();
   var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
   document.getElementById('headerDate').textContent=days[d.getDay()]+', '+months[d.getMonth()]+' '+d.getDate();
+  var epoch=new Date('2025-01-01T00:00:00');
+  var dayIdx=Math.floor((Date.now()-epoch.getTime())/86400000);
+  document.getElementById('editionLabel').textContent='Day #'+dayIdx;
 })();
 
-// ── Game status checks ──
+// ── Status checks ──
 function todayKey(){
   var d=new Date();
   return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
 }
-function setStatus(dotId,textId,statusId,played){
-  var dot=document.getElementById(dotId);
-  var txt=document.getElementById(textId);
-  var st=document.getElementById(statusId);
-  if(played){
-    dot.classList.add('played');
-    txt.textContent='Played today';
-    st.classList.add('played');
-  }
-}
-
 var tk=todayKey();
 
-// Check Daily Five (stores played state as df_played_DATE)
 var wordPlayed=localStorage.getItem('df_played_'+tk)==='1';
-setStatus('wordDot','wordStatusText','wordStatus',wordPlayed);
+if(wordPlayed){
+  document.getElementById('wordDot').classList.add('played');
+  document.getElementById('wordStatusText').textContent='Played today ✓';
+  document.getElementById('wordStatusText').classList.add('played');
+}
 
-// Check Scramble
 var scramblePlayed=localStorage.getItem('ds_played_'+tk)==='1';
-setStatus('scrambleDot','scrambleStatusText','scrambleStatus',scramblePlayed);
+if(scramblePlayed){
+  document.getElementById('scrambleDot').classList.add('played');
+  document.getElementById('scrambleStatusText').textContent='Played today ✓';
+  document.getElementById('scrambleStatusText').classList.add('played');
+}
 </script>
 </body>
 </html>

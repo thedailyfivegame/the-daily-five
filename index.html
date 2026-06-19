@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>The Daily Five &#8212; Daily Word Puzzles &amp; Games</title>
   <meta name="description" content="Five free daily word puzzles. Play The Daily Five word game, The Daily Scramble, Trivia, and more. No sign-up needed."/>
-  <meta property="og:title" content="The Daily Five â Free Daily Word Puzzles & Games"/>
+  <meta property="og:title" content="The Daily Five — Free Daily Word Puzzles & Games"/>
   <meta property="og:description" content="Five free daily word puzzles. Play The Daily Five word game, The Daily Scramble, Trivia, and more. No sign-up needed."/>
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://the-daily-five-v3.vercel.app/"/>
   <meta property="og:image" content="https://the-daily-five-v3.vercel.app/og-image.png"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="The Daily Five â Free Daily Word Puzzles"/>
+  <meta name="twitter:title" content="The Daily Five — Free Daily Word Puzzles"/>
   <meta name="twitter:description" content="Five free daily puzzles. New games every day at midnight."/>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
@@ -364,14 +364,14 @@ firebase.initializeApp(_fbCfg);
 var _auth=firebase.auth();
 
 // Theme
-(function(){var t=localStorage.getItem('df_theme')||'light';document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'âï¸':'ð';})();
-document.getElementById('themeBtn').onclick=function(){var c=document.documentElement.getAttribute('data-theme');var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('df_theme',n);this.textContent=n==='dark'?'âï¸':'ð';};
+(function(){var t=localStorage.getItem('df_theme')||'light';document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';})();
+document.getElementById('themeBtn').onclick=function(){var c=document.documentElement.getAttribute('data-theme');var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('df_theme',n);this.textContent=n==='dark'?'☀️':'🌙';};
 
 // Header date + edition + footer year
 (function(){var d=new Date();var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];var mos=['January','February','March','April','May','June','July','August','September','October','November','December'];var hd=document.getElementById('headerDate');if(hd)hd.textContent=days[d.getDay()]+', '+mos[d.getMonth()]+' '+d.getDate();var epoch=new Date('2025-01-01T00:00:00');var idx=Math.floor((Date.now()-epoch.getTime())/86400000);var he=document.getElementById('headerEst');if(he)he.textContent='Day #'+idx;var fy=document.getElementById('footerYear');if(fy)fy.textContent=d.getFullYear();})();
 
 // Status checks
-(function(){var d=new Date();var tk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(localStorage.getItem('df_played_'+tk)==='1'){document.getElementById('wordDot').classList.add('played');document.getElementById('wordStatusText').textContent='Played today â';document.getElementById('wordStatusText').classList.add('played');}if(localStorage.getItem('ds_played_'+tk)==='1'){document.getElementById('scrambleDot').classList.add('played');document.getElementById('scrambleStatusText').textContent='Played today â';document.getElementById('scrambleStatusText').classList.add('played');}})();
+(function(){var d=new Date();var tk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(localStorage.getItem('df_played_'+tk)==='1'){document.getElementById('wordDot').classList.add('played');document.getElementById('wordStatusText').textContent='Played today ✓';document.getElementById('wordStatusText').classList.add('played');}if(localStorage.getItem('ds_played_'+tk)==='1'){document.getElementById('scrambleDot').classList.add('played');document.getElementById('scrambleStatusText').textContent='Played today ✓';document.getElementById('scrambleStatusText').classList.add('played');}})();
 
 // Auth modal
 var _modal=document.getElementById('authModal');
@@ -415,7 +415,7 @@ _auth.onAuthStateChanged(function(user){
     localStorage.setItem('df_lb_name',name);
     document.getElementById('dropdownName').textContent=user.email||name;
     var coins=parseInt(localStorage.getItem('df_coins')||'0');
-    document.getElementById('userCoins').textContent=coins>0?('ðª'+coins):'';
+    document.getElementById('userCoins').textContent=coins>0?('🪙'+coins):'';
   }else{sib.style.display='';uc.style.display='none';}
 });
 

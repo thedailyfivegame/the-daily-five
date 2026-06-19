@@ -387,6 +387,8 @@ header {
   font-family: 'Hanken Grotesk', sans-serif;
 }
 .hard-badge.show { display: inline-block; }
+.back-link{position:absolute;left:12px;top:50%;transform:translateY(-50%);text-decoration:none;color:var(--ink);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:6px 10px;border:1.5px solid var(--line);border-radius:var(--radius);font-family:'Hanken Grotesk',sans-serif;transition:background var(--trans);white-space:nowrap;}
+.back-link:hover{background:var(--paper-2);}
 
 /* ═══════════════════════════════════════════
    TOAST
@@ -985,9 +987,10 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
     <span id="dateText">—</span>
     <span class="edition">No. <span id="puzzleNo">—</span></span>
   </div>
+  <a class="back-link" href="/">← Home</a>
   <span class="hard-badge" id="hardBadge">Hard</span>
   <a href="/" class="masthead" style="text-decoration:none;color:inherit;">The Daily Five</a>
-  <div class="subhead">One word � Six tries � Every day</div>
+  <div class="subhead">One word � Six tries � Every day</div>
   <div class="header-btns"><button class="hbtn coin-btn" id="coinDisplay" onclick="openCoinModal()" title="My Coins" aria-label="Coins">🪙<span id="coinCount">10</span></button>
     <button class="hbtn" id="openLeaderboard" aria-label="Leaderboard" title="Leaderboard">🏆</button>
     <button class="hbtn" id="openStats" aria-label="Statistics" title="Statistics">▤</button>
@@ -1010,7 +1013,7 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 </main>
 
 <!-- ═══ AD BANNER ═══ -->
-<div class="ad-banner" id="adBanner">
+<div class="ad-banner" id="adBanner" style="display:none;">
   <!-- Replace this comment block with real AdSense code when approved:
   <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px"
        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX"></ins>
@@ -1020,15 +1023,17 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 </div>
 
 <div class="footer-note">
-  <a href="https://thedailyfive.net" target="_blank">thedailyfive.net</a> �
-  <a href="privacy.html">Privacy</a> �
-  <a href="mailto:thedailyfive.game@gmail.com">Contact</a>
+  <a href="/">Home</a> &middot;
+  <a href="privacy.html">Privacy</a> &middot;
+  <a href="terms.html">Terms</a> &middot;
+  <a href="https://www.instagram.com/thedailyfive.game/" target="_blank">Instagram</a> &middot;
+  <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
 </div>
 
 <!-- ═══ STATS MODAL ═══ -->
 <div class="overlay" id="statsOverlay" role="dialog" aria-modal="true" aria-labelledby="statsTitle">
   <div class="modal">
-    <button class="modal-close" id="closeStats" aria-label="Close">�</button>
+    <button class="modal-close" id="closeStats" aria-label="Close">�</button>
 
     <!-- Tabs -->
     <div class="modal-tabs">
@@ -1114,7 +1119,7 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 <!-- ═══ SETTINGS MODAL ═══ -->
 <div class="overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
   <div class="modal">
-    <button class="modal-close" id="closeSettings" aria-label="Close">�</button>
+    <button class="modal-close" id="closeSettings" aria-label="Close">�</button>
     <h2 id="settingsTitle">Settings</h2>
 
     <div class="settings-list">
@@ -1263,7 +1268,7 @@ function applySettings() {
 }
 applySettings();
 
-document.getElementById('darkToggle').addEventListener('change', function(){ saveSetting('dark', this.checked); applySettings(); });
+document.getElementById('darkToggle').addEventListener('change', function(){ saveSetting('dark', this.checked); applySettings(); S.set('df_theme', this.checked ? 'dark' : 'light'); });
 document.getElementById('hardToggle').addEventListener('change', function(){
   if(guesses.length > 0 && gameStatus === 'playing'){ toast('Hard mode can only be enabled before you start'); this.checked = settings.hard; return; }
   saveSetting('hard', this.checked); applySettings();
@@ -1895,7 +1900,7 @@ function buildShare(){
   var emoji={correct:'🟩',present:'🟨',absent:'⬜'};
   var head='The Daily Five #'+DAY+'  '+(gameStatus==='won'?guesses.length:'X')+'/6'+(settings.hard?' *':'');
   var grid=guesses.map(function(g){ return scoreGuess(g).map(function(s){ return emoji[s]; }).join(''); }).join('\n');
-  return head+'\n\n'+grid+'\n\nhttps://thedailyfive.net';
+  return head+'\n\n'+grid+'\n\nhttps://the-daily-five-v3.vercel.app';
 }
 document.getElementById('shareBtn').addEventListener('click',function(){
   var text=buildShare();
@@ -2212,7 +2217,7 @@ function dismissIgPrompt(){
 <!-- ═══ HINT MODAL ═══ -->
 <div id="hintOverlay" class="hint-overlay-bg">
   <div class="hint-modal">
-    <button class="close-modal-btn" onclick="closeHintModal()">�</button>
+    <button class="close-modal-btn" onclick="closeHintModal()">�</button>
     <h2>💡 Use a Hint</h2>
     <p class="hint-sub">You have <strong id="hintCoinBalance">0</strong> 🪙</p>
     <div class="hint-option" data-cost="5" onclick="useHint('reveal')">
@@ -2233,7 +2238,7 @@ function dismissIgPrompt(){
 <!-- ═══ AD MODAL ═══ -->
 <div id="adOverlay" class="hint-overlay-bg">
   <div class="ad-modal">
-    <button class="close-modal-btn" onclick="closeAdModal()">�</button>
+    <button class="close-modal-btn" onclick="closeAdModal()">�</button>
     <h2>📺 Watch &amp; Earn</h2>
     <p style="font-size:13px;color:#787c7e;margin:4px 0 8px">Watch a short ad to earn 5 coins</p>
     <div class="ad-placeholder">Advertisement</div>
@@ -2244,7 +2249,7 @@ function dismissIgPrompt(){
 <!-- ═══ COIN MODAL ═══ -->
 <div id="coinOverlay" class="hint-overlay-bg">
   <div class="coin-modal">
-    <button class="close-modal-btn" onclick="closeCoinModal()">�</button>
+    <button class="close-modal-btn" onclick="closeCoinModal()">�</button>
     <h2>🪙 Your Coins</h2>
     <div class="big-balance" id="coinBalance">0</div>
     <p style="font-size:13px;color:#787c7e;margin-bottom:12px">Spend coins on hints during the game</p>
@@ -2288,8 +2293,8 @@ function dismissIgPrompt(){
 <!-- ═══ RIGHT SIDEBAR — Ad ═══ -->
 <aside id="rightSidebar" class="game-sidebar" aria-label="Advertisement">
   <div class="sb-ad-slot">
-    <!-- Replace with real AdSense 160�600 skyscraper unit when approved -->
-    <span>Ad<br>160�600</span>
+    <!-- Replace with real AdSense 160�600 skyscraper unit when approved -->
+    <span>Ad<br>160�600</span>
   </div>
   <p style="font-size:10px;color:#aaa;text-align:center;width:160px;margin-top:4px;">Advertisement</p>
 </aside>
@@ -2305,9 +2310,9 @@ function dismissIgPrompt(){
   <button class="ig-dismiss" onclick="dismissIgPrompt()" aria-label="Dismiss">✕</button>
 </div>
 <nav id="siteFooterNav" style="text-align:center;padding:18px 16px 24px;font-size:13px;border-top:1px solid #e5e0d5;margin-top:8px;color:#888;">
-  <a href="/" style="color:#555;text-decoration:none;margin:0 10px;">Home</a>�
-  <a href="archive.html" style="color:#555;text-decoration:none;margin:0 10px;">Archive</a>�
-  <a href="about.html" style="color:#555;text-decoration:none;margin:0 10px;">How to Play</a>�
+  <a href="/" style="color:#555;text-decoration:none;margin:0 10px;">Home</a>�
+  <a href="archive.html" style="color:#555;text-decoration:none;margin:0 10px;">Archive</a>�
+  <a href="about.html" style="color:#555;text-decoration:none;margin:0 10px;">How to Play</a>�
   <a href="privacy.html" style="color:#555;text-decoration:none;margin:0 10px;">Privacy</a>
 </nav>
 </body>

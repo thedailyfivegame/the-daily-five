@@ -223,7 +223,14 @@
     .time-val{font-family:'Fraunces',serif;font-weight:700;font-size:15px;text-align:right;color:var(--green);}
     .loading{text-align:center;padding:32px;color:var(--ink-muted);font-size:13px;letter-spacing:.1em;text-transform:uppercase;}
     .empty{text-align:center;padding:32px;color:var(--ink-muted);font-size:14px;}
-  </style>
+  
+  footer{border-top:2px solid var(--ink);padding:18px 20px 14px;text-align:center;margin-top:40px;}
+  .footer-links{display:flex;justify-content:center;align-items:center;gap:6px 16px;flex-wrap:wrap;margin-bottom:10px;}
+  .footer-links a{color:var(--ink-muted);text-decoration:none;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:color var(--trans);}
+  .footer-links a:hover{color:var(--ink);}
+  .footer-sep{color:var(--line);font-size:12px;}
+  .footer-copy{font-size:10px;color:var(--ink-muted);letter-spacing:.06em;text-transform:uppercase;}
+</style>
 </head>
 <body>
 <header>
@@ -647,5 +654,21 @@ function loadLeaderboard(){
   buildUI();
 })();
 </script>
+
+<footer>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="privacy.html">Privacy</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="terms.html">Terms</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">&copy; <span id="footerYear"></span> The Daily Five</div>
+  <script>(function(){var y=document.getElementById('footerYear');if(y)y.textContent=new Date().getFullYear();})();</script>
+</footer>
 </body>
 </html>

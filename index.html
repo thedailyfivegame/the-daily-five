@@ -1,469 +1,331 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<meta name="google-site-verification" content="wVNhcG2vf_oZklnS4v5NY0-d3T3afIg5kcnNNw6ahic"/>
-<title>The Daily Five — One word. Six tries. Every day.</title>
-<meta name="description" content="The Daily Five is a free daily word game. Guess the hidden 5-letter word in 6 tries. Play every day, track your streak, compete on the leaderboard — no account needed."/>
-<meta name="keywords" content="daily word game, 5 letter word, word puzzle, free word game, Wordle alternative, daily puzzle, guess the word, word game online"/>
-<meta property="og:title" content="The Daily Five — Free Daily Word Game"/>
-<meta property="og:description" content="Guess the 5-letter word in 6 tries. A new word every day. Free, no sign-up, streaks and sharing."/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://www.thedailyfive.net"/>
-<meta property="og:image" content="https://www.thedailyfive.net/og-image.png"/>
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="The Daily Five — Free Daily Word Game"/>
-<meta name="twitter:description" content="Guess the 5-letter word in 6 tries. Free, no sign-up. A new word every day."/>
-<meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
-<link rel="canonical" href="https://www.thedailyfive.net/"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap"></noscript>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.thedailyfive.net/#website","name":"The Daily Five","url":"https://www.thedailyfive.net"},{"@type":"WebApplication","@id":"https://www.thedailyfive.net/#webapp","name":"The Daily Five","url":"https://www.thedailyfive.net","description":"A free daily word puzzle game. Guess the 5-letter word in 6 tries. New word every day at midnight.","applicationCategory":"GameApplication","genre":"Word Game","operatingSystem":"Any","inLanguage":"en","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Sunny Sammi"}}]}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is The Daily Five?","acceptedAnswer":{"@type":"Answer","text":"The Daily Five is a free daily word puzzle game where you guess a five-letter word in up to six tries. A new word is revealed every day at midnight, and everyone in the world plays the same word on the same day."}},{"@type":"Question","name":"What makes The Daily Five stand out from other word games?","acceptedAnswer":{"@type":"Answer","text":"The Daily Five is a free daily word game with extra polish: a warm newspaper aesthetic, solve timer, word definition reveal after each game, streak milestones, difficulty badges, dark mode, hard mode, color-blind mode, and it installs as a PWA — all without signing in."}},{"@type":"Question","name":"Is The Daily Five free to play?","acceptedAnswer":{"@type":"Answer","text":"Completely free — no subscription, no sign-up, and no lives to buy. The game itself will always be free."}},{"@type":"Question","name":"Does The Daily Five work on iPhone and Android?","acceptedAnswer":{"@type":"Answer","text":"Yes — it works in any browser on iPhone, Android, or desktop. You can also install it to your home screen as a PWA for an app-like experience."}},{"@type":"Question","name":"Can I play offline?","acceptedAnswer":{"@type":"Answer","text":"Yes. Once you've loaded the game once, it works offline thanks to the service worker cache."}},{"@type":"Question","name":"Will my stats and streak reset?","acceptedAnswer":{"@type":"Answer","text":"Stats are saved in your browser's local storage. They persist as long as you don't clear your browser data. They are not tied to an account."}},{"@type":"Question","name":"What are the streak milestones?","acceptedAnswer":{"@type":"Answer","text":"Streaks of 3, 7, 14, 30, and 100 days earn special badges shown in your stats. Keep coming back every day to climb the milestones."}}]}
-</script>
-<style>
-/* ── RESET & BASE ── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--cream:#f4efe4;--dark:#1a1a1b;--green:#538d4e;--yellow:#b59f3b;--grey:#787c7e;--border:#d3d6da;--gold:#f5c518;--font-serif:'Georgia',serif;--font-sans:system-ui,-apple-system,sans-serif;}
-body{background:var(--cream);color:var(--dark);font-family:var(--font-sans);line-height:1.6;overflow-x:hidden;}
-a{color:inherit;text-decoration:none;}
-img{max-width:100%;display:block;}
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>The Daily Five — Daily Word Puzzles & Games</title>
+  <meta name="description" content="Five free daily word puzzles. Play The Daily Five word game, The Daily Scramble, and more. No sign-up needed."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --paper:#f4efe4;--paper-2:#ede6d4;--paper-3:#e5dcc8;
+      --ink:#1c1a16;--ink-soft:#4a463c;--ink-muted:#8a8070;
+      --line:#cdc4ad;--green:#3f7a4f;--amber:#c89a2b;
+      --accent:#9e2b25;--radius:3px;--trans:.15s ease;
+    }
+    [data-theme="dark"]{
+      --paper:#12110e;--paper-2:#1c1a15;--paper-3:#242018;
+      --ink:#f0ebe0;--ink-soft:#a39b85;--ink-muted:#6b6356;
+      --line:#2e2a22;--green:#4a8f5e;--amber:#d4a830;--accent:#c0392b;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{min-height:100%;}
+    body{
+      background:var(--paper);color:var(--ink);
+      font-family:'Hanken Grotesk',system-ui,sans-serif;
+      transition:background var(--trans),color var(--trans);
+      overflow-x:hidden;
+    }
+    body::before{
+      content:'';position:fixed;inset:0;
+      background-image:radial-gradient(rgba(128,120,100,.04) 1px,transparent 1px);
+      background-size:4px 4px;pointer-events:none;z-index:0;
+    }
+    *{position:relative;z-index:1;}
 
-/* ── NAV ── */
-.site-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:var(--cream);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px);}
-.nav-logo{font-family:var(--font-serif);font-size:20px;font-weight:700;letter-spacing:-.02em;}
-.nav-play-btn{background:var(--dark);color:#fff;padding:9px 20px;border-radius:8px;font-weight:600;font-size:14px;transition:background .15s;}
-.nav-play-btn:hover{background:#333;}
-.nav-links{display:flex;align-items:center;gap:20px;}
-.nav-links a{font-size:14px;font-weight:500;color:var(--dark);opacity:0.65;transition:opacity .15s;}
-.nav-links a:hover{opacity:1;}
-@media(max-width:640px){.nav-links{display:none;}}
+    /* ── Header ── */
+    header{
+      border-bottom:2px solid var(--ink);
+      padding:10px 20px 9px;
+      transition:border-color var(--trans);
+    }
+    .dateline{
+      font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
+      color:var(--ink-soft);font-weight:600;
+      display:flex;justify-content:space-between;align-items:center;
+      border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:6px;
+    }
+    .header-top{
+      display:flex;align-items:center;justify-content:center;
+      position:relative;
+    }
+    .masthead{
+      font-family:'Fraunces',serif;font-weight:900;
+      font-size:clamp(30px,7vw,52px);line-height:.95;letter-spacing:-.02em;
+      text-align:center;
+    }
+    .subhead{
+      font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+      color:var(--ink-soft);margin-top:4px;font-weight:600;
+      font-family:'Fraunces',serif;font-style:italic;text-align:center;
+    }
+    .theme-btn{
+      position:absolute;right:0;
+      background:none;border:none;cursor:pointer;font-size:20px;padding:6px;
+      color:var(--ink);border-radius:var(--radius);
+    }
 
-/* ── HERO ── */
-.hero-v2{padding:64px 32px 48px;max-width:1200px;margin:0 auto;}
-.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
-@media(max-width:768px){.hero-inner{grid-template-columns:1fr;}.hero-right{display:none;}}
-.hero-eyebrow{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--grey);margin-bottom:16px;}
-.hero-h1{font-family:var(--font-serif);font-size:clamp(44px,6vw,72px);font-weight:700;line-height:1.05;letter-spacing:-.03em;margin-bottom:20px;}
-.hero-p{font-size:17px;color:#444;line-height:1.7;max-width:480px;margin-bottom:28px;}
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
-.btn-primary{background:var(--dark);color:#fff;padding:13px 26px;border-radius:10px;font-weight:700;font-size:15px;transition:background .15s,transform .1s;display:inline-block;}
-.btn-primary:hover{background:#333;transform:translateY(-1px);}
-.btn-disabled{opacity:.55;cursor:default;pointer-events:none;}
-.app-badge-soon{opacity:.75;cursor:default;pointer-events:none;filter:grayscale(.3);}
-.btn-secondary{background:transparent;color:var(--dark);padding:12px 24px;border-radius:10px;font-weight:600;font-size:15px;border:2px solid var(--border);transition:border-color .15s;}
-.btn-secondary:hover{border-color:var(--dark);}
-.btn-large{padding:16px 36px;font-size:17px;border-radius:12px;}
-.hero-badges{display:flex;flex-wrap:wrap;gap:8px;}
-.hero-badge{background:rgba(0,0,0,.06);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;}
+    /* ── Page ── */
+    .page{max-width:860px;margin:0 auto;padding:32px 16px 64px;}
 
-/* ── GAME PREVIEW ── */
-.game-preview{background:#fff;border-radius:20px;padding:20px;box-shadow:0 8px 40px rgba(0,0,0,.12);max-width:320px;margin:0 auto;}
-.gp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:13px;font-weight:600;}
-.gp-no{color:var(--grey);}
-.gp-board{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
-.gp-row{display:flex;gap:5px;}
-.gp-tile{width:52px;height:52px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;color:#fff;border:2px solid var(--border);}
-.gp-tile.correct{background:var(--green);border-color:var(--green);animation:tileFlip .4s ease;}
-.gp-tile.present{background:var(--yellow);border-color:var(--yellow);}
-.gp-tile.absent{background:var(--grey);border-color:var(--grey);}
-.gp-tile.empty-sm{width:44px;height:44px;font-size:18px;color:var(--dark);}
-.gp-row.empty .gp-tile{color:transparent;background:transparent;}
-@keyframes tileFlip{0%{transform:rotateX(0);}50%{transform:rotateX(-90deg);}100%{transform:rotateX(0);}}
-.gp-share{text-align:center;font-size:13px;line-height:1.8;padding:10px;background:var(--cream);border-radius:8px;letter-spacing:2px;}
+    .intro{
+      text-align:center;font-size:15px;color:var(--ink-soft);
+      margin-bottom:36px;letter-spacing:.01em;line-height:1.6;
+    }
+    .intro strong{color:var(--ink);}
 
-/* ── STATS STRIP ── */
-.stats-strip{display:flex;align-items:center;justify-content:center;gap:0;background:var(--dark);color:#fff;padding:20px 32px;flex-wrap:wrap;}
-.stat-item{display:flex;flex-direction:column;align-items:center;padding:8px 32px;}
-.stat-num{font-size:28px;font-weight:800;line-height:1;}
-.stat-lbl{font-size:11px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;}
-.stat-div{width:1px;height:40px;background:rgba(255,255,255,.15);}
-@media(max-width:600px){.stat-div{display:none;}.stat-item{padding:8px 20px;}}
+    /* ── Divider ── */
+    .section-label{
+      display:flex;align-items:center;gap:12px;margin-bottom:20px;
+    }
+    .section-label span{
+      font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+      font-weight:700;color:var(--ink-muted);white-space:nowrap;
+    }
+    .section-label::before,.section-label::after{
+      content:'';flex:1;height:1px;background:var(--line);
+    }
 
-/* ── SECTION BASE ── */
-.section-inner{max-width:1100px;margin:0 auto;padding:72px 32px;}
-.section-eyebrow{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--green);margin-bottom:12px;}
-.section-title{font-family:var(--font-serif);font-size:clamp(28px,4vw,42px);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-bottom:12px;}
-.section-sub{font-size:16px;color:#555;max-width:560px;margin-bottom:40px;}
+    /* ── Games grid ── */
+    .games-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+      gap:16px;
+    }
 
-/* ── HOW TO PLAY ── */
-.how-section{background:#fff;}
-.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:40px;}
-@media(max-width:600px){.how-steps{grid-template-columns:1fr;}}
-.how-step{display:flex;flex-direction:column;gap:16px;}
-.how-tiles{display:flex;gap:5px;align-items:center;}
-.how-text{display:flex;align-items:center;gap:10px;font-size:14px;}
-.how-color-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+    /* ── Game card ── */
+    .game-card{
+      display:flex;flex-direction:column;
+      background:var(--paper-2);border:1.5px solid var(--line);
+      border-radius:4px;padding:24px 20px 20px;
+      text-decoration:none;color:inherit;
+      transition:border-color var(--trans),background var(--trans),transform .1s ease;
+      cursor:pointer;
+    }
+    a.game-card:hover{
+      border-color:var(--ink-soft);background:var(--paper-3);
+      transform:translateY(-2px);
+    }
+    .game-card.coming-soon{
+      opacity:.6;cursor:default;
+    }
+    .card-top{
+      display:flex;align-items:flex-start;justify-content:space-between;
+      margin-bottom:14px;
+    }
+    .game-icon{font-size:28px;line-height:1;}
+    .card-badge{
+      font-size:9px;letter-spacing:.15em;text-transform:uppercase;
+      font-weight:700;color:var(--ink-muted);
+      border:1px solid var(--line);border-radius:2px;
+      padding:2px 6px;white-space:nowrap;
+    }
+    .card-badge.new{
+      color:var(--green);border-color:var(--green);
+    }
+    .card-badge.soon{
+      color:var(--ink-muted);
+    }
+    .game-name{
+      font-family:'Fraunces',serif;font-weight:700;font-size:18px;
+      margin-bottom:6px;line-height:1.1;
+    }
+    .game-desc{
+      font-size:13px;color:var(--ink-soft);line-height:1.5;flex:1;
+      margin-bottom:18px;
+    }
+    .card-footer{
+      display:flex;align-items:center;justify-content:space-between;
+      border-top:1px solid var(--line);padding-top:14px;margin-top:auto;
+    }
+    .card-status{
+      font-size:11px;font-weight:600;color:var(--ink-muted);
+      display:flex;align-items:center;gap:5px;
+    }
+    .card-status.played{color:var(--green);}
+    .status-dot{
+      width:7px;height:7px;border-radius:50%;
+      background:var(--line);display:inline-block;
+    }
+    .status-dot.played{background:var(--green);}
+    .card-cta{
+      font-size:12px;font-weight:700;letter-spacing:.05em;
+      color:var(--ink);text-transform:uppercase;
+    }
+    a.game-card:hover .card-cta{color:var(--accent);}
 
-/* ── FEATURES ── */
-.features-section{background:var(--cream);}
-.features-grid-v2{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;margin-top:40px;}
-.feat-card{background:#fff;border-radius:14px;padding:24px;position:relative;border:1px solid rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s;}
-.feat-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08);}
-.feat-card--highlight{background:var(--dark);color:#fff;border-color:transparent;}
-.feat-card--highlight h3,.feat-card--highlight p{color:#fff;}
-.feat-card--highlight p{color:rgba(255,255,255,.75);}
-.feat-icon{font-size:28px;margin-bottom:12px;}
-.feat-card h3{font-size:16px;font-weight:700;margin-bottom:6px;}
-.feat-card p{font-size:13px;color:#666;line-height:1.6;}
-.feat-new-badge{display:inline-block;background:var(--gold);color:var(--dark);font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.06em;margin-top:10px;}
+    /* ── Coming soon games: smaller row ── */
+    .coming-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    .mini-card{
+      background:var(--paper-2);border:1.5px solid var(--line);
+      border-radius:4px;padding:16px;opacity:.55;
+      display:flex;align-items:center;gap:14px;
+    }
+    .mini-icon{font-size:22px;}
+    .mini-name{font-family:'Fraunces',serif;font-weight:700;font-size:14px;margin-bottom:2px;}
+    .mini-desc{font-size:11px;color:var(--ink-muted);}
+    .mini-badge{
+      font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;
+      font-weight:700;color:var(--ink-muted);margin-top:4px;
+    }
 
-/* ── COINS SHOWCASE ── */
-.coins-showcase{background:var(--dark);color:#fff;}
-.coins-showcase .section-inner{padding:72px 32px;}
-.cs-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
-@media(max-width:768px){.cs-inner{grid-template-columns:1fr;}.cs-right{display:none;}}
-.cs-hint-list{display:flex;flex-direction:column;gap:12px;}
-.cs-hint-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.07);border-radius:10px;padding:12px 14px;}
-.cs-hi{font-size:20px;flex-shrink:0;}
-.cs-hint-row strong{font-size:14px;color:#fff;}
-.cs-hint-row small{font-size:12px;color:rgba(255,255,255,.55);}
-.cs-cost{margin-left:auto;font-weight:700;font-size:13px;background:rgba(245,197,24,.2);border-radius:20px;padding:4px 10px;flex-shrink:0;}
-.cs-coin-card{background:rgba(255,255,255,.07);border-radius:20px;padding:32px;text-align:center;border:1px solid rgba(255,255,255,.1);}
-.cs-big-coin{font-size:52px;margin-bottom:8px;}
-.cs-balance-num{font-size:56px;font-weight:900;color:var(--gold);line-height:1;}
-.cs-balance-label{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:20px;}
-.cs-earn-ways{display:flex;flex-direction:column;gap:10px;text-align:left;}
-.cs-earn-row{display:flex;justify-content:space-between;font-size:13px;color:rgba(255,255,255,.7);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08);}
-.cs-earn-row:last-child{border-bottom:none;}
+    /* ── Footer ── */
+    footer{
+      border-top:1px solid var(--line);padding:20px;
+      text-align:center;font-size:11px;color:var(--ink-muted);
+      letter-spacing:.05em;margin-top:48px;
+    }
 
-/* ── APP ── */
-.app-section{background:#fff;}
-.app-badges{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
-.app-badge-btn{display:flex;align-items:center;gap:14px;background:var(--dark);color:#fff;border-radius:12px;padding:14px 20px;min-width:220px;transition:background .15s;}
-.app-badge-btn:hover{background:#333;}
-.ios-soon{background:#999;cursor:default;}
-.badge-store{font-size:11px;display:block;opacity:.7;}
-.badge-name{font-size:15px;font-weight:700;display:block;}
-.app-pwa-note{font-size:14px;color:var(--grey);}
-.app-pwa-note a{text-decoration:underline;}
-
-/* ── FAQ ── */
-.faq-section{background:var(--cream);}
-.faq-list{max-width:720px;margin-top:32px;}
-.faq-item{border-bottom:1px solid var(--border);}
-.faq-q{width:100%;background:none;border:none;text-align:left;padding:18px 0;font-size:15px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--dark);}
-.faq-arrow{transition:transform .25s;font-size:18px;}
-.faq-item.open .faq-arrow{transform:rotate(180deg);}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
-.faq-item.open .faq-a{max-height:200px;}
-.faq-a p{padding-bottom:18px;font-size:14px;color:#555;line-height:1.7;}
-
-/* ── CTA ── */
-.cta-section{background:var(--green);color:#fff;text-align:center;}
-.cta-inner{max-width:600px;margin:0 auto;padding:72px 32px;}
-.cta-tiles{display:flex;justify-content:center;gap:6px;margin-bottom:24px;}
-.cta-h2{font-family:var(--font-serif);font-size:36px;font-weight:700;margin-bottom:12px;}
-.cta-p{font-size:16px;opacity:.85;margin-bottom:28px;}
-.cta-section .btn-primary{background:#fff;color:var(--green);}
-.cta-section .btn-primary:hover{background:rgba(255,255,255,.9);}
-.cta-section .gp-tile.correct{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);}
-
-/* ── FOOTER ── */
-footer{background:var(--dark);color:rgba(255,255,255,.6);padding:24px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px;}
-footer a{color:rgba(255,255,255,.6);transition:color .15s;}
-footer a:hover{color:#fff;}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap;}
-
-/* ── REVEAL ANIMATION ── */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
-.reveal.visible{opacity:1;transform:translateY(0);}
-</style>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"The Daily Five","url":"https://www.thedailyfive.net/","description":"A free daily 5-letter word guessing game. Guess the word in 6 tries, track your streak and compete on the leaderboard.","applicationCategory":"GameApplication","operatingSystem":"Web, Android","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"47","bestRating":"5"},"author":{"@type":"Organization","name":"The Daily Five","url":"https://www.thedailyfive.net/"}}
-</script>
+    @media(max-width:480px){
+      .games-grid{grid-template-columns:1fr;}
+      .coming-grid{grid-template-columns:1fr;}
+    }
+  </style>
 </head>
 <body>
-
-<!-- ═══ NAV ═══ -->
-<nav class="site-nav">
-  <a href="/" class="nav-logo">The Daily Five</a>
-  <div class="nav-links">
-    <a href="archive.html">Archive</a>
-    <a href="about.html">How to Play</a>
+<header>
+  <div class="dateline">
+    <span id="headerDate"></span>
+    <span>The Daily Five</span>
+    <span>Est. 2024</span>
   </div>
-  <div class="nav-actions">
-    <a href="play.html" class="nav-play-btn">Play Now →</a>
+  <div class="header-top">
+    <div>
+      <div class="masthead">The Daily Five</div>
+      <div class="subhead">Daily Puzzles &amp; Games</div>
+    </div>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">&#127769;</button>
   </div>
-</nav>
+</header>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero-v2">
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-eyebrow">Free · No sign-up · Every day</div>
-      <h1 class="hero-h1">One word.<br>Six tries.<br>Every day.</h1>
-      <p class="hero-p">A new five-letter word drops at midnight. Guess it, share your result, build your streak. No account required — just open and play.</p>
-      <div class="hero-ctas">
-        <a href="play.html" class="btn-primary">Play Today's Word →</a>
-        <a class="btn-secondary btn-disabled" aria-disabled="true" style="opacity:.55;pointer-events:none;cursor:default;">📱 Android — Coming Soon</a>
+<div class="page">
+  <p class="intro">Five free daily word puzzles. <strong>One new challenge every day.</strong><br>No sign-up needed &mdash; just play.</p>
+
+  <div class="section-label"><span>Play Today</span></div>
+
+  <div class="games-grid">
+    <a class="game-card" href="play.html">
+      <div class="card-top">
+        <div class="game-icon">&#128288;</div>
+        <div class="card-badge new">Live</div>
       </div>
-      <div class="hero-badges">
-        <span class="hero-badge">🆓 Always free</span>
-        <span class="hero-badge">🌙 Dark mode</span>
-        <span class="hero-badge">📊 Leaderboard</span>
-        <span class="hero-badge">🪙 Hints system</span>
-      <a class="hero-badge ig-hero-badge" href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener" style="text-decoration:none;cursor:pointer;">📸 Follow on Instagram</a>
-    </div>
-    </div>
-    <div class="hero-right">
-      <div class="game-preview">
-        <div class="gp-header">
-          <span class="gp-date">The Daily Five</span>
-          <span class="gp-no">No. 3</span>
+      <div class="game-name">The Daily Five</div>
+      <div class="game-desc">Guess the hidden 5-letter word in six tries. New word every day.</div>
+      <div class="card-footer">
+        <div class="card-status" id="wordStatus">
+          <span class="status-dot" id="wordDot"></span>
+          <span id="wordStatusText">Ready to play</span>
         </div>
-        <div class="gp-board">
-          <div class="gp-row">
-            <div class="gp-tile correct">V</div><div class="gp-tile correct">O</div><div class="gp-tile correct">C</div><div class="gp-tile correct">A</div><div class="gp-tile correct">L</div>
-          </div>
-          <div class="gp-row">
-            <div class="gp-tile present">C</div><div class="gp-tile absent">R</div><div class="gp-tile absent">A</div><div class="gp-tile present">N</div><div class="gp-tile absent">E</div>
-          </div>
-          <div class="gp-row">
-            <div class="gp-tile absent">T</div><div class="gp-tile present">O</div><div class="gp-tile absent">R</div><div class="gp-tile absent">C</div><div class="gp-tile absent">H</div>
-          </div>
-          <div class="gp-row empty"><div class="gp-tile"></div><div class="gp-tile"></div><div class="gp-tile"></div><div class="gp-tile"></div><div class="gp-tile"></div></div>
-          <div class="gp-row empty"><div class="gp-tile"></div><div class="gp-tile"></div><div class="gp-tile"></div><div class="gp-tile"></div><div class="gp-tile"></div></div>
-          <div class="gp-row empty"><div class="gp-tile"></div><div class="gp-tile"></div><div class="gp-tile"></div><div class="gp-tile"></div><div class="gp-tile"></div></div>
+        <div class="card-cta">Play &rarr;</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="scramble.html">
+      <div class="card-top">
+        <div class="game-icon">&#128260;</div>
+        <div class="card-badge new">New</div>
+      </div>
+      <div class="game-name">The Daily Scramble</div>
+      <div class="game-desc">Five letters, all mixed up. Unscramble them as fast as you can.</div>
+      <div class="card-footer">
+        <div class="card-status" id="scrambleStatus">
+          <span class="status-dot" id="scrambleDot"></span>
+          <span id="scrambleStatusText">Ready to play</span>
         </div>
-        <div class="gp-share">🟩🟩🟩🟩🟩<br>🟨⬜⬜🟨⬜<br>⬜🟨⬜⬜⬜</div>
+        <div class="card-cta">Play &rarr;</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label" style="margin-top:36px;"><span>Coming Soon</span></div>
+
+  <div class="coming-grid">
+    <div class="mini-card">
+      <div class="mini-icon">&#128290;</div>
+      <div>
+        <div class="mini-name">The Daily Number</div>
+        <div class="mini-desc">Crack the hidden 4-digit code</div>
+        <div class="mini-badge">Coming Soon</div>
+      </div>
+    </div>
+    <div class="mini-card">
+      <div class="mini-icon">&#129513;</div>
+      <div>
+        <div class="mini-name">The Daily Connections</div>
+        <div class="mini-desc">Group the words into four categories</div>
+        <div class="mini-badge">Coming Soon</div>
+      </div>
+    </div>
+    <div class="mini-card">
+      <div class="mini-icon">&#10067;</div>
+      <div>
+        <div class="mini-name">The Daily Trivia</div>
+        <div class="mini-desc">One question. One shot. Can you get it?</div>
+        <div class="mini-badge">Coming Soon</div>
       </div>
     </div>
   </div>
-</section>
-
-<!-- ═══ STATS STRIP ═══ -->
-<div class="stats-strip">
-  <div class="stat-item"><span class="stat-num" id="stripPuzzle">3</span><span class="stat-lbl">Puzzles published</span></div>
-  <div class="stat-div"></div>
-  <div class="stat-item"><span class="stat-num" id="stripPlayers">—</span><span class="stat-lbl">Players today</span></div>
-  <div class="stat-div"></div>
-  <div class="stat-item"><span class="stat-num">8k+</span><span class="stat-lbl">Valid words</span></div>
-  <div class="stat-div"></div>
-  <div class="stat-item"><span class="stat-num">100%</span><span class="stat-lbl">Free forever</span></div>
 </div>
 
-<!-- ═══ HOW TO PLAY ═══ -->
-<section class="how-section">
-  <div class="section-inner reveal">
-    <p class="section-eyebrow">How it works</p>
-    <h2 class="section-title">Three types of clues</h2>
-    <div class="how-steps">
-      <div class="how-step">
-        <div class="how-tiles">
-          <div class="gp-tile correct" style="width:44px;height:44px;font-size:20px">W</div>
-          <div class="gp-tile empty-sm"></div><div class="gp-tile empty-sm"></div><div class="gp-tile empty-sm"></div><div class="gp-tile empty-sm"></div>
-        </div>
-        <div class="how-text">
-          <div class="how-color-dot" style="background:#538d4e"></div>
-          <div><strong>Green</strong> — right letter, right spot</div>
-        </div>
-      </div>
-      <div class="how-step">
-        <div class="how-tiles">
-          <div class="gp-tile empty-sm"></div>
-          <div class="gp-tile present" style="width:44px;height:44px;font-size:20px">I</div>
-          <div class="gp-tile empty-sm"></div><div class="gp-tile empty-sm"></div><div class="gp-tile empty-sm"></div>
-        </div>
-        <div class="how-text">
-          <div class="how-color-dot" style="background:#b59f3b"></div>
-          <div><strong>Yellow</strong> — in the word, wrong spot</div>
-        </div>
-      </div>
-      <div class="how-step">
-        <div class="how-tiles">
-          <div class="gp-tile empty-sm"></div><div class="gp-tile empty-sm"></div>
-          <div class="gp-tile absent" style="width:44px;height:44px;font-size:20px">N</div>
-          <div class="gp-tile empty-sm"></div><div class="gp-tile empty-sm"></div>
-        </div>
-        <div class="how-text">
-          <div class="how-color-dot" style="background:#787c7e"></div>
-          <div><strong>Grey</strong> — not in the word</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ FEATURES ═══ -->
-<section class="features-section">
-  <div class="section-inner reveal">
-    <p class="section-eyebrow">Features</p>
-    <h2 class="section-title">Built for daily players</h2>
-    <p class="section-sub">Everything you need, nothing you don't.</p>
-    <div class="features-grid-v2">
-      <div class="feat-card">
-        <div class="feat-icon">🌙</div>
-        <h3>Dark Mode</h3>
-        <p>Warm newspaper look or deep dark theme — follows your system or toggle manually.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">🏆</div>
-        <h3>Daily Leaderboard</h3>
-        <p>Compete with players worldwide. Ranked by guesses first, then time-to-solve.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">🔥</div>
-        <h3>Streaks & Stats</h3>
-        <p>Track your win rate, current streak, and guess distribution across all your games.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">📲</div>
-        <h3>PWA + Android App</h3>
-        <p>Install from your browser or download on Android. iOS coming soon.</p>
-      </div>
-      <div class="feat-card feat-card--highlight">
-        <div class="feat-icon">🪙</div>
-        <h3>Coins & Hints</h3>
-        <p>Earn coins by winning. Spend them on hints — reveal a letter, check a letter, or get an extra guess. Watch ads for bonus coins.</p>
-        <span class="feat-new-badge">New</span>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">⚡</div>
-        <h3>Hard Mode</h3>
-        <p>Every revealed hint must be used in your next guess. For players who want a real challenge.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">🎮</div>
-        <h3>Practice Mode</h3>
-        <p>Unlimited random puzzles whenever you want more. No streak impact.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">🔔</div>
-        <h3>Daily Reminders</h3>
-        <p>Never miss a word. Push notifications on Android let you know when today's puzzle is ready.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ COINS SHOWCASE ═══ -->
-<section class="coins-showcase">
-  <div class="section-inner reveal">
-    <div class="cs-inner">
-      <div class="cs-left">
-        <p class="section-eyebrow" style="color:#f5c518">Coins & Hints</p>
-        <h2 class="section-title" style="color:#fff">Stuck? Use a hint.</h2>
-        <p style="color:rgba(255,255,255,.75);font-size:16px;line-height:1.65;margin-bottom:24px">Earn coins by solving the daily puzzle. The faster you solve, the more you earn. Use coins to unlock hints when you're stuck.</p>
-        <div class="cs-hint-list">
-          <div class="cs-hint-row"><span class="cs-hi">🔤</span><div><strong>Reveal a Letter</strong><br><small>Shows a correct letter in its exact position</small></div><span class="cs-cost">5🪙</span></div>
-          <div class="cs-hint-row"><span class="cs-hi">💬</span><div><strong>Check a Letter</strong><br><small>Find out if a letter is in the word</small></div><span class="cs-cost">3🪙</span></div>
-          <div class="cs-hint-row"><span class="cs-hi">➕</span><div><strong>Extra Guess</strong><br><small>Add a 7th row to your board</small></div><span class="cs-cost">8🪙</span></div>
-          <div class="cs-hint-row"><span class="cs-hi">📺</span><div><strong>Watch an Ad</strong><br><small>Earn 5 bonus coins instantly</small></div><span class="cs-cost">+5🪙</span></div>
-        </div>
-        <a href="play.html" class="btn-primary" style="margin-top:24px;display:inline-block">Try it now →</a>
-      </div>
-      <div class="cs-right">
-        <div class="cs-coin-card">
-          <div class="cs-big-coin">🪙</div>
-          <div class="cs-balance-num">24</div>
-          <div class="cs-balance-label">coins</div>
-          <div class="cs-earn-ways">
-            <div class="cs-earn-row"><span>Win in 1–2 guesses</span><span style="color:#f5c518;font-weight:700">+20🪙</span></div>
-            <div class="cs-earn-row"><span>Win in 3 guesses</span><span style="color:#f5c518;font-weight:700">+15🪙</span></div>
-            <div class="cs-earn-row"><span>7-day streak</span><span style="color:#f5c518;font-weight:700">+5🪙</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ APP DOWNLOAD ═══ -->
-<section class="app-section">
-  <div class="section-inner reveal">
-    <p class="section-eyebrow">Mobile App</p>
-    <h2 class="section-title">Play anywhere</h2>
-    <p class="section-sub">The Daily Five on your phone — with daily push notifications and offline play.</p>
-    <div class="app-badges">
-      <div class="app-badge-btn android app-badge-soon">
-        <span class="badge-icon">🤖</span>
-        <div class="badge-text"><span class="badge-label">Coming Soon on</span><strong class="badge-store">Google Play</strong></div>
-      </div>
-      <div class="app-badge-btn ios-soon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        <div><span class="badge-store">App Store</span><span class="badge-name">iOS — Coming Soon</span></div>
-      </div>
-    </div>
-    <p class="app-pwa-note">Or <a href="play.html">open in browser</a> and tap <strong>Add to Home Screen</strong> for a native-like experience on any device.</p>
-  </div>
-</section>
-
-<!-- ═══ FAQ ═══ -->
-<section class="faq-section">
-  <div class="section-inner reveal">
-    <p class="section-eyebrow">FAQ</p>
-    <h2 class="section-title">Questions & answers</h2>
-    <div class="faq-list" id="faq">
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is The Daily Five free? <span class="faq-arrow">▾</span></button><div class="faq-a"><p>Yes — completely free to play, forever. There are small banner ads on the homepage to keep the lights on, but never mid-game ads. The hints system lets you optionally watch an ad for coins.</p></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Do I need an account? <span class="faq-arrow">▾</span></button><div class="faq-a"><p>No account needed to play. Google Sign-In is optional and only required if you want to sync your streak across devices or appear on the leaderboard with your name.</p></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do coins work? <span class="faq-arrow">▾</span></button><div class="faq-a"><p>You earn coins by winning the daily puzzle (10 coins base + bonus for fewer guesses and streaks). Spend coins on hints: reveal a letter (5🪙), check if a letter is in the word (3🪙), or get an extra guess (8🪙). Watch a short ad to earn 5 bonus coins.</p></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is there a new word every day? <span class="faq-arrow">▾</span></button><div class="faq-a"><p>Yes — one new word at midnight every day. You get six guesses to find it. Words are common English words; we avoid proper nouns, plurals of proper nouns, and overly obscure terms.</p></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is Hard Mode? <span class="faq-arrow">▾</span></button><div class="faq-a"><p>Hard Mode requires you to use all revealed hints in every subsequent guess. If you discover the letter E is correct in position 3, your next guess must have E in position 3. It's significantly more challenging.</p></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is there an app? <span class="faq-arrow">▾</span></button><div class="faq-a"><p>Yes — the Android app is on Google Play. It includes daily push notifications so you never miss a word. An iOS app is coming soon. You can also install the web version as a PWA by tapping "Add to Home Screen" in your browser.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ CTA ═══ -->
-<section class="cta-section">
-  <div class="cta-inner reveal">
-    
-    <h2 class="cta-h2">Ready to play?</h2>
-    <p class="cta-p">Today's word is waiting. It takes two minutes. You'll want to come back tomorrow.</p>
-    <a href="play.html" class="btn-primary btn-large">Play Today's Word →</a>
-  </div>
-</section>
-
 <footer>
-  <span>© 2026 The Daily Five · <a href="mailto:thedailyfive.game@gmail.com">thedailyfive.game@gmail.com</a></span>
-  <div class="footer-links">
-    <a href="https://www.instagram.com" target="_blank" rel="noopener">Instagram</a>
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="terms.html">Terms</a>
-    <a href="play.html">Play</a>
-  </div>
-
-  
+  &copy; 2024 The Daily Five &mdash; Free daily word puzzles
 </footer>
 
 <script>
-function toggleFaq(btn){
-  var item=btn.closest('.faq-item');
-  var isOpen=item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open');});
-  if(!isOpen) item.classList.add('open');
-}
-// Reveal on scroll
-var revEls=document.querySelectorAll('.reveal');
-if('IntersectionObserver' in window){
-  var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.1});
-  revEls.forEach(function(el){obs.observe(el);});
-} else {
-  revEls.forEach(function(el){el.classList.add('visible');});
-}
-// Live player count + puzzle number
+// ── Theme ──
+(function(){
+  var t=localStorage.getItem('df_theme')||'light';
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';
+})();
+document.getElementById('themeBtn').onclick=function(){
+  var cur=document.documentElement.getAttribute('data-theme');
+  var next=cur==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  localStorage.setItem('df_theme',next);
+  this.textContent=next==='dark'?'☀️':'🌙';
+};
+
+// ── Header date ──
 (function(){
   var d=new Date();
-  var epoch=new Date('2026-06-12T00:00:00Z');
-  var day=Math.floor((d-epoch)/86400000)+1;
-  var pEl=document.getElementById('stripPuzzle');
-  if(pEl) pEl.textContent='No. '+day;
-  var plEl=document.getElementById('stripPlayers');
-  if(plEl) plEl.textContent=(Math.floor(Math.random()*200)+80)+'';
+  var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('headerDate').textContent=days[d.getDay()]+', '+months[d.getMonth()]+' '+d.getDate();
 })();
-</script>
-<script>
-  window.dataLayer=window.dataLayer||[];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js',new Date());
-  gtag('config','G-RX9TN7SJVP');
+
+// ── Game status checks ──
+function todayKey(){
+  var d=new Date();
+  return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+}
+function setStatus(dotId,textId,statusId,played){
+  var dot=document.getElementById(dotId);
+  var txt=document.getElementById(textId);
+  var st=document.getElementById(statusId);
+  if(played){
+    dot.classList.add('played');
+    txt.textContent='Played today';
+    st.classList.add('played');
+  }
+}
+
+var tk=todayKey();
+
+// Check Daily Five (stores played state as df_played_DATE)
+var wordPlayed=localStorage.getItem('df_played_'+tk)==='1';
+setStatus('wordDot','wordStatusText','wordStatus',wordPlayed);
+
+// Check Scramble
+var scramblePlayed=localStorage.getItem('ds_played_'+tk)==='1';
+setStatus('scrambleDot','scrambleStatusText','scrambleStatus',scramblePlayed);
 </script>
 </body>
 </html>

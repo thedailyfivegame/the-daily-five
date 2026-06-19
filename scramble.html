@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>The Daily Scramble — The Daily Five</title>
@@ -388,7 +390,7 @@ document.getElementById('themeBtn').onclick=function(){
   var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
   document.getElementById('headerDate').textContent=days[d.getDay()]+', '+months[d.getMonth()]+' '+d.getDate();
-  document.getElementById('headerEdition').textContent='Est. 2024';
+  (function(){var epoch=new Date('2025-01-01T00:00:00');var idx=Math.floor((Date.now()-epoch.getTime())/86400000);var el=document.getElementById('headerEdition');if(el)el.textContent='Day #'+idx;})();
   var idx=todayIdx();
   document.getElementById('dayLabel').textContent='Day #'+idx;
 })();

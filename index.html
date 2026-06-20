@@ -86,7 +86,7 @@
     .section-label::before,.section-label::after{content:'';flex:1;height:1px;background:var(--line);}
     /* How to Play */
     .how-to-section{max-width:1100px;margin:0 auto;padding:24px 20px 32px;}
-    .how-tabs{display:flex;border-bottom:2px solid var(--line);margin-bottom:24px;}
+    .how-tabs{display:flex;border-bottom:.px solid var(--line);margin-bottom:24px;}
     .how-tab{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--ink-muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color var(--trans),border-color var(--trans);font-family:'Hanken Grotesk',sans-serif;}
     .how-tab.active{color:var(--ink);border-bottom-color:var(--ink);}
     .how-panel{display:none;}
@@ -344,6 +344,8 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-links">
+    <a href="/leaderboard.html">🏆 Rankings</a>
+    <span class="footer-sep">&middot;</span>
     <a href="/privacy.html">Privacy Policy</a>
     <span class="footer-sep">&middot;</span>
     <a href="/terms.html">Terms of Service</a>
@@ -428,29 +430,4 @@ _auth.onAuthStateChanged(function(user){
     {c:"Geography"},{c:"History"},{c:"Science"},{c:"Pop Culture"},{c:"Mathematics"},
     {c:"Geography"},{c:"Science"},{c:"History"},{c:"Language"},{c:"Science"},
     {c:"Geography"},{c:"Pop Culture"},{c:"Science"},{c:"History"},{c:"Mathematics"},
-    {c:"Geography"},{c:"Science"},{c:"History"},{c:"Pop Culture"},{c:"Science"},
-    {c:"Geography"},{c:"Language"},{c:"Science"},{c:"History"},{c:"Pop Culture"},
-    {c:"Mathematics"},{c:"Geography"},{c:"Science"},{c:"History"},{c:"Pop Culture"},
-    {c:"Science"},{c:"Mathematics"},{c:"Geography"},{c:"History"},{c:"Pop Culture"},
-    {c:"Science"},{c:"Language"},{c:"History"},{c:"Geography"},{c:"Mathematics"}
-  ];
-  var d=new Date();
-  var epoch=new Date('2025-01-01T00:00:00');
-  var idx=Math.floor((Date.now()-epoch.getTime())/86400000)%QUESTIONS.length;
-  var tk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-  var cat=document.getElementById('triviaCategory');
-  if(cat) cat.textContent=QUESTIONS[idx].c;
-  if(localStorage.getItem('dt_played_'+tk)){
-    var dot=document.getElementById('triviaDot');
-    var txt=document.getElementById('triviaStatusText');
-    if(dot){dot.classList.add('played');}
-    if(txt){txt.textContent='Played today ✓';txt.classList.add('played');}
-  }
-})();
-
-// How to Play tabs
-document.querySelectorAll('.how-tab').forEach(function(btn){btn.addEventListener('click',function(){document.querySelectorAll('.how-tab').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.how-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');var t=document.getElementById('panel-'+btn.dataset.panel);if(t)t.classList.add('active');});});
-
-</script>
-</body>
-</html>
+    {c:"Geography"},{c:"Science"},{c:

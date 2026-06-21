@@ -216,7 +216,7 @@
 <div class="page">
   <div class="tabs">
     <button class="tab active" id="tabMonthly" onclick="showTab('monthly')">📅 Monthly</button>
-    <button class="tab" id="tabAlltime" onclick="showTab('alltime')">🌍 All-time</button>
+    <button class="tab" id="tabToday" onclick="showTab('today')">📆 Today</button>
   </div>
 
   <div class="legend">
@@ -313,7 +313,7 @@ function updateMonthNav(){
 function showTab(t){
   currentTab = t;
   document.getElementById('tabMonthly').classList.toggle('active', t === 'monthly');
-  document.getElementById('tabAlltime').classList.toggle('active', t === 'alltime');
+  document.getElementById('tabToday').classList.toggle('active', t === 'today');
   document.getElementById('monthNav').style.display = t === 'monthly' ? '' : 'none';
   loadRankings();
 }
@@ -349,10 +349,11 @@ function loadRankings(){
       window._db.collection('trivia_scores').where('day','>=',startDay).where('day','<=',endDay).limit(2000).get()
     ];
   } else {
+    var todayDay = dayIdx(today);
     queries = [
-      window._db.collection('scores').limit(5000).get(),
-      window._db.collection('scramble_scores').limit(5000).get(),
-      window._db.collection('trivia_scores').limit(5000).get()
+      window._db.collection('scores').where('day','==',todayDay).get(),
+      window._db.collection('scramble_scores').where('day','==',todayDay).get(),
+      window._db.collection('trivia_scores').where('day','==',todayDay).get()
     ];
   }
 
@@ -403,7 +404,7 @@ function loadRankings(){
     });
 
     if(sorted.length === 0){
-      var period = currentTab === 'monthly' ? MOS_NAMES[viewMonth]+' '+viewYear : 'all time';
+      var period = currentTab === 'monthly' ? MOS_NAMES[viewMonth]+' '+viewYear : 'today';
       document.getElementById('rankList').innerHTML =
         '<div class="empty">No scores yet for '+period+'.<br>Play all three games to appear here! 🎯</div>';
       return;

@@ -346,10 +346,10 @@ function loadRankings(){
     ];
   }
 
-  Promise.all(queries).then(function(results){
-    var wordSnap = results[0];
-    var scramSnap = results[1];
-    var trivSnap = results[2];
+  Promise.allSettled(queries).then(function(results){
+    var wordSnap = results[0].status==='fulfilled'?results[0].value:{docs:[]};
+    var scramSnap = results[1].status==='fulfilled'?results[1].value:{docs:[]};
+    var trivSnap = results[2].status==='fulfilled'?results[2].value:{docs:[]};
     var players = {};
 
     function ensure(slug, name){

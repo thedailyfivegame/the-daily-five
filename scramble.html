@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script>
   (function(){
@@ -23,7 +24,7 @@
     };
     try{
       if(!firebase.apps.length) firebase.initializeApp(cfg);
-      window._db=firebase.firestore();
+      window._db=firebase.firestore();firebase.auth().signInAnonymously().catch(function(){});
     }catch(e){ window._db=null; }
   })();
   </script>

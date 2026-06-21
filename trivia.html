@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>The Daily Trivia Ã¢ÂÂ One Question. One Shot.</title>
+  <title>The Daily Trivia — One Question. One Shot.</title>
   <meta name="description" content="One trivia question per day. One shot to get it right. Free daily trivia game from The Daily Five."/>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
@@ -117,7 +117,7 @@
 <div class="game-wrap">
   <!-- Already played banner -->
   <div class="played-banner" id="playedBanner">
-    <div class="played-title">You already played today Ã¢ÂÂ</div>
+    <div class="played-title">You already played today ✓</div>
     <div class="played-sub" id="playedSub">Come back tomorrow for a new question.</div>
   </div>
 
@@ -144,10 +144,9 @@
   </div>
 </div>
 
-  <!-- Instagram follow banner -->
   <div class="ig-follow-banner" id="igFollowBanner" style="display:none">
-    <p>ð¸ Follow <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">@thedailyfive.game</a> for daily updates &amp; behind the scenes</p>
-    <a href="/leaderboard.html" style="display:inline-block;margin-top:8px;color:var(--green,#3f7a4f);font-weight:700;font-size:13px;text-decoration:none;">ð View Rankings</a>
+    <p>&#x1F4F8; Follow <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">@thedailyfive.game</a> for daily updates &amp; behind the scenes</p>
+    <a href="/leaderboard.html" style="display:inline-block;margin-top:8px;color:var(--green,#3f7a4f);font-weight:700;font-size:13px;text-decoration:none;">&#x1F3C6; View Rankings</a>
   </div>
 
 <footer>
@@ -164,62 +163,62 @@
 </footer>
 
 <script>
-// Ã¢ÂÂÃ¢ÂÂ TRIVIA BANK Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// ── TRIVIA BANK ──────────────────────────────────────────────────────────────
 // 365 questions cycling by day index from 2025-01-01
 var QUESTIONS = [
   {c:"Geography",q:"What is the capital of Australia?",a:2,o:["Sydney","Melbourne","Canberra","Brisbane"],f:"Many people guess Sydney, but Canberra has been the capital since 1913."},
   {c:"Science",q:"What planet is known as the Red Planet?",a:1,o:["Venus","Mars","Jupiter","Saturn"],f:"Mars gets its reddish colour from iron oxide (rust) on its surface."},
-  {c:"History",q:"In what year did World War II end?",a:2,o:["1943","1944","1945","1946"],f:"WWII ended in 1945 Ã¢ÂÂ VE Day (Europe) in May and VJ Day (Japan) in September."},
+  {c:"History",q:"In what year did World War II end?",a:2,o:["1943","1944","1945","1946"],f:"WWII ended in 1945 — VE Day (Europe) in May and VJ Day (Japan) in September."},
   {c:"Science",q:"What is the chemical symbol for gold?",a:1,o:["Go","Au","Gd","Ag"],f:"Au comes from the Latin word 'aurum', meaning gold."},
   {c:"Pop Culture",q:"Which streaming service produced 'Stranger Things'?",a:0,o:["Netflix","HBO","Amazon","Disney+"],f:"Stranger Things has been a Netflix original since its debut in 2016."},
-  {c:"Geography",q:"Which country has the most natural lakes?",a:2,o:["Russia","USA","Canada","Finland"],f:"Canada has over 60% of the world's freshwater lakes Ã¢ÂÂ about 2 million."},
+  {c:"Geography",q:"Which country has the most natural lakes?",a:2,o:["Russia","USA","Canada","Finland"],f:"Canada has over 60% of the world's freshwater lakes — about 2 million."},
   {c:"Science",q:"How many bones are in the adult human body?",a:1,o:["196","206","216","226"],f:"Adults have 206 bones. Babies are born with around 270, which fuse over time."},
   {c:"History",q:"Who painted the Mona Lisa?",a:0,o:["Leonardo da Vinci","Michelangelo","Raphael","Botticelli"],f:"Leonardo da Vinci painted the Mona Lisa, likely between 1503 and 1519."},
   {c:"Language",q:"What is the most spoken language in the world by native speakers?",a:2,o:["English","Spanish","Mandarin Chinese","Hindi"],f:"Mandarin Chinese has the most native speakers, with nearly 1 billion."},
-  {c:"Science",q:"What is the speed of light in a vacuum (approximately)?",a:1,o:["200,000 km/s","300,000 km/s","400,000 km/s","150,000 km/s"],f:"Light travels at approximately 299,792 km/s Ã¢ÂÂ about 186,000 miles per second."},
+  {c:"Science",q:"What is the speed of light in a vacuum (approximately)?",a:1,o:["200,000 km/s","300,000 km/s","400,000 km/s","150,000 km/s"],f:"Light travels at approximately 299,792 km/s — about 186,000 miles per second."},
   {c:"Geography",q:"Which ocean is the largest?",a:0,o:["Pacific","Atlantic","Indian","Arctic"],f:"The Pacific Ocean covers more than 30% of Earth's surface."},
   {c:"History",q:"Who was the first person to walk on the Moon?",a:2,o:["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","John Glenn"],f:"Neil Armstrong took his historic first step on July 21, 1969."},
-  {c:"Science",q:"What gas do plants absorb from the atmosphere?",a:1,o:["Oxygen","Carbon dioxide","Nitrogen","Hydrogen"],f:"Plants absorb COÃ¢ÂÂ and release oxygen through photosynthesis."},
+  {c:"Science",q:"What gas do plants absorb from the atmosphere?",a:1,o:["Oxygen","Carbon dioxide","Nitrogen","Hydrogen"],f:"Plants absorb CO₂ and release oxygen through photosynthesis."},
   {c:"Pop Culture",q:"Which city hosts the Cannes Film Festival?",a:0,o:["Cannes","Paris","Nice","Lyon"],f:"The Cannes Film Festival has been held in Cannes, France since 1946."},
-  {c:"Mathematics",q:"What is the value of Pi to two decimal places?",a:2,o:["3.12","3.13","3.14","3.16"],f:"Pi is approximately 3.14159265... Ã¢ÂÂ an irrational number that never repeats."},
+  {c:"Mathematics",q:"What is the value of Pi to two decimal places?",a:2,o:["3.12","3.13","3.14","3.16"],f:"Pi is approximately 3.14159265... — an irrational number that never repeats."},
   {c:"Geography",q:"What is the longest river in the world?",a:1,o:["Amazon","Nile","Yangtze","Mississippi"],f:"The Nile is generally considered the longest river at about 6,650 km."},
-  {c:"Science",q:"What is the hardest natural substance on Earth?",a:0,o:["Diamond","Graphene","Quartz","Sapphire"],f:"Diamond rates 10 on the Mohs hardness scale Ã¢ÂÂ the maximum."},
+  {c:"Science",q:"What is the hardest natural substance on Earth?",a:0,o:["Diamond","Graphene","Quartz","Sapphire"],f:"Diamond rates 10 on the Mohs hardness scale — the maximum."},
   {c:"History",q:"Which empire was ruled by Julius Caesar?",a:1,o:["Greek Empire","Roman Empire","Ottoman Empire","Persian Empire"],f:"Julius Caesar was a pivotal figure in the Roman Empire's rise to power."},
   {c:"Language",q:"How many letters are in the English alphabet?",a:2,o:["24","25","26","27"],f:"The modern English alphabet has 26 letters, adopted from the Latin alphabet."},
-  {c:"Science",q:"Which planet has the most moons?",a:1,o:["Jupiter","Saturn","Uranus","Neptune"],f:"Saturn has over 140 confirmed moons Ã¢ÂÂ more than any other planet in our solar system."},
-  {c:"Geography",q:"What is the smallest country in the world?",a:0,o:["Vatican City","Monaco","San Marino","Liechtenstein"],f:"Vatican City, at just 0.44 kmÃÂ², is the world's smallest independent state."},
+  {c:"Science",q:"Which planet has the most moons?",a:1,o:["Jupiter","Saturn","Uranus","Neptune"],f:"Saturn has over 140 confirmed moons — more than any other planet in our solar system."},
+  {c:"Geography",q:"What is the smallest country in the world?",a:0,o:["Vatican City","Monaco","San Marino","Liechtenstein"],f:"Vatican City, at just 0.44 km², is the world's smallest independent state."},
   {c:"Pop Culture",q:"Which band released the album 'Thriller' in 1982?",a:2,o:["Prince","The Beatles","Michael Jackson","Madonna"],f:"Michael Jackson's Thriller remains the best-selling album of all time."},
   {c:"Science",q:"What element has the atomic number 1?",a:1,o:["Helium","Hydrogen","Carbon","Oxygen"],f:"Hydrogen is the lightest and most abundant element in the universe."},
   {c:"History",q:"In which city was the Titanic built?",a:0,o:["Belfast","Dublin","Liverpool","Southampton"],f:"The Titanic was built in Belfast, Northern Ireland, at the Harland and Wolff shipyard."},
-  {c:"Mathematics",q:"What is 12 squared?",a:2,o:["124","134","144","154"],f:"12 ÃÂ 12 = 144. A perfect square!"},
+  {c:"Mathematics",q:"What is 12 squared?",a:2,o:["124","134","144","154"],f:"12 × 12 = 144. A perfect square!"},
   {c:"Geography",q:"Which continent is the Sahara Desert located on?",a:1,o:["Asia","Africa","Australia","South America"],f:"The Sahara is the world's largest hot desert, spanning North Africa."},
-  {c:"Science",q:"What is the powerhouse of the cell?",a:0,o:["Mitochondria","Nucleus","Ribosome","Chloroplast"],f:"The mitochondria produce ATP Ã¢ÂÂ the energy currency of the cell."},
+  {c:"Science",q:"What is the powerhouse of the cell?",a:0,o:["Mitochondria","Nucleus","Ribosome","Chloroplast"],f:"The mitochondria produce ATP — the energy currency of the cell."},
   {c:"Pop Culture",q:"Who wrote the Harry Potter series?",a:2,o:["Stephenie Meyer","Suzanne Collins","J.K. Rowling","Philip Pullman"],f:"J.K. Rowling published the first Harry Potter book in 1997."},
   {c:"History",q:"Which country gifted the Statue of Liberty to the USA?",a:1,o:["England","France","Spain","Germany"],f:"France gifted the Statue of Liberty in 1886 as a symbol of friendship."},
   {c:"Science",q:"How many planets are in our solar system?",a:2,o:["7","7","8","9"],f:"There are 8 planets. Pluto was reclassified as a dwarf planet in 2006."},
   {c:"Geography",q:"What is the capital of Japan?",a:0,o:["Tokyo","Osaka","Kyoto","Hiroshima"],f:"Tokyo has been Japan's capital since 1869, when it was known as Edo."},
   {c:"Language",q:"What language is spoken in Brazil?",a:1,o:["Spanish","Portuguese","Brazilian","French"],f:"Brazil was colonised by Portugal, so Portuguese is the official language."},
-  {c:"Science",q:"What is HÃ¢ÂÂO more commonly known as?",a:0,o:["Water","Hydrogen gas","Oxygen","Steam"],f:"HÃ¢ÂÂO is the chemical formula for water Ã¢ÂÂ two hydrogen atoms and one oxygen."},
+  {c:"Science",q:"What is H₂O more commonly known as?",a:0,o:["Water","Hydrogen gas","Oxygen","Steam"],f:"H₂O is the chemical formula for water — two hydrogen atoms and one oxygen."},
   {c:"History",q:"Who invented the telephone?",a:2,o:["Thomas Edison","Nikola Tesla","Alexander Graham Bell","Samuel Morse"],f:"Alexander Graham Bell received the first patent for the telephone in 1876."},
   {c:"Pop Culture",q:"Which country does LEGO originate from?",a:1,o:["Sweden","Denmark","Norway","Finland"],f:"LEGO was founded in Billund, Denmark in 1932 by Ole Kirk Christiansen."},
-  {c:"Mathematics",q:"What is the next prime number after 7?",a:0,o:["11","9","10","13"],f:"11 is prime Ã¢ÂÂ divisible only by 1 and itself. 9 = 3ÃÂ3, 10 = 2ÃÂ5."},
+  {c:"Mathematics",q:"What is the next prime number after 7?",a:0,o:["11","9","10","13"],f:"11 is prime — divisible only by 1 and itself. 9 = 3×3, 10 = 2×5."},
   {c:"Geography",q:"Which mountain is the tallest in the world?",a:2,o:["K2","Kangchenjunga","Mount Everest","Makalu"],f:"Mount Everest stands at 8,848.86 metres above sea level."},
-  {c:"Science",q:"What is the largest organ in the human body?",a:1,o:["Brain","Skin","Liver","Lungs"],f:"The skin is the largest organ Ã¢ÂÂ an average adult has about 2 square metres of it."},
+  {c:"Science",q:"What is the largest organ in the human body?",a:1,o:["Brain","Skin","Liver","Lungs"],f:"The skin is the largest organ — an average adult has about 2 square metres of it."},
   {c:"History",q:"Which ancient wonder was located in Alexandria?",a:0,o:["The Lighthouse","The Colossus","The Mausoleum","The Temple of Artemis"],f:"The Lighthouse of Alexandria was one of the tallest man-made structures for centuries."},
-  {c:"Pop Culture",q:"What colour is the famous London phone box?",a:1,o:["Blue","Red","Green","Yellow"],f:"The iconic London phone box is bright red Ã¢ÂÂ introduced in 1924 by Sir Giles Gilbert Scott."},
+  {c:"Pop Culture",q:"What colour is the famous London phone box?",a:1,o:["Blue","Red","Green","Yellow"],f:"The iconic London phone box is bright red — introduced in 1924 by Sir Giles Gilbert Scott."},
   {c:"Science",q:"Which gas makes up most of Earth's atmosphere?",a:0,o:["Nitrogen","Oxygen","Carbon dioxide","Argon"],f:"Nitrogen makes up about 78% of Earth's atmosphere. Oxygen is about 21%."},
-  {c:"Mathematics",q:"What is 15% of 200?",a:2,o:["25","20","30","35"],f:"15% of 200 = 0.15 ÃÂ 200 = 30."},
-  {c:"Geography",q:"Which country has the longest coastline in the world?",a:1,o:["Russia","Canada","Australia","Norway"],f:"Canada has the longest coastline at over 202,000 km Ã¢ÂÂ including its many islands."},
+  {c:"Mathematics",q:"What is 15% of 200?",a:2,o:["25","20","30","35"],f:"15% of 200 = 0.15 × 200 = 30."},
+  {c:"Geography",q:"Which country has the longest coastline in the world?",a:1,o:["Russia","Canada","Australia","Norway"],f:"Canada has the longest coastline at over 202,000 km — including its many islands."},
   {c:"History",q:"What year did the Berlin Wall fall?",a:0,o:["1989","1991","1987","1993"],f:"The Berlin Wall fell on November 9, 1989, reuniting East and West Germany."},
   {c:"Pop Culture",q:"Who plays Iron Man in the Marvel Cinematic Universe?",a:2,o:["Chris Evans","Chris Hemsworth","Robert Downey Jr.","Mark Ruffalo"],f:"Robert Downey Jr. debuted as Tony Stark / Iron Man in 2008."},
   {c:"Science",q:"What is the closest star to Earth?",a:1,o:["Sirius","The Sun","Proxima Centauri","Alpha Centauri A"],f:"Our Sun is the closest star at about 150 million km. Proxima Centauri is the closest other star."},
   {c:"Language",q:"What is a word that reads the same forwards and backwards called?",a:0,o:["Palindrome","Anagram","Homophone","Acronym"],f:"'Racecar', 'level', and 'madam' are all palindromes."},
   {c:"History",q:"Who discovered penicillin?",a:2,o:["Marie Curie","Louis Pasteur","Alexander Fleming","Robert Koch"],f:"Alexander Fleming discovered penicillin in 1928, revolutionising medicine."},
-  {c:"Geography",q:"What is the currency of Japan?",a:1,o:["Yuan","Yen","Won","Baht"],f:"The Japanese Yen (ÃÂ¥) has been Japan's currency since 1871."},
-  {c:"Mathematics",q:"How many sides does a hexagon have?",a:2,o:["5","7","6","8"],f:"Hex means six Ã¢ÂÂ a hexagon has 6 sides and 6 angles."}
+  {c:"Geography",q:"What is the currency of Japan?",a:1,o:["Yuan","Yen","Won","Baht"],f:"The Japanese Yen (¥) has been Japan's currency since 1871."},
+  {c:"Mathematics",q:"How many sides does a hexagon have?",a:2,o:["5","7","6","8"],f:"Hex means six — a hexagon has 6 sides and 6 angles."}
 ];
 
-// Ã¢ÂÂÃ¢ÂÂ DATE + INDEX Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// ── DATE + INDEX ─────────────────────────────────────────────────────────────
 var _today = new Date();
 var _epoch = new Date('2025-01-01T00:00:00');
 var _dayIdx = Math.floor((Date.now() - _epoch.getTime()) / 86400000);
@@ -228,7 +227,7 @@ var _q = QUESTIONS[_qIdx];
 var _dateKey = _today.getFullYear() + '-' + (_today.getMonth()+1) + '-' + _today.getDate();
 var _storageKey = 'dt_played_' + _dateKey;
 
-// Ã¢ÂÂÃ¢ÂÂ HEADER Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// ── HEADER ───────────────────────────────────────────────────────────────────
 (function(){
   var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   var mos=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -238,21 +237,21 @@ var _storageKey = 'dt_played_' + _dateKey;
   var qn=document.getElementById('questionNum');if(qn)qn.textContent='Question #'+(_dayIdx+1);
 })();
 
-// Ã¢ÂÂÃ¢ÂÂ THEME Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// ── THEME ────────────────────────────────────────────────────────────────────
 (function(){
   var t=localStorage.getItem('df_theme')||'light';
   document.documentElement.setAttribute('data-theme',t);
-  document.getElementById('themeBtn').textContent=t==='dark'?'Ã¢ÂÂÃ¯Â¸Â':'Ã°ÂÂÂ';
+  document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';
 })();
 document.getElementById('themeBtn').onclick=function(){
   var c=document.documentElement.getAttribute('data-theme');
   var n=c==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',n);
   localStorage.setItem('df_theme',n);
-  this.textContent=n==='dark'?'Ã¢ÂÂÃ¯Â¸Â':'Ã°ÂÂÂ';
+  this.textContent=n==='dark'?'☀️':'🌙';
 };
 
-// Ã¢ÂÂÃ¢ÂÂ RENDER QUESTION Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// ── RENDER QUESTION ──────────────────────────────────────────────────────────
 document.getElementById('categoryBadge').textContent = _q.c;
 document.getElementById('questionText').textContent = _q.q;
 
@@ -267,7 +266,7 @@ _q.o.forEach(function(opt, i){
   _optWrap.appendChild(btn);
 });
 
-// Ã¢ÂÂÃ¢ÂÂ CHECK IF ALREADY PLAYED Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// ── CHECK IF ALREADY PLAYED ───────────────────────────────────────────────────
 var _savedResult = localStorage.getItem(_storageKey);
 if (_savedResult) {
   _showAlreadyPlayed(JSON.parse(_savedResult));
@@ -284,13 +283,13 @@ function _showAlreadyPlayed(res) {
   });
   document.getElementById('playedBanner').classList.add('show');
   document.getElementById('playedSub').textContent = res.correct
-    ? 'Ã¢ÂÂ You got it right! Come back tomorrow for a new question.'
+    ? '✓ You got it right! Come back tomorrow for a new question.'
     : 'The answer was ' + _q.o[_q.a] + '. Better luck tomorrow!';
   _showResult(res.correct, res.chosen, false);
   _startCountdown();
 }
 
-// Ã¢ÂÂÃ¢ÂÂ ANSWER Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// ── ANSWER ───────────────────────────────────────────────────────────────────
 function _answer(chosen) {
   var correct = (chosen === _q.a);
   var btns = _optWrap.querySelectorAll('.option-btn');
@@ -305,14 +304,7 @@ function _answer(chosen) {
   var result = {correct: correct, chosen: chosen};
   localStorage.setItem(_storageKey, JSON.stringify(result));
 
-  if(window._db){
-    try{
-      var tName=localStorage.getItem('df_lb_name')||'Anonymous';
-      var tDoc={day:_dayIdx,name:tName,correct:correct,ts:firebase.firestore.FieldValue.serverTimestamp()};
-      var tId=tName.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+'_'+_dayIdx;
-      window._db.collection('trivia_scores').doc(tId).set(tDoc).catch(function(){});
-    }catch(e){}
-  }
+  if(window._db){try{var tName=localStorage.getItem('df_lb_name')||'Anonymous';var tDoc={day:_dayIdx,name:tName,correct:correct,ts:firebase.firestore.FieldValue.serverTimestamp()};var tId=tName.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+ '_'+_dayIdx;window._db.collection('trivia_scores').doc(tId).set(tDoc).catch(function(){});}catch(e){}}
 
   // Award coins
   if (correct) {
@@ -330,41 +322,41 @@ function _showResult(correct, chosen, animate) {
   var body = document.getElementById('resultBody');
   var coinsEl = document.getElementById('resultCoins');
 
-  headline.textContent = correct ? 'Correct! Ã°ÂÂÂ' : 'Not quite...';
+  headline.textContent = correct ? 'Correct! 🎉' : 'Not quite...';
   headline.className = 'result-headline ' + (correct ? 'win' : 'lose');
 
   body.innerHTML = '<strong>Did you know?</strong> ' + _q.f;
 
   if (correct && animate) {
-    coinsEl.textContent = 'Ã°ÂÂªÂ +3 coins earned!';
+    coinsEl.textContent = '🪙 +3 coins earned!';
   } else {
-    coinsEl.textContent = correct ? 'Ã°ÂÂªÂ +3 coins' : 'The answer was: ' + _q.o[_q.a];
+    coinsEl.textContent = correct ? '🪙 +3 coins' : 'The answer was: ' + _q.o[_q.a];
   }
 
   panel.classList.add('show');
   var igB=document.getElementById('igFollowBanner');if(igB)igB.style.display='block';
 }
 
-// Ã¢ÂÂÃ¢ÂÂ SHARE Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// ── SHARE ────────────────────────────────────────────────────────────────────
 document.getElementById('shareBtn').onclick = function(){
   var res = JSON.parse(localStorage.getItem(_storageKey) || '{}');
   var correct = res.correct;
   var text = 'The Daily Trivia #' + (_dayIdx + 1) + '\n' +
-    (correct ? 'Ã¢ÂÂ Got it!' : 'Ã¢ÂÂ Missed it') + '\n\n' +
-    'Ã°ÂÂÂ ' + _q.c + '\n' +
+    (correct ? '✅ Got it!' : '❌ Missed it') + '\n\n' +
+    '📚 ' + _q.c + '\n' +
     'the-daily-five-v3.vercel.app/trivia.html';
   if (navigator.share) {
     navigator.share({title:'The Daily Trivia', text:text}).catch(function(){});
   } else {
     navigator.clipboard.writeText(text).then(function(){
       var btn = document.getElementById('shareBtn');
-      btn.textContent = 'Ã¢ÂÂ Copied!';
+      btn.textContent = '✓ Copied!';
       setTimeout(function(){ btn.innerHTML = '&#128279; Share Result'; }, 2000);
     });
   }
 };
 
-// Ã¢ÂÂÃ¢ÂÂ COUNTDOWN Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// ── COUNTDOWN ────────────────────────────────────────────────────────────────
 function _startCountdown() {
   document.getElementById('countdownWrap').style.display = 'block';
   function tick() {

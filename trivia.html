@@ -86,7 +86,7 @@
   <script>
   (function(){
     var cfg={apiKey:"AIzaSyAy0iARQPIZSeE4W_Qco7ctonY_758yvvU",authDomain:"thedailyfive-f7103.firebaseapp.com",projectId:"thedailyfive-f7103",storageBucket:"thedailyfive-f7103.appspot.com"};
-    try{if(!firebase.apps.length)firebase.initializeApp(cfg);window._db=firebase.firestore();}catch(e){window._db=null;}
+    try{if(!firebase.apps.length)firebase.initializeApp(cfg);window._db=firebase.firestore();firebase.auth().signInAnonymously().catch(function(){});}catch(e){window._db=null;}
   })();
   </script>
   <meta property="og:type" content="website"/>

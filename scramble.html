@@ -237,6 +237,8 @@
 .ig-follow-banner{margin-top:14px;background:var(--paper-2);border:1.5px solid var(--line);border-radius:var(--radius);padding:13px 18px;text-align:center;}
 .ig-follow-banner a{color:var(--accent);text-decoration:none;font-weight:700;font-size:13px;}
 .ig-follow-banner p{font-size:13px;color:var(--ink-soft);}
+.share-btn{display:block;width:100%;margin-top:12px;background:var(--ink);color:var(--paper);border:none;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:.05em;padding:10px 20px;border-radius:var(--radius);font-family:'Hanken Grotesk',sans-serif;}
+.share-btn:hover{background:var(--accent);}
 </style>
   <meta property="og:type" content="website"/>
   <meta property="og:title" content="The Daily Scramble — The Daily Five"/>
@@ -306,6 +308,7 @@
   <div class="ig-follow-banner" id="igFollowBanner" style="display:none">
     <p>📸 Follow <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">@thedailyfive.game</a> for daily updates &amp; behind the scenes</p>
     <a href="/leaderboard.html" style="display:inline-block;margin-top:8px;color:var(--green,#3f7a4f);font-weight:700;font-size:13px;text-decoration:none;">&#x1F3C6; View Rankings</a>
+    <button class="share-btn" id="shareBtn">&#128279; Share Result</button>
   </div>
 </div>
 
@@ -675,6 +678,27 @@ function loadLeaderboard(){
   }
   buildUI();
 })();
+
+
+// ── SHARE ──
+document.getElementById('shareBtn').onclick = function(){
+  var titleEl = document.querySelector('#result .result-title');
+  var won = titleEl && titleEl.textContent.indexOf('Solved') !== -1;
+  var timeText = won ? titleEl.textContent : '';
+  var text = 'The Daily Scramble #'+(DAY+1)+'\n'+
+    (won ? '\u2705 '+timeText : '\u274c Not solved')+'\n\n'+
+    '\uD83D\uDD24 '+WORD+'\n'+
+    'www.thedailyfive.net/scramble.html';
+  if(navigator.share){
+    navigator.share({title:'The Daily Scramble', text:text}).catch(function(){});
+  } else {
+    navigator.clipboard.writeText(text).then(function(){
+      var btn = document.getElementById('shareBtn');
+      btn.textContent = '\u2713 Copied!';
+      setTimeout(function(){ btn.innerHTML = '&#128279; Share Result'; }, 2000);
+    });
+  }
+};
 </script>
 
 <footer>

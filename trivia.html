@@ -162,6 +162,8 @@
 
 <footer>
   <div class="footer-links">
+    <a href="/">Home</a>
+    <span class="footer-sep">&middot;</span>
     <a href="/privacy.html">Privacy Policy</a>
     <span class="footer-sep">&middot;</span>
     <a href="/terms.html">Terms of Service</a>
@@ -355,7 +357,7 @@ document.getElementById('shareBtn').onclick = function(){
   var text = 'The Daily Trivia #' + (_dayIdx + 1) + '\n' +
     (correct ? '✅ Got it!' : '❌ Missed it') + '\n\n' +
     '📚 ' + _q.c + '\n' +
-    'the-daily-five-v3.vercel.app/trivia.html';
+    'www.thedailyfive.net/trivia.html';
   if (navigator.share) {
     navigator.share({title:'The Daily Trivia', text:text}).catch(function(){});
   } else {

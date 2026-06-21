@@ -5,15 +5,15 @@
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>The Daily Scramble â The Daily Five</title>
+  <title>The Daily Scramble — The Daily Five</title>
   <meta name="description" content="Unscramble the daily 5-letter word as fast as you can."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script>
   (function(){
     var cfg={
@@ -55,7 +55,7 @@
     }
     *{position:relative;z-index:1;}
 
-    /* ââ Header ââ */
+    /* ── Header ── */
     header{
       border-bottom:2px solid var(--ink);
       padding:8px 14px 7px;
@@ -95,10 +95,10 @@
       color:var(--ink);border-radius:var(--radius);flex-shrink:0;
     }
 
-    /* ââ Page ââ */
+    /* ── Page ── */
     .page{max-width:520px;margin:0 auto;padding:28px 16px 64px;}
 
-    /* ââ Day label ââ */
+    /* ── Day label ── */
     .day-label{
       font-family:'Fraunces',serif;font-weight:700;font-size:13px;
       color:var(--ink-muted);text-align:center;margin-bottom:6px;
@@ -113,7 +113,7 @@
       margin-bottom:28px;
     }
 
-    /* ââ Timer ââ */
+    /* ── Timer ── */
     .timer-row{
       display:flex;justify-content:center;align-items:center;gap:8px;
       margin-bottom:24px;
@@ -125,7 +125,7 @@
     .timer.running{color:var(--accent);}
     .timer.done-win{color:var(--green);}
 
-    /* ââ Answer slots ââ */
+    /* ── Answer slots ── */
     .answer-row{
       display:flex;justify-content:center;gap:8px;margin-bottom:20px;
     }
@@ -146,7 +146,7 @@
     [data-theme="dark"] .slot.correct{background:#1a3a24;}
     [data-theme="dark"] .slot.wrong{background:#3a1a1a;}
 
-    /* ââ Scrambled tiles ââ */
+    /* ── Scrambled tiles ── */
     .tiles-label{
       font-size:10px;letter-spacing:.18em;text-transform:uppercase;
       color:var(--ink-muted);font-weight:700;text-align:center;margin-bottom:10px;
@@ -168,7 +168,7 @@
       opacity:.25;cursor:default;pointer-events:none;
     }
 
-    /* ââ Action buttons ââ */
+    /* ── Action buttons ── */
     .actions{display:flex;gap:10px;justify-content:center;margin-bottom:24px;}
     .btn{
       padding:11px 24px;font-family:'Hanken Grotesk',sans-serif;
@@ -182,7 +182,7 @@
     .btn-secondary:hover{background:var(--paper-2);}
     .btn:disabled{opacity:.4;cursor:default;}
 
-    /* ââ Result banner ââ */
+    /* ── Result banner ── */
     .result{
       display:none;text-align:center;padding:20px;
       border:1.5px solid var(--line);border-radius:4px;
@@ -198,7 +198,7 @@
       color:var(--amber);
     }
 
-    /* ââ Leaderboard ââ */
+    /* ── Leaderboard ── */
     .lb-section{margin-top:32px;}
     .lb-title{
       font-family:'Fraunces',serif;font-weight:700;font-size:16px;
@@ -239,9 +239,13 @@
 </style>
   <meta property="og:type" content="website"/>
   <meta property="og:title" content="The Daily Scramble — The Daily Five"/>
-  <meta property="og:description" content="Unscramble one word per day. A fast, fun daily word game from The Daily Five."/>
+  <meta property="og:description" content="Unscramble the hidden word. One puzzle daily — no replays."/>
   <meta property="og:url" content="https://www.thedailyfive.net/scramble.html"/>
   <meta property="og:image" content="https://www.thedailyfive.net/og-image.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="The Daily Scramble — The Daily Five"/>
+  <meta name="twitter:description" content="Unscramble the hidden word. One puzzle daily — no replays."/>
+  <meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
 </head>
 <body>
 <header>
@@ -299,13 +303,13 @@
 
   <!-- Instagram follow banner -->
   <div class="ig-follow-banner" id="igFollowBanner" style="display:none">
-    <p>ð¸ Follow <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">@thedailyfive.game</a> for daily updates &amp; behind the scenes</p>
+    <p>📸 Follow <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">@thedailyfive.game</a> for daily updates &amp; behind the scenes</p>
     <a href="/leaderboard.html" style="display:inline-block;margin-top:8px;color:var(--green,#3f7a4f);font-weight:700;font-size:13px;text-decoration:none;">&#x1F3C6; View Rankings</a>
   </div>
 </div>
 
 <script>
-// ââ Word list (365 curated 5-letter words) ââ
+// ── Word list (365 curated 5-letter words) ──
 var WORDS = [
 'ABOUT','ACTOR','ADMIT','ADULT','AFTER','AGAIN','AGENT','AGREE','AHEAD','ALARM',
 'ALBUM','ALERT','ALIKE','ALIVE','ALLOW','ALONE','ALONG','ALTER','AMBER','ANGEL',
@@ -362,12 +366,12 @@ var WORDS = [
 'BRISK','CRISP','FRAIL','GRUFF','SCANT','SLICK','STARK','TERSE','VAPID','VIVID'
 ];
 
-// ââ Helpers ââ
+// ── Helpers ──
 var S = {
   get:function(k){try{return localStorage.getItem(k);}catch(e){return null;}},
   set:function(k,v){try{localStorage.setItem(k,v);}catch(e){}}
 };
-var MEDALS = ['ð¥','ð¥','ð¥'];
+var MEDALS = ['🥇','🥈','🥉'];
 
 function todayIdx(){
   var epoch=new Date('2025-01-01T00:00:00');
@@ -385,21 +389,21 @@ function getMyName(){
   return (S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
 }
 
-// ââ Theme ââ
+// ── Theme ──
 (function(){
   var t=S.get('df_theme')||'light';
   document.documentElement.setAttribute('data-theme',t);
-  document.getElementById('themeBtn').textContent=t==='dark'?'âï¸':'ð';
+  document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';
 })();
 document.getElementById('themeBtn').onclick=function(){
   var cur=document.documentElement.getAttribute('data-theme');
   var next=cur==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',next);
   S.set('df_theme',next);
-  this.textContent=next==='dark'?'âï¸':'ð';
+  this.textContent=next==='dark'?'☀️':'🌙';
 };
 
-// ââ Header date ââ
+// ── Header date ──
 (function(){
   var d=new Date();
   var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -410,7 +414,7 @@ document.getElementById('themeBtn').onclick=function(){
   document.getElementById('dayLabel').textContent='Day #'+idx;
 })();
 
-// ââ Game state ââ
+// ── Game state ──
 var DAY = todayIdx();
 var WORD = WORDS[DAY % WORDS.length];
 var answer = []; // indices into WORD (which letter positions chosen)
@@ -420,7 +424,7 @@ var endTime = null;
 var timerInterval = null;
 var gameOver = false;
 
-// ââ Scramble word (shuffle until differs from original) ââ
+// ── Scramble word (shuffle until differs from original) ──
 function scramble(word){
   var letters = word.split('');
   var tries = 0;
@@ -436,7 +440,7 @@ function scramble(word){
 
 var scrambledLetters = scramble(WORD);
 
-// ââ Build UI ââ
+// ── Build UI ──
 function buildUI(){
   // Answer slots
   var ar=document.getElementById('answerRow');
@@ -576,14 +580,14 @@ function submitAnswer(){
 
 function showResult(won, elapsed, guess){
   var el=document.getElementById('result');
-  var coins=won?'+6 ðª':'';
+  var coins=won?'+6 🪙':'';
   if(won){
-    el.innerHTML='<div class="result-emoji">ð</div>'+
+    el.innerHTML='<div class="result-emoji">🎉</div>'+
       '<div class="result-title">Solved in '+fmtTime(elapsed)+'!</div>'+
       '<div class="result-sub">The word was <strong>'+WORD+'</strong></div>'+
       (coins?'<div class="result-coins">'+coins+' coins earned</div>':'');
   } else {
-    el.innerHTML='<div class="result-emoji">ð¬</div>'+
+    el.innerHTML='<div class="result-emoji">😬</div>'+
       '<div class="result-title">Not quite!</div>'+
       '<div class="result-sub">You guessed <strong>'+guess+'</strong>, the word was <strong>'+WORD+'</strong></div>';
   }
@@ -620,7 +624,7 @@ function loadLeaderboard(){
     .get()
     .then(function(snap){
       if(snap.empty){
-        document.getElementById('lbList').innerHTML='<div class="empty">No winners yet today â you could be first!</div>';
+        document.getElementById('lbList').innerHTML='<div class="empty">No winners yet today — you could be first!</div>';
         return;
       }
       var docs=snap.docs.map(function(d){return{id:d.id,data:d.data()};});
@@ -644,11 +648,11 @@ function loadLeaderboard(){
     });
 }
 
-// ââ Check if already played today ââ
+// ── Check if already played today ──
 (function(){
   var tk=todayKey();
   if(S.get('ds_played_'+tk)==='1'){
-    // Already played â show already played state
+    // Already played — show already played state
     gameOver=true;
     buildUI();
     // Disable all tiles
@@ -660,7 +664,7 @@ function loadLeaderboard(){
 
     var won=S.get('ds_won_'+tk)==='1';
     var el=document.getElementById('result');
-    el.innerHTML='<div class="result-emoji">'+(won?'â':'ð¬')+'</div>'
+    el.innerHTML='<div class="result-emoji">'+(won?'✅':'😬')+'</div>'
       +'<div class="result-title">Already played today!</div>'
       +'<div class="result-sub">The word was <strong>'+WORD+'</strong>. Come back tomorrow for a new word.</div>';
     el.classList.add('show');

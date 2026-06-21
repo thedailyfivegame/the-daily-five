@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Rankings — The Daily Five</title>
-  <meta name="description" content="Cumulative leaderboard for The Daily Five — word game, scramble and trivia."/>
+  <title>Rankings â The Daily Five</title>
+  <meta name="description" content="Cumulative leaderboard for The Daily Five â word game, scramble and trivia."/>
   <!-- GA -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
@@ -47,7 +47,7 @@
     }
     *{position:relative;z-index:1;}
 
-    /* ── Header ── */
+    /* ââ Header ââ */
     header{border-bottom:2px solid var(--ink);padding:8px 14px 7px;transition:border-color var(--trans);}
     .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
     .header-center{text-align:center;flex:1;}
@@ -78,10 +78,10 @@
     .back-btn:hover{background:var(--paper-2);border-color:var(--ink-soft);}
     .theme-btn{background:none;border:none;cursor:pointer;font-size:18px;padding:6px;color:var(--ink);border-radius:var(--radius);flex-shrink:0;}
 
-    /* ── Page ── */
+    /* ââ Page ââ */
     .page{max-width:680px;margin:0 auto;padding:24px 16px 48px;}
 
-    /* ── Tabs ── */
+    /* ââ Tabs ââ */
     .tabs{display:flex;border-bottom:2px solid var(--ink);margin-bottom:22px;}
     .tab{
       flex:1;padding:10px 0;font-size:13px;font-weight:700;letter-spacing:.08em;
@@ -92,7 +92,7 @@
     .tab.active{color:var(--ink);border-bottom-color:var(--ink);}
     .tab:hover:not(.active){color:var(--ink-soft);}
 
-    /* ── Legend ── */
+    /* ââ Legend ââ */
     .legend{
       display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
       margin-bottom:18px;padding:9px 14px;
@@ -101,7 +101,7 @@
     .legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--ink-soft);}
     .legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 
-    /* ── Month nav ── */
+    /* ââ Month nav ââ */
     .month-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:20px;}
     .month-nav button{
       background:none;border:1.5px solid var(--line);border-radius:var(--radius);
@@ -112,7 +112,7 @@
     .month-nav button:disabled{opacity:.3;cursor:default;}
     #monthLabel{font-family:'Fraunces',serif;font-weight:700;font-size:18px;min-width:140px;text-align:center;}
 
-    /* ── Rank table ── */
+    /* ââ Rank table ââ */
     .rank-header{
       display:grid;
       grid-template-columns:36px 1fr 50px 50px 50px 58px;
@@ -166,7 +166,7 @@
     .empty{text-align:center;padding:48px 24px;color:var(--ink-muted);font-size:15px;line-height:1.6;}
     .loading{text-align:center;padding:48px 24px;color:var(--ink-muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;}
 
-    /* ── Refresh ── */
+    /* ââ Refresh ââ */
     .refresh-row{text-align:center;margin-top:24px;}
     .refresh-btn{
       background:none;border:1.5px solid var(--line);border-radius:var(--radius);
@@ -177,7 +177,7 @@
     .refresh-btn:hover{background:var(--paper-2);border-color:var(--ink-soft);}
     .last-updated{font-size:11px;color:var(--ink-muted);margin-top:8px;}
 
-    /* ── Mobile ── */
+    /* ââ Mobile ââ */
     @media(max-width:400px){
       .rank-header,.rank-row{grid-template-columns:32px 1fr 42px 42px 42px 50px;}
       .stat-val{font-size:13px;}
@@ -185,6 +185,11 @@
       .player-name{font-size:13px;}
     }
   </style>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Rankings — The Daily Five"/>
+  <meta property="og:description" content="See today's top players across all Daily Five games — word game, scramble, and trivia."/>
+  <meta property="og:url" content="https://www.thedailyfive.net/leaderboard.html"/>
+  <meta property="og:image" content="https://www.thedailyfive.net/og-image.png"/>
 </head>
 <body>
 <header>
@@ -199,14 +204,14 @@
       <div class="masthead">The Daily Five</div>
       <div class="subhead">Leaderboard</div>
     </div>
-    <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">🌙</button>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">ð</button>
   </div>
 </header>
 
 <div class="page">
   <div class="tabs">
-    <button class="tab active" id="tabMonthly" onclick="showTab('monthly')">📅 Monthly</button>
-    <button class="tab" id="tabAlltime" onclick="showTab('alltime')">🌍 All-time</button>
+    <button class="tab active" id="tabMonthly" onclick="showTab('monthly')">ð Monthly</button>
+    <button class="tab" id="tabAlltime" onclick="showTab('alltime')">ð All-time</button>
   </div>
 
   <div class="legend">
@@ -222,9 +227,9 @@
   </div>
 
   <div class="month-nav" id="monthNav">
-    <button id="prevMonthBtn" onclick="changeMonth(-1)">‹</button>
-    <div id="monthLabel">Loading…</div>
-    <button id="nextMonthBtn" onclick="changeMonth(1)" disabled>›</button>
+    <button id="prevMonthBtn" onclick="changeMonth(-1)">â¹</button>
+    <div id="monthLabel">Loadingâ¦</div>
+    <button id="nextMonthBtn" onclick="changeMonth(1)" disabled>âº</button>
   </div>
 
   <div class="rank-header">
@@ -236,36 +241,36 @@
     <span style="text-align:right">Score</span>
   </div>
 
-  <div id="rankList"><div class="loading">Loading…</div></div>
+  <div id="rankList"><div class="loading">Loadingâ¦</div></div>
 
   <div class="refresh-row">
-    <button class="refresh-btn" onclick="loadRankings()">↻ Refresh</button>
+    <button class="refresh-btn" onclick="loadRankings()">â» Refresh</button>
     <div class="last-updated" id="lastUpdated"></div>
   </div>
 </div>
 
 <script>
-var MEDALS = ['🥇','🥈','🥉'];
+var MEDALS = ['ð¥','ð¥','ð¥'];
 var S = {
   get: function(k){ try{return localStorage.getItem(k);}catch(e){return null;} },
   set: function(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
 };
 
-// ── Theme ──
+// ââ Theme ââ
 (function(){
   var t = S.get('df_theme') || 'light';
   document.documentElement.setAttribute('data-theme', t);
-  document.getElementById('themeBtn').textContent = t === 'dark' ? '☀️' : '🌙';
+  document.getElementById('themeBtn').textContent = t === 'dark' ? 'âï¸' : 'ð';
 })();
 document.getElementById('themeBtn').onclick = function(){
   var cur = document.documentElement.getAttribute('data-theme');
   var next = cur === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
   S.set('df_theme', next);
-  this.textContent = next === 'dark' ? '☀️' : '🌙';
+  this.textContent = next === 'dark' ? 'âï¸' : 'ð';
 };
 
-// ── Header date ──
+// ââ Header date ââ
 (function(){
   var d = new Date();
   var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -273,7 +278,7 @@ document.getElementById('themeBtn').onclick = function(){
   document.getElementById('headerDate').textContent = days[d.getDay()]+', '+mos[d.getMonth()]+' '+d.getDate();
 })();
 
-// ── State ──
+// ââ State ââ
 var today = new Date();
 var viewYear = today.getFullYear();
 var viewMonth = today.getMonth();
@@ -317,16 +322,16 @@ function getMySlug(){
 }
 
 function fmt(n){
-  return n > 0 ? n : '<span class="dash">—</span>';
+  return n > 0 ? n : '<span class="dash">â</span>';
 }
 
-// ── Load all 3 collections ──
+// ââ Load all 3 collections ââ
 function loadRankings(){
   if(!window._db){
     document.getElementById('rankList').innerHTML = '<div class="empty">Leaderboard unavailable.</div>';
     return;
   }
-  document.getElementById('rankList').innerHTML = '<div class="loading">Loading…</div>';
+  document.getElementById('rankList').innerHTML = '<div class="loading">Loadingâ¦</div>';
   document.getElementById('lastUpdated').textContent = '';
 
   var queries;
@@ -395,7 +400,7 @@ function loadRankings(){
     if(sorted.length === 0){
       var period = currentTab === 'monthly' ? MOS_NAMES[viewMonth]+' '+viewYear : 'all time';
       document.getElementById('rankList').innerHTML =
-        '<div class="empty">No scores yet for '+period+'.<br>Play all three games to appear here! 🎯</div>';
+        '<div class="empty">No scores yet for '+period+'.<br>Play all three games to appear here! ð¯</div>';
       return;
     }
 
@@ -416,7 +421,7 @@ function loadRankings(){
           rankCell +
           '<div>' +
             '<div class="player-name">'+(p.name||'Anonymous')+'</div>' +
-            '<div class="player-sub">'+sub.join(' · ')+'</div>' +
+            '<div class="player-sub">'+sub.join(' Â· ')+'</div>' +
           '</div>' +
           '<div class="stat-cell">' +
             '<div class="stat-val" style="color:var(--green)">'+fmt(p.word)+'</div>' +
@@ -450,7 +455,7 @@ function loadRankings(){
   });
 }
 
-// ── Init ──
+// ââ Init ââ
 updateMonthNav();
 loadRankings();
 </script>

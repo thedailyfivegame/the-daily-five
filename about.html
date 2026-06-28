@@ -1,295 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>How to Play — The Daily Five</title>
-<meta name="description" content="Learn how to play The Daily Five — a free daily 5-letter word game. Guess the hidden word in 6 tries using colour clues. Rules, tips and FAQ.">
-<meta name="keywords" content="how to play daily five, word game rules, five letter word game guide, daily word game tips">
-<meta property="og:title" content="How to Play The Daily Five">
-<meta property="og:description" content="Learn the rules, tips and tricks for The Daily Five — free daily word puzzle game.">
-<meta property="og:url" content="https://www.thedailyfive.net/about.html">
-<meta property="og:type" content="website">
-<link rel="canonical" href="https://www.thedailyfive.net/about.html">
-<link rel="icon" href="/assets/favicon.ico">
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
-<!-- JSON-LD HowTo -->
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"HowTo","name":"How to Play The Daily Five","description":"Guess the hidden 5-letter word in 6 tries using colour clues.","step":[{"@type":"HowToStep","name":"Enter a word","text":"Type any valid 5-letter word and press Enter to submit your guess."},{"@type":"HowToStep","name":"Read the colour clues","text":"Green means the letter is correct and in the right position. Yellow means the letter is in the word but in the wrong position. Grey means the letter is not in the word at all."},{"@type":"HowToStep","name":"Use your clues","text":"Use the colour feedback to narrow down the hidden word with your next guess."},{"@type":"HowToStep","name":"Win in 6 tries","text":"Guess the word correctly within 6 attempts to win. A new word is available every day at midnight."}]}
-</script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4efe4;color:#1a1a1b;min-height:100vh;}
-
-/* ── NAV ── */
-nav{position:sticky;top:0;z-index:100;background:#f4efe4;border-bottom:1px solid #d3d6da;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;}
-.nav-logo{font-family:Georgia,serif;font-size:18px;font-weight:700;text-decoration:none;color:#1a1a1b;}
-.nav-links{display:flex;align-items:center;gap:20px;}
-.nav-links a{font-size:13px;color:#787c7e;text-decoration:none;transition:color .15s;}
-.nav-links a:hover,.nav-links a.active{color:#1a1a1b;font-weight:600;}
-.nav-play{background:#1a1a1b;color:#fff !important;border-radius:6px;padding:7px 16px;font-size:13px;font-weight:600 !important;}
-
-/* ── HERO ── */
-.about-hero{text-align:center;padding:56px 24px 40px;border-bottom:1px solid #d3d6da;}
-.about-hero h1{font-family:Georgia,serif;font-size:clamp(32px,6vw,52px);font-weight:700;line-height:1.1;margin-bottom:14px;}
-.about-hero p{font-size:16px;color:#4a463c;max-width:520px;margin:0 auto 28px;line-height:1.6;}
-.play-cta{display:inline-block;background:#1a1a1b;color:#fff;text-decoration:none;border-radius:8px;padding:13px 32px;font-size:15px;font-weight:700;transition:opacity .15s;}
-.play-cta:hover{opacity:.85;}
-
-/* ── EXAMPLE TILES ── */
-.example-area{max-width:340px;margin:40px auto 0;display:flex;flex-direction:column;gap:6px;}
-.example-row{display:flex;gap:6px;justify-content:center;}
-.ex-tile{width:52px;height:52px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:0;}
-.ex-correct{background:#3f7a4f;}
-.ex-present{background:#c89a2b;}
-.ex-absent{background:#a39b85;}
-.ex-empty{background:transparent;border:2px solid #d3d6da;color:#1a1a1b;}
-
-/* ── CONTENT ── */
-.content{max-width:680px;margin:0 auto;padding:56px 24px;}
-.section{margin-bottom:52px;}
-.section h2{font-family:Georgia,serif;font-size:24px;font-weight:700;margin-bottom:16px;color:#1a1a1b;}
-.section p{color:#4a463c;font-size:15px;line-height:1.7;margin-bottom:12px;}
-
-/* ── RULES GRID ── */
-.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:20px;}
-.rule-card{background:#fff;border-radius:12px;padding:20px;border:1px solid #e5dcc8;}
-.rule-icon{font-size:28px;margin-bottom:10px;}
-.rule-card h3{font-size:14px;font-weight:700;margin-bottom:6px;}
-.rule-card p{font-size:13px;color:#787c7e;line-height:1.5;margin:0;}
-
-/* ── COLOUR KEY ── */
-.colour-key{display:flex;flex-direction:column;gap:14px;margin-top:20px;}
-.colour-row{display:flex;align-items:center;gap:16px;}
-.colour-swatch{width:44px;height:44px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:20px;font-weight:700;color:#fff;}
-.colour-info h3{font-size:14px;font-weight:700;margin-bottom:2px;}
-.colour-info p{font-size:13px;color:#787c7e;margin:0;}
-
-/* ── TIPS ── */
-.tips{display:flex;flex-direction:column;gap:12px;margin-top:20px;counter-reset:tips;}
-.tip{display:flex;gap:14px;align-items:flex-start;background:#fff;border-radius:10px;padding:16px;border:1px solid #e5dcc8;}
-.tip-num{background:#1a1a1b;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-top:1px;}
-.tip-body h3{font-size:14px;font-weight:700;margin-bottom:3px;}
-.tip-body p{font-size:13px;color:#787c7e;line-height:1.5;margin:0;}
-
-/* ── FAQ ── */
-.faq{margin-top:20px;}
-.faq-item{border-bottom:1px solid #d3d6da;padding:18px 0;}
-.faq-item:first-child{border-top:1px solid #d3d6da;}
-.faq-q{font-size:15px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;list-style:none;}
-.faq-q::after{content:'＋';font-size:18px;color:#787c7e;flex-shrink:0;transition:transform .2s;}
-.faq-item.open .faq-q::after{transform:rotate(45deg);}
-.faq-a{font-size:14px;color:#4a463c;line-height:1.7;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s;}
-.faq-item.open .faq-a{max-height:200px;padding-top:10px;}
-
-/* ── ABOUT ── */
-.about-card{background:#1a1a1b;color:#fff;border-radius:16px;padding:36px;text-align:center;}
-.about-card h2{font-family:Georgia,serif;font-size:22px;margin-bottom:12px;}
-.about-card p{color:rgba(255,255,255,.7);font-size:14px;line-height:1.7;margin-bottom:20px;}
-.about-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-.about-link{color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:8px 16px;transition:all .15s;}
-.about-link:hover{background:rgba(255,255,255,.1);}
-
-footer{background:#1a1a1b;color:rgba(255,255,255,.5);text-align:center;padding:24px 16px;font-size:12px;margin-top:0;}
-footer a{color:rgba(255,255,255,.5);text-decoration:none;margin:0 8px;}
-footer a:hover{color:#fff;}
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>About — The Daily Five</title>
+  <meta name="description" content="The story behind The Daily Five — free daily word puzzles built by one person who loves word games."/>
+  <meta property="og:title" content="About — The Daily Five"/>
+  <meta property="og:description" content="The story behind The Daily Five — free daily word puzzles, scramble, and trivia built with love."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://www.thedailyfive.net/about.html"/>
+  <meta property="og:image" content="https://www.thedailyfive.net/og-image.png"/>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700;1,900&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--paper:#f4efe4;--paper-2:#ede6d4;--ink:#1c1a16;--ink-soft:#4a463c;--ink-muted:#8a8070;--line:#cdc4ad;--accent:#9e2b25;--green:#3f7a4f;--radius:3px;--trans:.18s ease;}
+    [data-theme="dark"]{--paper:#12110e;--paper-2:#1c1a15;--ink:#f0ebe0;--ink-soft:#a39b85;--ink-muted:#6b6356;--line:#2e2a22;--accent:#c0392b;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--paper);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;transition:background var(--trans),color var(--trans);line-height:1.7;}
+    header{border-bottom:3px solid var(--ink);padding:10px 20px 0;}
+    .dateline{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-muted);font-weight:600;display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:8px;}
+    .header-top{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;}
+    .masthead{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(24px,5vw,42px);line-height:.93;letter-spacing:-.02em;}
+    .masthead a{text-decoration:none;color:inherit;}
+    .theme-btn{background:none;border:none;cursor:pointer;font-size:20px;padding:6px;color:var(--ink);border-radius:var(--radius);}
+    main{max-width:760px;margin:0 auto;padding:48px 20px 64px;}
+    h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(32px,5vw,52px);line-height:1.02;margin-bottom:6px;letter-spacing:-.02em;}
+    .byline{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);font-weight:600;margin-bottom:36px;padding-bottom:16px;border-bottom:1px solid var(--line);}
+    h2{font-family:'Fraunces',serif;font-weight:700;font-size:22px;margin:40px 0 12px;color:var(--ink);}
+    p{font-size:15px;color:var(--ink-soft);margin-bottom:16px;max-width:640px;}
+    a{color:var(--accent);}
+    .pull-quote{border-left:4px solid var(--ink);padding:12px 20px;margin:32px 0;background:var(--paper-2);border-radius:0 var(--radius) var(--radius) 0;}
+    .pull-quote p{font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--ink);margin:0;max-width:none;}
+    .games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0;}
+    @media(max-width:520px){.games-grid{grid-template-columns:1fr;}}
+    .game-card{background:var(--paper-2);border:1.5px solid var(--line);border-radius:var(--radius);padding:18px 16px;text-decoration:none;color:inherit;display:block;transition:border-color var(--trans),transform var(--trans);}
+    .game-card:hover{border-color:var(--ink);transform:translateY(-2px);}
+    .game-card .icon{font-size:26px;margin-bottom:8px;}
+    .game-card .name{font-family:'Fraunces',serif;font-weight:700;font-size:15px;margin-bottom:4px;}
+    .game-card .desc{font-size:12px;color:var(--ink-muted);}
+    .support-box{margin:48px 0 0;background:var(--paper-2);border:2px solid var(--ink);border-radius:var(--radius);padding:32px 28px;text-align:center;}
+    .support-box h2{margin:0 0 10px;font-size:26px;}
+    .support-box p{margin:0 0 22px;font-size:14px;max-width:480px;margin-left:auto;margin-right:auto;}
+    .kofi-btn{display:inline-block;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:700;font-size:14px;letter-spacing:.06em;padding:13px 28px;border-radius:var(--radius);transition:background var(--trans);font-family:'Hanken Grotesk',sans-serif;}
+    .kofi-btn:hover{background:var(--accent);color:#fff;}
+    .support-note{margin-top:12px;font-size:11px;color:var(--ink-muted);}
+    footer{border-top:2px solid var(--ink);padding:18px 20px 14px;text-align:center;}
+    .footer-links{display:flex;justify-content:center;align-items:center;gap:6px 16px;flex-wrap:wrap;margin-bottom:10px;}
+    .footer-links a{color:var(--ink-muted);text-decoration:none;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:color var(--trans);}
+    .footer-links a:hover{color:var(--ink);}
+    .footer-sep{color:var(--line);font-size:12px;}
+    .footer-copy{font-size:10px;color:var(--ink-muted);letter-spacing:.06em;text-transform:uppercase;}
+  </style>
 </head>
 <body>
-
-<nav>
-  <a class="nav-logo" href="/">The Daily Five</a>
-  <div class="nav-links">
-    <a href="/archive.html">Archive</a>
-    <a href="/about.html" class="active">How to Play</a>
-    <a href="/play.html" class="nav-play">Play →</a>
+<header>
+  <div class="dateline"><span>The Daily Five</span><span>About</span><span>Est. 2024</span></div>
+  <div class="header-top">
+    <div class="masthead"><a href="/">The Daily Five</a></div>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">&#127769;</button>
   </div>
-</nav>
+</header>
 
-<!-- Hero -->
-<div class="about-hero">
-  <h1>How to Play</h1>
-  <p>Guess the hidden 5-letter word in 6 tries. A new word drops every day at midnight — free, no account needed.</p>
-  <a href="/play.html" class="play-cta">Play Today's Word →</a>
+<main>
+  <h1>Built by one person.<br/>Played every day.</h1>
+  <div class="byline">By Sunny &nbsp;&middot;&nbsp; thedailyfivegame@gmail.com &nbsp;&middot;&nbsp; Est. 2024</div>
 
-  <div class="example-area">
-    <div class="example-row">
-      <div class="ex-tile ex-correct">V</div>
-      <div class="ex-tile ex-absent">I</div>
-      <div class="ex-tile ex-absent">N</div>
-      <div class="ex-tile ex-present">Y</div>
-      <div class="ex-tile ex-absent">L</div>
-    </div>
-    <div class="example-row">
-      <div class="ex-tile ex-correct">V</div>
-      <div class="ex-tile ex-correct">O</div>
-      <div class="ex-tile ex-present">W</div>
-      <div class="ex-tile ex-absent">E</div>
-      <div class="ex-tile ex-absent">D</div>
-    </div>
-    <div class="example-row">
-      <div class="ex-tile ex-correct">V</div>
-      <div class="ex-tile ex-correct">O</div>
-      <div class="ex-tile ex-correct">C</div>
-      <div class="ex-tile ex-correct">A</div>
-      <div class="ex-tile ex-correct">L</div>
-    </div>
-  </div>
-</div>
+  <p>The Daily Five started with a simple frustration: I wanted a word game that went beyond one puzzle a day. Wordle is great — but what if you could warm up with a scramble, test your trivia, and then take on the main word challenge, all in one place?</p>
 
-<div class="content">
+  <p>So I built it. Every game resets at midnight. Every puzzle is the same for every player around the world. No algorithms, no endless scrolling, no ads interrupting your flow — just five minutes of good mental exercise before you get on with your day.</p>
 
-  <!-- Rules -->
-  <div class="section">
-    <h2>The Rules</h2>
-    <div class="rules">
-      <div class="rule-card">
-        <div class="rule-icon">🔤</div>
-        <h3>5-letter words only</h3>
-        <p>Every guess must be a real 5-letter word from our dictionary.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-icon">6️⃣</div>
-        <h3>Six tries</h3>
-        <p>You have 6 attempts to guess the daily word correctly.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-icon">📅</div>
-        <h3>One word a day</h3>
-        <p>The same word for everyone, every day. New word at midnight.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-icon">🆓</div>
-        <h3>Always free</h3>
-        <p>No account, no subscription, no paywalls. Just open and play.</p>
-      </div>
-    </div>
+  <div class="pull-quote">
+    <p>"A five-minute mental workout. New games every day. No sign-up needed."</p>
   </div>
 
-  <!-- Colour key -->
-  <div class="section">
-    <h2>Reading the Colours</h2>
-    <p>After each guess, the tiles change colour to show you how close you were.</p>
-    <div class="colour-key">
-      <div class="colour-row">
-        <div class="colour-swatch ex-correct">A</div>
-        <div class="colour-info">
-          <h3>Green — correct</h3>
-          <p>The letter is in the word and in exactly the right position.</p>
-        </div>
-      </div>
-      <div class="colour-row">
-        <div class="colour-swatch ex-present">B</div>
-        <div class="colour-info">
-          <h3>Yellow — wrong position</h3>
-          <p>The letter is in the word but in a different position.</p>
-        </div>
-      </div>
-      <div class="colour-row">
-        <div class="colour-swatch ex-absent">C</div>
-        <div class="colour-info">
-          <h3>Grey — not in word</h3>
-          <p>The letter does not appear in the word at all.</p>
-        </div>
-      </div>
-    </div>
+  <h2>What's in the game</h2>
+  <p>Three games, one daily habit. Each resets at midnight so there's always something fresh waiting for you tomorrow.</p>
+
+  <div class="games-grid">
+    <a class="game-card" href="/play.html">
+      <div class="icon">&#129001;</div>
+      <div class="name">The Daily Five</div>
+      <div class="desc">6 tries to guess the 5-letter word</div>
+    </a>
+    <a class="game-card" href="/scramble.html">
+      <div class="icon">&#128292;</div>
+      <div class="name">Daily Scramble</div>
+      <div class="desc">Unscramble the word against the clock</div>
+    </a>
+    <a class="game-card" href="/trivia.html">
+      <div class="icon">&#128218;</div>
+      <div class="name">Daily Trivia</div>
+      <div class="desc">One question. One chance. Get it right.</div>
+    </a>
   </div>
 
-  <!-- Tips -->
-  <div class="section">
-    <h2>Tips for Beginners</h2>
-    <div class="tips">
-      <div class="tip">
-        <div class="tip-num">1</div>
-        <div class="tip-body"><h3>Start with vowel-rich words</h3><p>Opening guesses like ARISE, AUDIO or CRANE cover common letters and reveal lots of clues fast.</p></div>
-      </div>
-      <div class="tip">
-        <div class="tip-num">2</div>
-        <div class="tip-body"><h3>Don't repeat grey letters</h3><p>Once a letter is grey, you know it's not in the answer — avoid using it again to save guesses.</p></div>
-      </div>
-      <div class="tip">
-        <div class="tip-num">3</div>
-        <div class="tip-body"><h3>Move yellow letters</h3><p>Yellow means right letter, wrong spot. Try it in a different position on your next guess.</p></div>
-      </div>
-      <div class="tip">
-        <div class="tip-num">4</div>
-        <div class="tip-body"><h3>Use hints when you're stuck</h3><p>Spend coins to reveal a letter, check if a letter is in the word, or add an extra guess row.</p></div>
-      </div>
-    </div>
-  </div>
+  <h2>Why free?</h2>
+  <p>Word games should be for everyone. There's no paywall, no premium tier, no "you've used your free plays for today." You can play every day, share your results, compete on the leaderboard, and earn coins — all without spending a thing.</p>
 
-  <!-- FAQ -->
-  <div class="section">
-    <h2>Questions &amp; Answers</h2>
-    <div class="faq">
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Is The Daily Five free?</div>
-        <div class="faq-a">Yes — completely free. No ads that interrupt gameplay, no sign-up required, no subscription.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">How often does the word change?</div>
-        <div class="faq-a">A new word is released every day at midnight (your local time). Everyone worldwide gets the same word on the same day.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">What are coins and hints?</div>
-        <div class="faq-a">You earn coins by winning — 10 base coins plus bonuses for guessing in fewer tries. Spend coins on hints: reveal a letter (5🪙), check if a letter is in the word (3🪙), or add an extra guess row (8🪙). You can also earn coins by watching a short ad.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Can I play old puzzles?</div>
-        <div class="faq-a">Yes! Visit the <a href="/archive.html" style="color:#3f7a4f;font-weight:600;">Word Archive</a> to browse every past puzzle and practise any word you missed.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">What is Practice Mode?</div>
-        <div class="faq-a">After finishing today's word, you can switch to Practice Mode for unlimited extra puzzles with randomly selected words — great for improving your skills.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">How does the leaderboard work?</div>
-        <div class="faq-a">Sign in with Google to submit your score to the daily leaderboard. Scores are ranked by number of guesses used — fewer guesses = higher rank.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Is there a mobile app?</div>
-        <div class="faq-a">An Android app is coming soon to the Google Play Store. In the meantime, the web game works perfectly on any mobile browser — you can even add it to your home screen.</div>
-      </div>
-    </div>
-  </div>
+  <p>The site runs on a shoestring. Hosting, the domain, the puzzle database — it all costs real money. If you enjoy the games, the best way to keep The Daily Five alive and growing is to tell a friend, share your results, or buy us a coffee.</p>
 
-  <!-- About -->
-  <div class="about-card">
-    <h2>About The Daily Five</h2>
-    <p>The Daily Five is an independent daily word game built for people who love words. One puzzle a day keeps things focused — no endless scrolling, just one satisfying challenge.</p>
-    <div class="about-links">
-      <a class="about-link" href="/play.html">Play Today</a>
-      <a class="about-link" href="/archive.html">Word Archive</a>
-      <a class="about-link" href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Follow on Instagram</a>
-    </div>
-  </div>
+  <h2>The leaderboard</h2>
+  <p>Sign in with your Google account and your name appears on the <a href="/leaderboard.html">global leaderboard</a>. Your wins across all three games count toward your monthly score. Top players get the gold, silver, and bronze medals. Rankings reset each month so there's always a fresh race.</p>
 
-</div>
+  <h2>Stay in the loop</h2>
+  <p>Follow <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">@thedailyfive.game</a> on Instagram for daily puzzle hints, behind-the-scenes updates, and the occasional word game deep-dive. Questions or feedback? Email <a href="mailto:thedailyfivegame@gmail.com">thedailyfivegame@gmail.com</a> — every message gets read.</p>
+
+  <div class="support-box">
+    <h2>&#9749; Support The Daily Five</h2>
+    <p>The games are free and will stay free. If they've made your mornings a little sharper, consider buying us a coffee — it goes directly toward keeping the servers running and building new puzzles.</p>
+    <a class="kofi-btn" href="https://ko-fi.com/thedailyfive" target="_blank" rel="noopener">&#9749; Buy Us a Coffee</a>
+    <div class="support-note">No account needed &middot; One-time or monthly &middot; Takes 30 seconds</div>
+  </div>
+</main>
 
 <footer>
-  <div>© 2025 The Daily Five &nbsp;·&nbsp;
-    <a href="/privacy.html">Privacy</a>
-    <a href="/terms.html">Terms</a>
-    <a href="/archive.html">Archive</a>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="/about.html">About</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="/privacy.html">Privacy Policy</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="/terms.html">Terms of Service</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
   </div>
+  <div class="footer-copy">&copy; <span id="footerYear"></span> The Daily Five</div>
+  <script>(function(){var y=document.getElementById('footerYear');if(y)y.textContent=new Date().getFullYear();})();</script>
 </footer>
 
 <script>
-function toggleFaq(el){
-  var item = el.parentElement;
-  var isOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(function(i){ i.classList.remove('open'); });
-  if(!isOpen) item.classList.add('open');
-}
+(function(){var t=localStorage.getItem('df_theme')||'light';document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';})();
+document.getElementById('themeBtn').onclick=function(){var c=document.documentElement.getAttribute('data-theme');var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('df_theme',n);this.textContent=n==='dark'?'☀️':'🌙';};
 </script>
-<nav id="siteFooterNav" style="text-align:center;padding:18px 16px 24px;font-size:13px;border-top:1px solid #e5e0d5;margin-top:8px;color:#888;">
-  <a href="/" style="color:#555;text-decoration:none;margin:0 10px;">Home</a>·
-  <a href="play.html" style="color:#555;text-decoration:none;margin:0 10px;">Play</a>·
-  <a href="archive.html" style="color:#555;text-decoration:none;margin:0 10px;">Archive</a>·
-  <a href="about.html" style="color:#555;text-decoration:none;margin:0 10px;">How to Play</a>·
-  <a href="privacy.html" style="color:#555;text-decoration:none;margin:0 10px;">Privacy</a>
-</nav>
 </body>
 </html>

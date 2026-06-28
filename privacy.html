@@ -7,7 +7,6 @@
   <meta name="description" content="Privacy Policy for The Daily Five daily word puzzle games."/>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4991106296689056" crossorigin="anonymous"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -35,11 +34,6 @@
     .footer-sep{color:var(--line);font-size:12px;}
     .footer-copy{font-size:10px;color:var(--ink-muted);letter-spacing:.06em;text-transform:uppercase;}
   </style>
-  <meta property="og:type" content="website"/>
-  <meta property="og:title" content="Privacy Policy — The Daily Five"/>
-  <meta property="og:description" content="Privacy Policy for The Daily Five daily word puzzle games."/>
-  <meta property="og:url" content="https://www.thedailyfive.net/privacy.html"/>
-  <meta property="og:image" content="https://www.thedailyfive.net/og-image.png"/>
 </head>
 <body>
 <header>
@@ -89,6 +83,8 @@
   <div class="footer-links">
     <a href="/">Home</a>
     <span class="footer-sep">&middot;</span>
+    <a href="/about.html">About</a>
+    <span class="footer-sep">&middot;</span>
     <a href="/privacy.html">Privacy Policy</a>
     <span class="footer-sep">&middot;</span>
     <a href="/terms.html">Terms of Service</a>
@@ -103,4 +99,7 @@
 
 <script>
 (function(){var t=localStorage.getItem('df_theme')||'light';document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';})();
-document.
+document.getElementById('themeBtn').onclick=function(){var c=document.documentElement.getAttribute('data-theme');var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('df_theme',n);this.textContent=n==='dark'?'☀️':'🌙';};
+</script>
+</body>
+</html>

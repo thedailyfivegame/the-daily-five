@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /node_modules/
 
 Sitemap: https://www.thedailyfive.net/sitemap.xml

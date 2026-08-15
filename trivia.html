@@ -7,7 +7,16 @@
   <meta name="description" content="One trivia question per day. One shot to get it right. Free daily trivia game from The Daily Five."/>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4991106296689056" crossorigin="anonymous"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script>
+  (function(){
+    var cfg={apiKey:"AIzaSyAy0iARQPIZSeE4W_Qco7ctonY_758yvvU",authDomain:"thedailyfive-f7103.firebaseapp.com",projectId:"thedailyfive-f7103",storageBucket:"thedailyfive-f7103.appspot.com"};
+    try{if(!firebase.apps.length)firebase.initializeApp(cfg);window._db=firebase.firestore();firebase.auth().signInAnonymously().catch(function(){});}catch(e){window._db=null;}
+  })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -77,33 +86,25 @@
     .footer-links a:hover{color:var(--ink);}
     .footer-sep{color:var(--line);font-size:12px;}
     .footer-copy{font-size:10px;color:var(--ink-muted);letter-spacing:.06em;text-transform:uppercase;}
+    /* Instagram follow banner */
+    .ig-follow-banner{display:none;margin-top:18px;background:var(--paper-2);border:1.5px solid var(--line);border-radius:4px;padding:13px 18px;text-align:center;}
+    .ig-follow-banner a{color:var(--accent);text-decoration:none;font-weight:700;font-size:13px;}
+    .ig-follow-banner a:hover{text-decoration:underline;}
+    .ig-follow-banner p{font-size:13px;color:var(--ink-soft);}
+    .kofi-btn{display:inline-block;margin-top:10px;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:700;font-size:12px;letter-spacing:.05em;padding:9px 20px;border-radius:var(--radius);transition:background var(--trans);}
+    .kofi-btn:hover{background:var(--accent);color:#fff;}
     @media(max-width:480px){
       .header-actions .home-btn{display:none;}
     }
-    .ig-follow-banner{display:none;margin-top:18px;background:var(--paper-2);border:1.5px solid var(--line);border-radius:4px;padding:13px 18px;text-align:center;}
-    .ig-follow-banner p{font-size:13px;color:var(--ink-soft);}
-    .ig-follow-banner a{color:var(--accent);text-decoration:none;font-weight:700;font-size:13px;}
-    .kofi-btn{display:inline-block;margin-top:10px;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:700;font-size:12px;letter-spacing:.05em;padding:9px 20px;border-radius:var(--radius);transition:background var(--trans);}
-    .kofi-btn:hover{background:var(--accent);color:#fff;}
   </style>
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script>
-  (function(){
-    var cfg={apiKey:"AIzaSyAy0iARQPIZSeE4W_Qco7ctonY_758yvvU",authDomain:"thedailyfive-f7103.firebaseapp.com",projectId:"thedailyfive-f7103",storageBucket:"thedailyfive-f7103.appspot.com"};
-    try{if(!firebase.apps.length)firebase.initializeApp(cfg);window._db=firebase.firestore();firebase.auth().signInAnonymously().catch(function(){});}catch(e){window._db=null;}
-  })();
-  </script>
   <meta property="og:type" content="website"/>
   <meta property="og:title" content="The Daily Trivia — One Question. One Shot."/>
-  <meta property="og:description" content="One trivia question per day. One shot to get it right."/>
+  <meta property="og:description" content="One trivia question per day. One shot to get it right. Free daily trivia game from The Daily Five."/>
   <meta property="og:url" content="https://www.thedailyfive.net/trivia.html"/>
   <meta property="og:image" content="https://www.thedailyfive.net/og-image.png"/>
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="The Daily Trivia — One Question. One Shot."/>
-  <meta name="twitter:description" content="One trivia question per day. One shot to get it right."/>
+  <meta name="twitter:description" content="One trivia question per day. One shot to get it right. Free daily trivia game from The Daily Five."/>
   <meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
 </head>
 <body>
@@ -133,7 +134,7 @@
 <div class="game-wrap">
   <!-- Already played banner -->
   <div class="played-banner" id="playedBanner">
-    <div class="played-title">You already played today ✓</div>
+    <div class="played-title">You already played today!b��</div>
     <div class="played-sub" id="playedSub">Come back tomorrow for a new question.</div>
   </div>
 
@@ -158,12 +159,15 @@
     <div class="countdown-label">Next question in</div>
     <div class="countdown-val" id="countdownVal">--:--:--</div>
   </div>
-</div>
 
-  <div class="ig-follow-banner" id="igFollowBanner" style="display:none">
-    <p>&#x1F4F8; Follow <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">@thedailyfive.game</a> for daily updates &amp; behind the scenes</p>
-    <a href="/leaderboard.html" style="display:inline-block;margin-top:8px;color:var(--green,#3f7a4f);font-weight:700;font-size:13px;text-decoration:none;">&#x1F3C6; View Rankings</a>
+  <!-- Instagram follow banner -->
+  <div class="ig-follow-banner" id="igFollowBanner">
+    <p>📸 Follow <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">@thedailyfive.game</a> for daily updates &amp; behind the scenes</p>
+    <a href="/leaderboard.html" style="display:inline-block;margin-top:8px;color:var(--green,#3f7a4f);font-weight:700;font-size:13px;text-decoration:none;">🏆 View Rankings</a>
+    <br/>
+    <a class="kofi-btn" href="https://ko-fi.com/thedailyfive" target="_blank" rel="noopener">☕ Support The Daily Five</a>
   </div>
+</div>
 
 <footer>
   <div class="footer-links">
@@ -171,7 +175,7 @@
     <span class="footer-sep">&middot;</span>
     <a href="/about.html">About</a>
     <span class="footer-sep">&middot;</span>
-    <a href="https://ko-fi.com/thedailyfive" target="_blank" rel="noopener">&#9749; Support</a>
+    <a href="https://ko-fi.com/thedailyfive" target="_blank" rel="noopener">☕ Support</a>
     <span class="footer-sep">&middot;</span>
     <a href="/privacy.html">Privacy Policy</a>
     <span class="footer-sep">&middot;</span>
@@ -237,7 +241,169 @@ var QUESTIONS = [
   {c:"Language",q:"What is a word that reads the same forwards and backwards called?",a:0,o:["Palindrome","Anagram","Homophone","Acronym"],f:"'Racecar', 'level', and 'madam' are all palindromes."},
   {c:"History",q:"Who discovered penicillin?",a:2,o:["Marie Curie","Louis Pasteur","Alexander Fleming","Robert Koch"],f:"Alexander Fleming discovered penicillin in 1928, revolutionising medicine."},
   {c:"Geography",q:"What is the currency of Japan?",a:1,o:["Yuan","Yen","Won","Baht"],f:"The Japanese Yen (¥) has been Japan's currency since 1871."},
-  {c:"Mathematics",q:"How many sides does a hexagon have?",a:2,o:["5","7","6","8"],f:"Hex means six — a hexagon has 6 sides and 6 angles."}
+  {c:"Mathematics",q:"How many sides does a hexagon have?",a:2,o:["5","7","6","8"],f:"Hex means six — a hexagon has 6 sides and 6 angles."},
+  {c:"Geography",q:"What is the capital of Canada?",a:1,o:["Toronto","Ottawa","Vancouver","Montreal"],f:"Ottawa has been Canada's capital since 1857, chosen by Queen Victoria."},
+  {c:"Science",q:"What is the chemical formula for table salt?",a:0,o:["NaCl","KCl","CaCl","MgCl"],f:"Table salt is sodium chloride — one sodium atom bonded to one chlorine atom."},
+  {c:"History",q:"Who was the first President of the United States?",a:2,o:["John Adams","Thomas Jefferson","George Washington","Benjamin Franklin"],f:"George Washington served two terms as the first US President, from 1789 to 1797."},
+  {c:"Pop Culture",q:"What is the best-selling video game of all time?",a:1,o:["Tetris","Minecraft","GTA V","The Sims"],f:"Minecraft has sold over 300 million copies, making it the best-selling game ever."},
+  {c:"Language",q:"How many vowels are in the English alphabet?",a:0,o:["5","6","4","7"],f:"A, E, I, O, U are the 5 vowels. Sometimes Y is considered a sixth."},
+  {c:"Science",q:"At what temperature does water boil at sea level?",a:2,o:["90°C","95°C","100°C","105°C"],f:"Water boils at 100°C (212°F) at sea level. At higher altitudes it boils at lower temperatures."},
+  {c:"Geography",q:"Which is the largest continent by area?",a:0,o:["Asia","Africa","North America","Antarctica"],f:"Asia covers about 44.6 million km² — nearly 30% of Earth's total land area."},
+  {c:"History",q:"In which year did the French Revolution begin?",a:1,o:["1776","1789","1799","1804"],f:"The French Revolution began in 1789 with the storming of the Bastille on July 14."},
+  {c:"Mathematics",q:"What is the square root of 144?",a:2,o:["11","13","12","14"],f:"12 × 12 = 144. It's one of the most commonly memorised perfect squares."},
+  {c:"Pop Culture",q:"Which country is the anime industry most associated with?",a:3,o:["South Korea","China","USA","Japan"],f:"Japan is the birthplace of anime, with studios like Studio Ghibli and Toei Animation."},
+  {c:"Science",q:"What organ pumps blood around the human body?",a:1,o:["Lungs","Heart","Liver","Kidneys"],f:"The average heart beats about 100,000 times per day, pumping around 5 litres of blood per minute."},
+  {c:"Geography",q:"What is the capital of Brazil?",a:0,o:["Brasilia","Rio de Janeiro","Sao Paulo","Salvador"],f:"Brasilia became Brazil's capital in 1960, replacing Rio de Janeiro. It was built from scratch."},
+  {c:"History",q:"Who wrote 'Romeo and Juliet'?",a:2,o:["Charles Dickens","Christopher Marlowe","William Shakespeare","Geoffrey Chaucer"],f:"Shakespeare wrote Romeo and Juliet around 1594–1596. It remains the world's most performed play."},
+  {c:"Food",q:"Which fruit is known as the 'king of fruits' in Southeast Asia?",a:1,o:["Mango","Durian","Jackfruit","Rambutan"],f:"Durian is called the king of fruits but is banned in many hotels and public transport due to its intense smell."},
+  {c:"Science",q:"How many chromosomes do humans have?",a:3,o:["44","48","42","46"],f:"Humans have 46 chromosomes arranged in 23 pairs. Chimpanzees have 48."},
+  {c:"Geography",q:"Which river flows through Egypt?",a:0,o:["Nile","Congo","Niger","Zambezi"],f:"The Nile flows northward through Egypt for about 1,545 km before emptying into the Mediterranean Sea."},
+  {c:"Pop Culture",q:"What is the name of Batman's butler?",a:2,o:["James","Edwin","Alfred","Henry"],f:"Alfred Pennyworth has been Batman's loyal butler since his first comic appearance in 1943."},
+  {c:"Mathematics",q:"How many degrees are in a right angle?",a:1,o:["45","90","180","360"],f:"A right angle is exactly 90°. The term comes from the Latin 'angulus rectus' meaning upright angle."},
+  {c:"History",q:"Which ancient civilisation built the pyramids at Giza?",a:0,o:["Egyptians","Romans","Greeks","Mesopotamians"],f:"The Great Pyramid of Giza was built around 2560 BC for Pharaoh Khufu. It took about 20 years."},
+  {c:"Science",q:"What is the most abundant gas in Earth's atmosphere?",a:2,o:["Oxygen","Carbon Dioxide","Nitrogen","Argon"],f:"Nitrogen makes up 78% of the atmosphere. We breathe it in but our bodies don't use it."},
+  {c:"Geography",q:"What country has the largest population in the world?",a:1,o:["USA","India","China","Indonesia"],f:"India surpassed China in 2023 to become the world's most populous country with over 1.4 billion people."},
+  {c:"Food",q:"What is the main ingredient in guacamole?",a:0,o:["Avocado","Tomato","Lime","Onion"],f:"Avocado is the star of guacamole. The word comes from the Nahuatl 'ahuacamolli', meaning avocado sauce."},
+  {c:"Pop Culture",q:"Which planet is the Death Star destroyed in front of in Star Wars?",a:3,o:["Tatooine","Coruscant","Endor","Alderaan"],f:"Princess Leia's home planet Alderaan is destroyed by the Death Star in A New Hope (1977)."},
+  {c:"Science",q:"What is the name of the force that keeps planets in orbit?",a:1,o:["Electromagnetism","Gravity","Nuclear force","Centrifugal force"],f:"Gravity is the attractive force between masses. Newton described it in 1687; Einstein refined it in 1915."},
+  {c:"History",q:"In which city were the first modern Olympic Games held?",a:2,o:["Rome","Paris","Athens","London"],f:"The first modern Olympics were held in Athens, Greece in 1896 with 14 nations participating."},
+  {c:"Mathematics",q:"What is 25% of 80?",a:0,o:["20","25","15","30"],f:"25% of 80 = 0.25 × 80 = 20. Or simply divide by 4: 80 ÷ 4 = 20."},
+  {c:"Geography",q:"Which country contains the Amazon Rainforest?",a:1,o:["Colombia","Brazil","Peru","Venezuela"],f:"About 60% of the Amazon Rainforest lies in Brazil. It covers over 5.5 million km²."},
+  {c:"Language",q:"What does the prefix 'bio' mean?",a:2,o:["Earth","Water","Life","Air"],f:"Bio comes from Greek 'bios' meaning life — used in biology, biography, biodegradable."},
+  {c:"Pop Culture",q:"What colour is the Hulk?",a:0,o:["Green","Grey","Blue","Purple"],f:"The Hulk is green now, but in his 1962 debut issue he was grey — changed to green due to printing issues."},
+  {c:"Science",q:"What planet is closest to the Sun?",a:3,o:["Venus","Earth","Mars","Mercury"],f:"Mercury orbits the Sun in just 88 days. Despite being closest, Venus is actually hotter due to its thick atmosphere."},
+  {c:"History",q:"Who was the Egyptian queen famous for her relationship with Julius Caesar and Mark Antony?",a:1,o:["Nefertiti","Cleopatra","Hatshepsut","Isis"],f:"Cleopatra VII ruled Egypt from 51–30 BC. She was actually Greek by descent, from the Ptolemaic dynasty."},
+  {c:"Food",q:"Which country invented pizza?",a:2,o:["USA","Greece","Italy","France"],f:"Pizza originated in Naples, Italy in the 18th century. The Margherita pizza was created in 1889."},
+  {c:"Mathematics",q:"What is 7 × 8?",a:0,o:["56","54","58","52"],f:"7 × 8 = 56. This is one of the most commonly missed multiplication facts!"},
+  {c:"Geography",q:"What is the capital of Australia?",a:2,o:["Sydney","Melbourne","Canberra","Brisbane"],f:"Canberra was purpose-built as the capital in 1913 as a compromise between Sydney and Melbourne."},
+  {c:"Science",q:"What is the chemical symbol for iron?",a:1,o:["Ir","Fe","In","Io"],f:"Fe comes from 'Ferrum', the Latin word for iron. It's the most common element on Earth by mass."},
+  {c:"Pop Culture",q:"Which TV show features the fictional kingdom of Westeros?",a:0,o:["Game of Thrones","The Witcher","Vikings","The Last Kingdom"],f:"Game of Thrones ran for 8 seasons (2011–2019) and was based on George R.R. Martin's book series."},
+  {c:"History",q:"What was the name of the first artificial satellite launched into space?",a:2,o:["Explorer","Vanguard","Sputnik","Luna"],f:"Sputnik 1 was launched by the Soviet Union on October 4, 1957. It transmitted radio signals for 21 days."},
+  {c:"Language",q:"What is the longest word in the English language?",a:1,o:["Pneumonoultramicroscopicsilicovolcanoconiosis","Pneumonoultramicroscopicsilicovolcanoconiosis","Supercalifragilisticexpialidocious","Antidisestablishmentarianism"],f:"Pneumonoultramicroscopicsilicovolcanoconiosis (45 letters) is a lung disease caused by inhaling silica dust."},
+  {c:"Science",q:"How many teeth does an adult human have?",a:3,o:["28","30","26","32"],f:"Adult humans have 32 teeth including 4 wisdom teeth. Many people have their wisdom teeth removed."},
+  {c:"Geography",q:"Which country is home to the Great Barrier Reef?",a:0,o:["Australia","Indonesia","Philippines","Fiji"],f:"The Great Barrier Reef stretches 2,300 km along Australia's Queensland coast and is the world's largest coral system."},
+  {c:"Pop Culture",q:"What is the name of the coffee shop in the TV show 'Friends'?",a:2,o:["The Grind","Java Joe's","Central Perk","The Perch"],f:"Central Perk coffee shop is where the six friends hang out. The orange couch became iconic in TV history."},
+  {c:"Mathematics",q:"How many seconds are in one hour?",a:1,o:["3000","3600","4800","6000"],f:"1 hour = 60 minutes × 60 seconds = 3,600 seconds."},
+  {c:"History",q:"Which war was fought between the North and South of the United States?",a:0,o:["The Civil War","The Revolutionary War","The War of 1812","The Mexican-American War"],f:"The American Civil War (1861–1865) was fought over slavery and states' rights, resulting in 620,000 deaths."},
+  {c:"Food",q:"What type of pastry is used to make a croissant?",a:2,o:["Shortcrust","Choux","Puff/Laminated","Filo"],f:"Croissants use laminated dough with many butter layers. Ironically, croissants originated in Vienna, not France."},
+  {c:"Science",q:"What is the name of the layer of gases surrounding Earth?",a:1,o:["Ionosphere","Atmosphere","Biosphere","Lithosphere"],f:"Earth's atmosphere extends about 10,000 km above the surface and is divided into 5 main layers."},
+  {c:"Geography",q:"In which ocean is the island of Madagascar located?",a:3,o:["Pacific","Atlantic","Arctic","Indian"],f:"Madagascar lies in the Indian Ocean off the east coast of Africa. About 90% of its wildlife is found nowhere else."},
+  {c:"Pop Culture",q:"What is the name of Harry Potter's pet owl?",a:0,o:["Hedwig","Errol","Pigwidgeon","Crookshanks"],f:"Hedwig is a snowy owl and one of Harry's most loyal companions throughout the series."},
+  {c:"Mathematics",q:"What is the perimeter of a square with sides of 5cm?",a:2,o:["15cm","25cm","20cm","10cm"],f:"Perimeter = 4 × side = 4 × 5 = 20cm. Area would be 5 × 5 = 25cm²."},
+  {c:"History",q:"Who was the first woman to win a Nobel Prize?",a:1,o:["Ada Lovelace","Marie Curie","Florence Nightingale","Rosalind Franklin"],f:"Marie Curie won the Nobel Prize in Physics in 1903, and again in Chemistry in 1911 — the only person to win in two sciences."},
+  {c:"Science",q:"What is the hardest bone in the human body?",a:3,o:["Femur","Skull","Spine","Jawbone (Mandible)"],f:"The mandible (jawbone) is the hardest and densest bone in the body, built to withstand chewing forces."},
+  {c:"Geography",q:"Which country has the most UNESCO World Heritage Sites?",a:0,o:["Italy","China","Spain","France"],f:"Italy leads with 58 UNESCO World Heritage Sites, followed by China (57) and Germany (52)."},
+  {c:"Food",q:"What is the primary ingredient in hummus?",a:2,o:["Lentils","Beans","Chickpeas","Peas"],f:"Hummus is made from blended chickpeas, tahini, olive oil, lemon juice, and garlic. The word means 'chickpeas' in Arabic."},
+  {c:"Pop Culture",q:"Which social media platform uses a bird as its logo?",a:1,o:["Facebook","X (formerly Twitter)","Instagram","Snapchat"],f:"Twitter's blue bird logo was used from 2006 until 2023 when Elon Musk rebranded it to X."},
+  {c:"Science",q:"What do bees collect to make honey?",a:0,o:["Nectar","Pollen","Sap","Dew"],f:"Bees collect nectar from flowers and convert it into honey through enzymatic activity and evaporation. One bee makes about 1/12 teaspoon in its lifetime."},
+  {c:"History",q:"What ancient wonder was a giant statue in Rhodes?",a:2,o:["The Pharos","The Mausoleum","The Colossus","The Temple"],f:"The Colossus of Rhodes was a statue of the sun god Helios, standing about 33 metres tall. It stood for only 54 years."},
+  {c:"Mathematics",q:"What is Roman numeral 'X' equal to?",a:1,o:["5","10","15","20"],f:"X = 10 in Roman numerals. The system uses combinations: IX = 9, XI = 11, XL = 40."},
+  {c:"Geography",q:"What is the name of the world's largest hot desert?",a:0,o:["Sahara","Arabian","Gobi","Kalahari"],f:"The Sahara covers about 9.2 million km² across North Africa — roughly the size of the USA."},
+  {c:"Pop Culture",q:"What is the name of the fictional land in 'The Lion, The Witch and the Wardrobe'?",a:2,o:["Middle-Earth","Oz","Narnia","Wonderland"],f:"Narnia was created by C.S. Lewis. The series has sold over 100 million copies worldwide."},
+  {c:"Science",q:"Which vitamin is produced when human skin is exposed to sunlight?",a:3,o:["Vitamin A","Vitamin B12","Vitamin C","Vitamin D"],f:"Sunlight triggers Vitamin D synthesis in skin. Most people in northern climates are deficient in winter."},
+  {c:"History",q:"Which country was formerly known as Persia?",a:1,o:["Iraq","Iran","Afghanistan","Turkey"],f:"Iran officially changed its name from Persia in 1935. Persian civilisation dates back over 2,500 years."},
+  {c:"Food",q:"What is the world's spiciest chilli pepper?",a:0,o:["Carolina Reaper","Ghost Pepper","Habanero","Scorpion Pepper"],f:"The Carolina Reaper held the Guinness World Record for years with over 2.2 million Scoville units."},
+  {c:"Mathematics",q:"What is 100 divided by 4?",a:2,o:["20","30","25","40"],f:"100 ÷ 4 = 25. Another way: half of 100 is 50, half of 50 is 25."},
+  {c:"Geography",q:"What is the currency of the United Kingdom?",a:1,o:["Euro","Pound Sterling","Shilling","Crown"],f:"The British Pound (£) is one of the world's oldest currencies still in use, dating back to the 8th century."},
+  {c:"Pop Culture",q:"Which company makes the iPhone?",a:0,o:["Apple","Samsung","Google","Sony"],f:"Apple launched the first iPhone in 2007. Steve Jobs called it 'a revolutionary device that changes everything.'"},
+  {c:"Science",q:"What is the study of earthquakes called?",a:3,o:["Meteorology","Geology","Volcanology","Seismology"],f:"Seismology studies seismic waves. The Richter scale measures earthquake magnitude, developed by Charles Richter in 1935."},
+  {c:"History",q:"Which country was the first to give women the right to vote?",a:2,o:["USA","UK","New Zealand","Australia"],f:"New Zealand was the first self-governing country to give women the right to vote, in 1893."},
+  {c:"Language",q:"What is the Italian word for 'hello'?",a:1,o:["Bonjour","Ciao","Hola","Salve"],f:"'Ciao' is used for both hello and goodbye in Italian. It comes from the Venetian dialect word for 'your servant'."},
+  {c:"Science",q:"How many hearts does an octopus have?",a:2,o:["1","2","3","4"],f:"An octopus has 3 hearts: one pumps blood to the body, two pump blood to the gills. Their blood is blue!"},
+  {c:"Geography",q:"Which African country has the largest population?",a:0,o:["Nigeria","Ethiopia","Egypt","South Africa"],f:"Nigeria is Africa's most populous country with over 220 million people, projected to be the world's 3rd most populous by 2050."},
+  {c:"Pop Culture",q:"What is the name of the pub in 'The Simpsons'?",a:3,o:["The Rusty Anchor","Homer's Place","The Springfield Bar","Moe's Tavern"],f:"Moe's Tavern is Homer's local bar, run by Moe Szyslak. It first appeared in the pilot episode in 1989."},
+  {c:"Mathematics",q:"What is the sum of angles in a triangle?",a:1,o:["90°","180°","270°","360°"],f:"Every triangle's interior angles always sum to 180°, whether it's tiny or enormous."},
+  {c:"History",q:"Who was the first human to travel to space?",a:2,o:["Alan Shepard","John Glenn","Yuri Gagarin","Neil Armstrong"],f:"Yuri Gagarin orbited Earth on April 12, 1961 in Vostok 1. His flight lasted 108 minutes."},
+  {c:"Food",q:"Which nut is used to make marzipan?",a:0,o:["Almond","Walnut","Hazelnut","Cashew"],f:"Marzipan is made from ground almonds and sugar. It's used in confectionery and to cover celebration cakes."},
+  {c:"Science",q:"What is the name of the process by which plants make food?",a:1,o:["Respiration","Photosynthesis","Transpiration","Germination"],f:"Photosynthesis converts sunlight, water and CO₂ into glucose and oxygen. It's the foundation of almost all life on Earth."},
+  {c:"Geography",q:"Which country is both a continent and a country?",a:3,o:["Greenland","Iceland","New Zealand","Australia"],f:"Australia is the world's smallest continent and the sixth-largest country by area, covering about 7.7 million km²."},
+  {c:"Pop Culture",q:"Which Disney film features the song 'Let It Go'?",a:2,o:["Moana","Tangled","Frozen","Brave"],f:"'Let It Go' from Frozen (2013) won the Academy Award for Best Original Song and became a global phenomenon."},
+  {c:"History",q:"What year did the Titanic sink?",a:0,o:["1912","1914","1908","1910"],f:"The Titanic sank on April 15, 1912, after hitting an iceberg. Of 2,224 passengers and crew, about 1,500 died."},
+  {c:"Mathematics",q:"What is 2 to the power of 10?",a:1,o:["512","1024","2048","256"],f:"2¹⁰ = 1,024. This is why computer memory comes in sizes like 1KB (1,024 bytes)."},
+  {c:"Science",q:"What is the most common blood type in humans?",a:0,o:["O+","A+","B+","AB+"],f:"O+ is the most common blood type globally, found in about 38% of people. O- is the universal donor."},
+  {c:"Geography",q:"Through how many countries does the River Danube flow?",a:3,o:["5","7","8","10"],f:"The Danube flows through 10 countries — more than any other river in the world — from Germany to the Black Sea."},
+  {c:"Language",q:"What does 'et cetera' (etc.) mean?",a:2,o:["And more importantly","And nothing else","And so on","For example"],f:"'Et cetera' is Latin for 'and the rest' or 'and other things'. It was absorbed into English in the 15th century."},
+  {c:"Pop Culture",q:"What colour is the Google Chrome browser logo's top segment?",a:1,o:["Blue","Red","Green","Yellow"],f:"The Chrome logo has red at top, then yellow, green, with blue in the centre circle."},
+  {c:"Science",q:"What is the name of the galaxy we live in?",a:3,o:["Andromeda","Triangulum","Sombrero","Milky Way"],f:"The Milky Way contains 100–400 billion stars. It takes the Sun about 225 million years to orbit the galactic centre."},
+  {c:"History",q:"What was the name of the plague that swept through Europe in the 14th century?",a:0,o:["The Black Death","The Red Plague","The Great Sickness","The Dark Fever"],f:"The Black Death (1347–1351) killed an estimated 30–60% of Europe's population — up to 25 million people."},
+  {c:"Food",q:"What country is sushi originally from?",a:2,o:["China","South Korea","Japan","Thailand"],f:"Sushi originated in Japan during the Edo period (1600s). The modern style with vinegared rice emerged in the 19th century."},
+  {c:"Mathematics",q:"How many faces does a cube have?",a:1,o:["4","6","8","12"],f:"A cube has 6 faces, 12 edges, and 8 vertices. Each face is a square of equal size."},
+  {c:"Science",q:"What is the smallest planet in our solar system?",a:0,o:["Mercury","Mars","Venus","Pluto"],f:"Mercury is the smallest planet, with a diameter of 4,879 km — about 38% of Earth's diameter."},
+  {c:"Geography",q:"What is the capital of South Africa?",a:3,o:["Johannesburg","Cape Town","Durban","Pretoria"],f:"South Africa has three capitals: Pretoria (executive), Cape Town (legislative), and Bloemfontein (judicial)."},
+  {c:"Pop Culture",q:"What is the name of Thor's hammer in Marvel comics?",a:1,o:["Gungnir","Mjolnir","Excalibur","Durandal"],f:"Mjolnir (pronounced 'Myol-near') is inscribed: 'Whosoever holds this hammer, if worthy, shall possess the power of Thor.'"},
+  {c:"History",q:"Which explorer is credited with discovering America in 1492?",a:2,o:["Amerigo Vespucci","Vasco da Gama","Christopher Columbus","Ferdinand Magellan"],f:"Columbus landed in the Bahamas on October 12, 1492. Though he never reached mainland America, his voyage changed history."},
+  {c:"Language",q:"What is the French word for 'water'?",a:0,o:["Eau","Aqua","Wasser","Agua"],f:"'Eau' is French for water. 'Aqua' is Latin/Italian, 'Wasser' is German, 'Agua' is Spanish/Portuguese."},
+  {c:"Science",q:"What is the unit of electrical resistance?",a:3,o:["Volt","Ampere","Watt","Ohm"],f:"The Ohm (Ω) is named after Georg Ohm who discovered that voltage = current × resistance (Ohm's Law, 1827)."},
+  {c:"Geography",q:"Which sea lies between Europe and Africa?",a:1,o:["Red Sea","Mediterranean Sea","Arabian Sea","Black Sea"],f:"The Mediterranean Sea spans 2.5 million km² and borders 21 countries across Europe, Africa, and Asia."},
+  {c:"Pop Culture",q:"Which artist painted the Sistine Chapel ceiling?",a:0,o:["Michelangelo","Leonardo da Vinci","Raphael","Botticelli"],f:"Michelangelo painted the Sistine Chapel ceiling from 1508–1512, lying on scaffolding. The centrepiece is The Creation of Adam."},
+  {c:"Mathematics",q:"What is the value of pi to 4 decimal places?",a:2,o:["3.1412","3.1416","3.1416","3.1418"],f:"Pi = 3.14159265... The first 10 digits are 3.1415926535. It's irrational — the decimals never repeat."},
+  {c:"Science",q:"What colour does litmus paper turn in an acid?",a:1,o:["Blue","Red","Yellow","Green"],f:"Litmus turns red in acids and blue in alkalis/bases. It's extracted from lichens and has been used since the 1300s."},
+  {c:"History",q:"Who was the first female Prime Minister of the United Kingdom?",a:3,o:["Theresa May","Queen Victoria","Angela Merkel","Margaret Thatcher"],f:"Margaret Thatcher served as PM from 1979–1990, becoming known as the 'Iron Lady' for her uncompromising politics."},
+  {c:"Food",q:"What is the main ingredient in a traditional Spanish paella?",a:0,o:["Rice","Pasta","Bread","Noodles"],f:"Paella is built on short-grain rice, cooked in saffron broth. It originated in Valencia and traditionally includes rabbit or seafood."},
+  {c:"Geography",q:"What is the name of the strait that separates England and France?",a:2,o:["Bering Strait","Strait of Gibraltar","English Channel","Strait of Dover"],f:"The English Channel (also called La Manche in French) is about 560 km long and just 34 km wide at its narrowest point."},
+  {c:"Pop Culture",q:"In which city is the TV show 'Sherlock Holmes' set?",a:1,o:["Edinburgh","London","Manchester","Oxford"],f:"Sherlock Holmes lives at 221B Baker Street, London. The address didn't exist when Conan Doyle wrote the stories in 1887."},
+  {c:"Science",q:"What is the name of the process by which liquid turns to gas?",a:0,o:["Evaporation","Condensation","Sublimation","Precipitation"],f:"Evaporation occurs when molecules at a liquid's surface gain enough energy to escape as vapour, even below boiling point."},
+  {c:"Mathematics",q:"If you have 3 dozen eggs, how many eggs do you have?",a:3,o:["24","30","32","36"],f:"One dozen = 12, so 3 dozen = 3 × 12 = 36 eggs."},
+  {c:"History",q:"What year did World War I begin?",a:2,o:["1912","1913","1914","1915"],f:"WWI began on July 28, 1914 after Archduke Franz Ferdinand was assassinated in Sarajevo on June 28, 1914."},
+  {c:"Language",q:"What is the Spanish word for 'thank you'?",a:1,o:["Por favor","Gracias","De nada","Hola"],f:"'Gracias' means thank you. 'Por favor' = please, 'De nada' = you're welcome, 'Hola' = hello."},
+  {c:"Science",q:"What is the name of the bone that protects the brain?",a:0,o:["Skull","Sternum","Cranium","Femur"],f:"The skull/cranium is made of 22 bones fused together. It's one of the strongest structures in the human body."},
+  {c:"Geography",q:"What is the tallest waterfall in the world?",a:3,o:["Niagara Falls","Victoria Falls","Iguazu Falls","Angel Falls"],f:"Angel Falls in Venezuela is 979 metres tall — about 15 times the height of Niagara Falls. It was named after pilot Jimmie Angel."},
+  {c:"Pop Culture",q:"What is the highest-grossing film of all time (not adjusted for inflation)?",a:2,o:["The Avengers","Titanic","Avatar","Avengers: Endgame"],f:"Avatar (2009, re-released 2022) holds the all-time box office record with over $2.9 billion worldwide."},
+  {c:"Mathematics",q:"What is 9 × 9?",a:1,o:["72","81","84","88"],f:"9 × 9 = 81. A quick trick: 9 × n = (n-1) in the tens digit, and (9-(n-1)) in the units. So 9×9 = 8,1."},
+  {c:"Science",q:"Which planet is known as the 'Blue Planet'?",a:0,o:["Earth","Neptune","Uranus","Venus"],f:"Earth is called the Blue Planet because about 71% of its surface is covered in water, giving it a blue appearance from space."},
+  {c:"History",q:"Who was the leader of the Nazi Party in Germany?",a:2,o:["Mussolini","Stalin","Hitler","Goebbels"],f:"Adolf Hitler led the Nazi Party from 1921 and was Chancellor/Fuhrer of Germany from 1933 until his death in 1945."},
+  {c:"Food",q:"Which country is the world's largest producer of coffee?",a:1,o:["Colombia","Brazil","Ethiopia","Vietnam"],f:"Brazil has been the world's largest coffee producer for over 150 years, producing about 35% of global supply."},
+  {c:"Geography",q:"What is the capital of India?",a:3,o:["Mumbai","Kolkata","Chennai","New Delhi"],f:"New Delhi has been India's capital since 1911 when it replaced Calcutta (Kolkata). It was designed by Edwin Lutyens."},
+  {c:"Pop Culture",q:"What is the name of the fictional school in Harry Potter?",a:0,o:["Hogwarts","Beauxbatons","Durmstrang","Ilvermorny"],f:"Hogwarts School of Witchcraft and Wizardry is located in the Scottish Highlands. Its motto is 'Never tickle a sleeping dragon'."},
+  {c:"Science",q:"What is the speed of sound in air (approximately)?",a:2,o:["200 m/s","500 m/s","343 m/s","1000 m/s"],f:"Sound travels at 343 m/s (1,235 km/h) in dry air at 20°C. It travels faster in water and even faster in solids."},
+  {c:"Mathematics",q:"How many minutes are in a day?",a:1,o:["1000","1440","1200","1500"],f:"24 hours × 60 minutes = 1,440 minutes per day. That's 86,400 seconds."},
+  {c:"History",q:"In which country did the Industrial Revolution begin?",a:0,o:["Britain","France","USA","Germany"],f:"The Industrial Revolution began in Britain in the 1760s, transforming manufacturing with steam power, textiles, and iron."},
+  {c:"Language",q:"What is a group of fish called?",a:2,o:["Pack","Herd","School","Colony"],f:"A group of fish is called a school or shoal. They swim together for protection — a predator finds it harder to target one fish."},
+  {c:"Science",q:"What type of animal is a seahorse?",a:1,o:["Crustacean","Fish","Mollusc","Amphibian"],f:"Despite their appearance, seahorses are fish. They're the only species where the male carries and gives birth to babies."},
+  {c:"Geography",q:"Which country has the most islands in the world?",a:3,o:["Indonesia","Philippines","Canada","Sweden"],f:"Sweden has over 220,000 islands! Most are tiny and uninhabited, dotting the Swedish archipelago."},
+  {c:"Pop Culture",q:"Which band wrote 'Bohemian Rhapsody'?",a:0,o:["Queen","The Beatles","Led Zeppelin","The Rolling Stones"],f:"Bohemian Rhapsody was written by Freddie Mercury and released by Queen in 1975. It's the most-streamed song from the 20th century."},
+  {c:"Mathematics",q:"What is the area of a rectangle that is 8cm long and 5cm wide?",a:2,o:["26cm²","13cm²","40cm²","56cm²"],f:"Area = length × width = 8 × 5 = 40cm². Perimeter = 2 × (8+5) = 26cm."},
+  {c:"Science",q:"What is the chemical symbol for water?",a:1,o:["WO","H₂O","HO₂","W₂O"],f:"H₂O means two hydrogen atoms bonded to one oxygen atom. Water is the most common molecule on Earth's surface."},
+  {c:"History",q:"What was the name of the ship Charles Darwin sailed on during his famous voyage?",a:3,o:["Endeavour","Resolution","Discovery","Beagle"],f:"Darwin sailed on HMS Beagle from 1831–1836. His observations, particularly in the Galapagos, led to his theory of evolution."},
+  {c:"Food",q:"Which country invented chocolate?",a:2,o:["Switzerland","Belgium","Mexico","France"],f:"Cacao was first used by ancient Mesoamerican civilisations in Mexico over 3,000 years ago. Europeans added sugar in the 16th century."},
+  {c:"Language",q:"What does the word 'philanthropy' mean?",a:0,o:["Love of humanity","Fear of crowds","Study of language","Love of knowledge"],f:"Philanthropy comes from Greek: philos (love) + anthropos (human). It refers to charitable acts to promote human welfare."},
+  {c:"Science",q:"How many layers does the Earth have?",a:1,o:["2","4","3","5"],f:"Earth has 4 layers: crust, mantle, outer core (liquid), and inner core (solid iron). The inner core is about 5,000°C."},
+  {c:"Geography",q:"What is the longest mountain range in the world?",a:2,o:["Himalayas","Rocky Mountains","Andes","Alps"],f:"The Andes stretch 7,000 km along South America's western coast — the world's longest continental mountain range."},
+  {c:"Pop Culture",q:"Which country is K-pop music from?",a:1,o:["Japan","South Korea","China","Thailand"],f:"K-pop (Korean pop) originated in South Korea. BTS became the first K-pop group to top the US Billboard Hot 100 in 2020."},
+  {c:"Mathematics",q:"What is 1,000 × 1,000?",a:3,o:["10,000","100,000","10,000,000","1,000,000"],f:"1,000 × 1,000 = 1,000,000 (one million). One million seconds is about 11.5 days."},
+  {c:"Science",q:"What is the name for a baby kangaroo?",a:0,o:["Joey","Kit","Cub","Pup"],f:"A baby kangaroo is called a joey. It's born at just 1cm long and crawls to its mother's pouch where it develops for months."},
+  {c:"History",q:"Which emperor built the Great Wall of China?",a:2,o:["Genghis Khan","Kublai Khan","Qin Shi Huang","Yongle Emperor"],f:"Qin Shi Huang ordered the first unified wall built around 221 BC. Most of today's wall was built during the Ming Dynasty (1368–1644)."},
+  {c:"Food",q:"What is the most consumed beverage in the world after water?",a:1,o:["Coffee","Tea","Beer","Coca-Cola"],f:"Tea is the world's second most consumed beverage. Over 3 billion cups are drunk daily. China is both the largest producer and consumer."},
+  {c:"Language",q:"What is a word that has the same spelling but different meanings called?",a:3,o:["Homophone","Synonym","Antonym","Homonym"],f:"Homonyms (or homophones when same sound) share spelling/pronunciation but differ in meaning. 'Bank' can mean a riverbank or financial institution."},
+  {c:"Science",q:"What is the rarest blood type?",a:2,o:["O-","B-","AB-","AB+"],f:"AB- is the rarest blood type, found in only about 1% of people. AB+ is the universal plasma donor."},
+  {c:"Geography",q:"What is the name of the world's largest ocean?",a:0,o:["Pacific","Atlantic","Indian","Arctic"],f:"The Pacific Ocean covers about 165 million km² — larger than all of Earth's land masses combined."},
+  {c:"Pop Culture",q:"In which year was the first iPhone released?",a:3,o:["2005","2006","2009","2007"],f:"Steve Jobs unveiled the first iPhone on January 9, 2007, calling it 'a revolutionary mobile phone'. It went on sale June 29, 2007."},
+  {c:"Mathematics",q:"What is the next number in the Fibonacci sequence: 1, 1, 2, 3, 5, 8, ?",a:1,o:["12","13","11","15"],f:"Each Fibonacci number is the sum of the two before it: 5+8=13. The sequence appears throughout nature in spirals and branching."},
+  {c:"Science",q:"What is the main function of red blood cells?",a:0,o:["Carry oxygen","Fight infection","Clot blood","Carry nutrients"],f:"Red blood cells (erythrocytes) carry oxygen from lungs to body tissues using haemoglobin, which gives blood its red colour."},
+  {c:"History",q:"Which country was the first to use paper money?",a:2,o:["India","Egypt","China","Rome"],f:"China invented paper money during the Tang Dynasty (7th century AD). It became widespread in the Song Dynasty (10th century)."},
+  {c:"Food",q:"What gives red wine its colour?",a:1,o:["Tannins","Anthocyanins from grape skins","Sulphites","Yeast"],f:"Red wine gets its colour from anthocyanins — pigments in red grape skins that leach into the wine during fermentation."},
+  {c:"Geography",q:"What is the name of the famous clock tower in London?",a:3,o:["The Shard","Tower of London","Canary Wharf","Big Ben"],f:"Big Ben is actually the name of the main bell, not the tower. The tower is officially named the Elizabeth Tower since 2012."},
+  {c:"Science",q:"How long does it take light to travel from the Sun to Earth?",a:2,o:["3 minutes","5 minutes","8 minutes","12 minutes"],f:"Light takes about 8 minutes and 20 seconds to reach Earth from the Sun, travelling 149.6 million km."},
+  {c:"Pop Culture",q:"Which author wrote '1984'?",a:0,o:["George Orwell","Aldous Huxley","Ray Bradbury","H.G. Wells"],f:"George Orwell published 1984 in 1949. It introduced concepts like Big Brother, doublethink, and thoughtcrime to popular culture."},
+  {c:"Mathematics",q:"What is 20% of 150?",a:1,o:["25","30","35","40"],f:"20% of 150 = 0.2 × 150 = 30. Or: 10% of 150 = 15, doubled = 30."},
+  {c:"Language",q:"What does 'status quo' mean?",a:2,o:["A new beginning","High status","The existing state of affairs","A legal term"],f:"Status quo is Latin for 'the state in which things are'. It's used in English to mean the current situation or condition."},
+  {c:"Science",q:"What is the largest mammal on Earth?",a:1,o:["African Elephant","Blue Whale","Sperm Whale","Giraffe"],f:"The blue whale is the largest animal ever known to exist, reaching up to 30 metres and 200 tonnes."},
+  {c:"History",q:"Who invented the light bulb?",a:3,o:["Nikola Tesla","Benjamin Franklin","Alexander Graham Bell","Thomas Edison"],f:"Edison patented the incandescent light bulb in 1879, though others worked on it too. His version lasted 1,200 hours."},
+  {c:"Geography",q:"What is the smallest ocean in the world?",a:0,o:["Arctic","Southern","Indian","Atlantic"],f:"The Arctic Ocean covers about 14 million km² — the shallowest and smallest of the world's five oceans."},
+  {c:"Food",q:"Which vegetable is also known as a 'courgette' in the UK?",a:2,o:["Cucumber","Aubergine","Zucchini","Squash"],f:"Zucchini (USA/Australia) and courgette (UK/France) are the same vegetable. Both words mean 'little gourd'."},
+  {c:"Pop Culture",q:"What is the name of the fictional African country in Black Panther?",a:1,o:["Naranda","Wakanda","Zamunda","Kanda"],f:"Wakanda is the fictional nation home to T'Challa/Black Panther, with advanced vibranium technology. It's set in East Africa."},
+  {c:"Science",q:"What makes the sky appear blue?",a:0,o:["Rayleigh scattering of sunlight","Reflection of ocean","Ozone layer","Water vapour"],f:"Blue light has a shorter wavelength and scatters more through the atmosphere (Rayleigh scattering). This is why the sky looks blue."},
+  {c:"Mathematics",q:"How many zeros are in one billion?",a:3,o:["7","8","10","9"],f:"One billion = 1,000,000,000 — that's 9 zeros. In British English, a billion historically meant a million million, but now matches the US standard."},
+  {c:"History",q:"What was the name of the first moon landing mission?",a:2,o:["Apollo 11 — confirmed","Gemini 9","Apollo 11","Mercury 6"],f:"Apollo 11 landed on the Moon on July 20, 1969. Neil Armstrong and Buzz Aldrin walked on the surface while Michael Collins orbited above."},
+  {c:"Language",q:"What does 'aqua' mean in Latin?",a:1,o:["Earth","Water","Fire","Air"],f:"Aqua is Latin for water. It lives on in words like aquarium, aquatic, aqueduct, and aquamarine."},
+  {c:"Science",q:"What is the name of the closest galaxy to the Milky Way?",a:3,o:["Triangulum","Sombrero","Pinwheel","Andromeda"],f:"Andromeda is about 2.5 million light-years away and is on a collision course with the Milky Way — expected in about 4.5 billion years."},
+  {c:"Geography",q:"In which country is Mount Kilimanjaro located?",a:0,o:["Tanzania","Kenya","Uganda","Ethiopia"],f:"Mount Kilimanjaro is in Tanzania and is Africa's highest peak at 5,895 metres. It has a snow-capped summit despite being near the equator."},
+  {c:"Food",q:"What type of bread is traditionally used in a BLT sandwich?",a:2,o:["Sourdough","Rye","White toast","Brioche"],f:"A classic BLT uses white toasted bread with bacon, lettuce, and tomato. It became popular in America in the 1900s."},
+  {c:"Pop Culture",q:"Which video game franchise features Link as the main character?",a:1,o:["Mario","The Legend of Zelda","Metroid","Kirby"],f:"Link is the hero of Nintendo's Legend of Zelda series, which began in 1986. Many people mistakenly call him Zelda — she's the princess."},
+  {c:"Science",q:"What is the name of the force that opposes motion between surfaces?",a:0,o:["Friction","Gravity","Tension","Inertia"],f:"Friction is caused by surface irregularities interacting. It's both useful (walking, braking) and wasteful (engine heat loss)."},
+  {c:"Mathematics",q:"What is the circumference formula for a circle?",a:2,o:["2r","πr²","2πr","πd²"],f:"Circumference = 2πr (or πd, since d=2r). Area = πr². A circle with radius 5cm has circumference ≈ 31.4cm."},
+  {c:"History",q:"Which country did Napoleon Bonaparte come from?",a:1,o:["France","Corsica (Italy at the time)","Spain","Austria"],f:"Napoleon was born in Corsica in 1769, which had just been transferred from Genoa to France. He rose to become Emperor of France."},
+  {c:"Language",q:"What is the Japanese word for 'yes'?",a:3,o:["Nai","Iie","Hai-iie","Hai"],f:"'Hai' means yes in Japanese, though it's more nuanced — it can also mean 'I hear you' or 'I understand' without necessarily agreeing."}
 ];
 
 // ── DATE + INDEX ─────────────────────────────────────────────────────────────
@@ -311,7 +477,7 @@ function _showAlreadyPlayed(res) {
   _startCountdown();
 }
 
-// ── ANSWER ───────────────────────────────────────────────────────────────────
+// ── ANSWER ──────────────────────────────────────────────────────────────────
 function _answer(chosen) {
   var correct = (chosen === _q.a);
   var btns = _optWrap.querySelectorAll('.option-btn');
@@ -326,7 +492,15 @@ function _answer(chosen) {
   var result = {correct: correct, chosen: chosen};
   localStorage.setItem(_storageKey, JSON.stringify(result));
 
-  if(window._db){try{var tName=localStorage.getItem('df_lb_name')||'Anonymous';var tDoc={day:_dayIdx,name:tName,correct:correct,ts:firebase.firestore.FieldValue.serverTimestamp()};var tId=tName.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+ '_'+_dayIdx;window._db.collection('trivia_scores').doc(tId).set(tDoc).catch(function(){});}catch(e){}}
+  // Write to Firestore
+  if(window._db){
+    try{
+      var tName=localStorage.getItem('df_lb_name')||'Anonymous';
+      var tDoc={day:_dayIdx,name:tName,correct:correct,ts:firebase.firestore.FieldValue.serverTimestamp()};
+      var tId=tName.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+'_'+_dayIdx;
+      window._db.collection('trivia_scores').doc(tId).set(tDoc).catch(function(){});
+    }catch(e){}
+  }
 
   // Award coins
   if (correct) {
@@ -356,10 +530,11 @@ function _showResult(correct, chosen, animate) {
   }
 
   panel.classList.add('show');
-  var igB=document.getElementById('igFollowBanner');if(igB)igB.style.display='block';
+  var igb = document.getElementById('igFollowBanner');
+  if(igb) igb.style.display='block';
 }
 
-// ── SHARE ────────────────────────────────────────────────────────────────────
+// ── SHARE ───────────────────────────────────────────────────────────────────
 document.getElementById('shareBtn').onclick = function(){
   var res = JSON.parse(localStorage.getItem(_storageKey) || '{}');
   var correct = res.correct;
@@ -383,7 +558,7 @@ function _startCountdown() {
   document.getElementById('countdownWrap').style.display = 'block';
   function tick() {
     var now = new Date();
-    var tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    var tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)) + 1);
     var diff = tomorrow - now;
     var h = Math.floor(diff / 3600000);
     var m = Math.floor((diff % 3600000) / 60000);
@@ -399,8 +574,10 @@ function _startCountdown() {
 (function(){
   var epoch=new Date('2025-01-01T00:00:00');
   var idx=Math.floor((Date.now()-epoch.getTime())/86400000);
-  var he=document.getElementById('headerEst');if(he)he.textContent='Day #'+idx;
-  var fy=document.getElementById('footerYear');if(fy)fy.textContent=new Date().getFullYear();
+  var est=document.getElementById('headerEst');
+  if(est)est.textContent='Day #'+idx;
+  var y=document.getElementById('footerYear');
+  if(y)y.textContent=new Date().getFullYear();
 })();
 </script>
 </body>

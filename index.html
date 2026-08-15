@@ -15,7 +15,6 @@
   <meta name="twitter:description" content="Five free daily puzzles. New games every day at midnight."/>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4991106296689056" crossorigin="anonymous"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -39,7 +38,7 @@
     .auth-btn:hover{background:var(--accent);}
     .lb-btn{display:inline-flex;align-items:center;background:var(--amber);color:#1c1a16;text-decoration:none;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;border-radius:var(--radius);white-space:nowrap;transition:opacity var(--trans);gap:4px;}
     .lb-btn:hover{opacity:.8;}
-    .lb-banner{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;padding:14px 20px;background:var(--paper-2);border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);gap:12px;flex-wrap:wrap;}
+    .lb-banner{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto 0;padding:14px 20px;background:var(--paper-2);border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);gap:12px;flex-wrap:wrap;}
     .lb-banner-text{font-size:13px;font-weight:600;color:var(--ink-soft);}
     .lb-banner-btn{display:inline-flex;align-items:center;gap:5px;background:var(--green);color:#fff;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:9px 16px;border-radius:var(--radius);white-space:nowrap;transition:opacity var(--trans);}
     .lb-banner-btn:hover{opacity:.85;}
@@ -93,7 +92,7 @@
     .section-label::before,.section-label::after{content:'';flex:1;height:1px;background:var(--line);}
     /* How to Play */
     .how-to-section{max-width:1100px;margin:0 auto;padding:24px 20px 32px;}
-    .how-tabs{display:flex;border-bottom:.px solid var(--line);margin-bottom:24px;}
+    .how-tabs{display:flex;border-bottom:2px solid var(--line);margin-bottom:24px;}
     .how-tab{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--ink-muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color var(--trans),border-color var(--trans);font-family:'Hanken Grotesk',sans-serif;}
     .how-tab.active{color:var(--ink);border-bottom-color:var(--ink);}
     .how-panel{display:none;}
@@ -119,6 +118,17 @@
     .mini-name{font-family:'Fraunces',serif;font-weight:700;font-size:15px;margin-bottom:4px;}
     .mini-desc{font-size:12px;color:var(--ink-muted);line-height:1.4;margin-bottom:8px;}
     .mini-badge{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-muted);border:1px solid var(--line);padding:2px 6px;border-radius:2px;display:inline-block;}
+    /* Streak bar */
+    .streak-bar{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .streak-left{display:flex;align-items:center;gap:10px;}
+    .streak-flame{font-size:22px;line-height:1;}
+    .streak-count{font-family:'Fraunces',serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:-.02em;}
+    .streak-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+    .streak-sub{font-size:11px;color:var(--ink-muted);}
+    .streak-pips{display:flex;gap:4px;align-items:center;}
+    .streak-pip{width:10px;height:10px;border-radius:50%;background:var(--line);}
+    .streak-pip.done{background:var(--green);}
+    .streak-pip.today{background:var(--amber);}
     /* Footer */
     footer{border-top:2px solid var(--ink);padding:18px 20px 14px;text-align:center;}
     .footer-links{display:flex;justify-content:center;align-items:center;gap:6px 16px;flex-wrap:wrap;margin-bottom:10px;}
@@ -265,6 +275,21 @@
   <a href="/leaderboard.html" class="lb-banner-btn">View Leaderboard &#8594;</a>
 </div>
 
+<!-- STREAK BAR -->
+<div class="streak-bar" id="streakBar" style="border-bottom:1px solid var(--line);">
+  <div class="streak-left">
+    <span class="streak-flame" id="streakFlame">🔥</span>
+    <div>
+      <div style="display:flex;align-items:baseline;gap:6px;">
+        <span class="streak-count" id="streakCount">0</span>
+        <span class="streak-label" id="streakLabel">day streak</span>
+      </div>
+      <div class="streak-sub" id="streakSub">Play any game today to start your streak</div>
+    </div>
+  </div>
+  <div class="streak-pips" id="streakPips"></div>
+</div>
+
 <!-- TRIVIA LIVE CARD -->
 <div class="section-label"><span>More Games</span></div>
 <div style="max-width:1100px;margin:0 auto;padding:24px 20px;">
@@ -392,6 +417,51 @@ document.getElementById('themeBtn').onclick=function(){var c=document.documentEl
 
 // Status checks
 (function(){var d=new Date();var tk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(localStorage.getItem('df_played_'+tk)==='1'){document.getElementById('wordDot').classList.add('played');document.getElementById('wordStatusText').textContent='Played today ✓';document.getElementById('wordStatusText').classList.add('played');}if(localStorage.getItem('ds_played_'+tk)==='1'){document.getElementById('scrambleDot').classList.add('played');document.getElementById('scrambleStatusText').textContent='Played today ✓';document.getElementById('scrambleStatusText').classList.add('played');}})();
+// Streak counter
+(function(){
+  function dateKey(d){return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+  function playedOn(k){return localStorage.getItem('df_played_'+k)==='1'||localStorage.getItem('ds_played_'+k)==='1'||!!localStorage.getItem('dt_played_'+k);}
+  var today=new Date();
+  var todayKey=dateKey(today);
+  var playedToday=playedOn(todayKey);
+  // Count streak: start from yesterday (streak only grows from past days), add today if played
+  var streak=0;
+  var check=new Date(today);
+  if(playedToday){streak=1;check.setDate(check.getDate()-1);}
+  for(var i=0;i<364;i++){
+    if(playedOn(dateKey(check))){streak++;check.setDate(check.getDate()-1);}
+    else break;
+  }
+  // Build UI
+  var countEl=document.getElementById('streakCount');
+  var labelEl=document.getElementById('streakLabel');
+  var subEl=document.getElementById('streakSub');
+  var flameEl=document.getElementById('streakFlame');
+  var pipsEl=document.getElementById('streakPips');
+  countEl.textContent=streak;
+  if(streak===0){
+    flameEl.textContent='💤';
+    labelEl.textContent='day streak';
+    subEl.textContent='Play any game today to start your streak';
+  } else if(playedToday){
+    flameEl.textContent='🔥';
+    labelEl.textContent=streak===1?'day streak':'day streak';
+    subEl.textContent='You\'ve played today — streak alive!';
+  } else {
+    flameEl.textContent='⚠️';
+    labelEl.textContent='day streak';
+    subEl.textContent='Play a game today to keep your streak going!';
+  }
+  // Last 7 days pips
+  for(var j=6;j>=0;j--){
+    var d2=new Date(today);d2.setDate(d2.getDate()-j);
+    var k2=dateKey(d2);
+    var pip=document.createElement('div');
+    pip.className='streak-pip'+(j===0?(playedToday?' today':''):( playedOn(k2)?' done':''));
+    pip.title=(j===0?'Today':j+'d ago')+(playedOn(k2)||( j===0&&playedToday)?' ✓':'');
+    pipsEl.appendChild(pip);
+  }
+})();
 
 // Auth modal
 var _modal=document.getElementById('authModal');
@@ -429,14 +499,13 @@ _auth.onAuthStateChanged(function(user){
   if(user){
     _closeModal();sib.style.display='none';uc.style.display='flex';
     var av=document.getElementById('userAvatar');
-    if(user.photoURL){av.innerHTML='<img src="'+user.photoURL+'" alt=""/>';}
-    else{av.textContent=((user.displayName||user.email||'?')[0]).toUpperCase();}
+    if(user.photoURL){av.innerHTML='<img src="'+user.photoURL+'" alt=""/>';}else{av.textContent=((user.displayName||user.email||'?')[0]).toUpperCase();}
     var name=user.displayName||(user.email?user.email.split('@')[0]:'Player');
     document.getElementById('userName').textContent=name;
     localStorage.setItem('df_lb_name',name);
     document.getElementById('dropdownName').textContent=user.email||name;
     var coins=parseInt(localStorage.getItem('df_coins')||'0');
-    document.getElementById('userCoins').textContent=coins>0?('🪙'+coins):'';
+    document.getElementById('userCoins').textContent=coins>0?('🪩'+coins):'';
   }else{sib.style.display='';uc.style.display='none';}
 });
 

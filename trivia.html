@@ -106,6 +106,9 @@
   <meta name="twitter:title" content="The Daily Trivia — One Question. One Shot."/>
   <meta name="twitter:description" content="One trivia question per day. One shot to get it right. Free daily trivia game from The Daily Five."/>
   <meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
+<link rel="stylesheet" href="/experience.css?v=20261115"/>
+<script defer src="/experience.js?v=20261115"></script>
+<link rel="canonical" href="https://www.thedailyfive.net/trivia.html"/>
 </head>
 <body>
 <header>
@@ -134,7 +137,7 @@
 <div class="game-wrap">
   <!-- Already played banner -->
   <div class="played-banner" id="playedBanner">
-    <div class="played-title">You already played today!b��</div>
+    <div class="played-title">You already played today!b��</div>
     <div class="played-sub" id="playedSub">Come back tomorrow for a new question.</div>
   </div>
 
@@ -183,7 +186,7 @@
     <span class="footer-sep">&middot;</span>
     <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a>
     <span class="footer-sep">&middot;</span>
-    <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
+    <a href="mailto:thedailyfive.game@gmail.com">Contact</a>
   </div>
   <div class="footer-copy">&copy; <span id="footerYear"></span> The Daily Five &mdash; Free daily word puzzles &middot; New games every day</div>
 </footer>
@@ -509,6 +512,7 @@ function _answer(chosen) {
   }
 
   _showResult(correct, chosen, true);
+  window.dispatchEvent(new CustomEvent('df:complete',{detail:{won:correct}}));
   _startCountdown();
 }
 
@@ -538,6 +542,7 @@ function _showResult(correct, chosen, animate) {
 document.getElementById('shareBtn').onclick = function(){
   var res = JSON.parse(localStorage.getItem(_storageKey) || '{}');
   var correct = res.correct;
+  window.dispatchEvent(new CustomEvent('df:share',{detail:{method:navigator.share?'native':'clipboard'}}));
   var text = 'The Daily Trivia #' + (_dayIdx + 1) + '\n' +
     (correct ? '✅ Got it!' : '❌ Missed it') + '\n\n' +
     '📚 ' + _q.c + '\n' +
@@ -558,7 +563,7 @@ function _startCountdown() {
   document.getElementById('countdownWrap').style.display = 'block';
   function tick() {
     var now = new Date();
-    var tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)) + 1);
+    var tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     var diff = tomorrow - now;
     var h = Math.floor(diff / 3600000);
     var m = Math.floor((diff % 3600000) / 60000);

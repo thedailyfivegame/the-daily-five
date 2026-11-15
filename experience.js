@@ -111,7 +111,7 @@
       if (/^(\/?)(play|scramble|trivia)\.html/.test(href)) track('game_select', { destination_game: /scramble/.test(href) ? 'scramble' : /trivia/.test(href) ? 'trivia' : 'word', placement: link.closest('#df-next') ? 'post_game' : 'page' });
     }
     if (e.target.closest('#keyboard .key, #tilesRow .tile, .option-btn')) start();
-  });
+  }, true);
   document.addEventListener('keydown', function (e) { if (/^[a-z]$/i.test(e.key) && !/INPUT|TEXTAREA/.test(e.target.tagName)) start(); });
   window.addEventListener('df:complete', function (e) { if (!practice) { track('game_complete', { outcome: e.detail && e.detail.won ? 'won' : 'lost' }); renderNext(); } });
   window.addEventListener('df:share', function (e) { track('share_intent', { method: e.detail && e.detail.method || 'unknown' }); });

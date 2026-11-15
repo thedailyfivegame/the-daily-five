@@ -547,6 +547,7 @@ document.getElementById('shareBtn').onclick = function(){
     (correct ? '✅ Got it!' : '❌ Missed it') + '\n\n' +
     '📚 ' + _q.c + '\n' +
     'www.thedailyfive.net/trivia.html';
+  if(window.DFShare){window.DFShare(text,this);return;}
   if (navigator.share) {
     navigator.share({title:'The Daily Trivia', text:text}).catch(function(){});
   } else {

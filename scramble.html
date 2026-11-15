@@ -456,7 +456,9 @@ function buildUI(){
   var ar=document.getElementById('answerRow');
   ar.innerHTML='';
   for(var i=0;i<5;i++){
-    var slot=document.createElement('div');
+    var slot=document.createElement('button');
+    slot.type='button';
+    slot.setAttribute('aria-label','Clear from answer position '+(i+1));
     slot.className='slot';
     slot.id='slot-'+i;
     slot.dataset.idx=i;
@@ -468,7 +470,9 @@ function buildUI(){
   var tr=document.getElementById('tilesRow');
   tr.innerHTML='';
   for(var i=0;i<5;i++){
-    var tile=document.createElement('div');
+    var tile=document.createElement('button');
+    tile.type='button';
+    tile.setAttribute('aria-label','Choose letter '+scrambledLetters[i]);
     tile.className='tile';
     tile.id='tile-'+i;
     tile.dataset.idx=i;
@@ -697,6 +701,7 @@ document.getElementById('shareBtn').onclick = function(){
     (won ? '\u2705 '+timeText : '\u274c Not solved')+'\n\n'+
     'A fresh five-letter challenge every day.\n'+
     'www.thedailyfive.net/scramble.html';
+  if(window.DFShare){window.DFShare(text,this);return;}
   if(navigator.share){
     navigator.share({title:'The Daily Scramble', text:text}).catch(function(){});
   } else {

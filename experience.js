@@ -12,8 +12,24 @@
     if (practice || location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
     if (typeof window.gtag === 'function') window.gtag('event', name, Object.assign({ game_name: game }, extra || {}));
   }
+  window.DFShare = function (text, button) {
+    var label = button.textContent;
+    function notice(message) { button.textContent = message; setTimeout(function () { button.textContent = label; }, 2200); }
+    function copy() {
+      if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).then(function () { notice('Copied — ready to share!'); }, fallback);
+      return fallback();
+    }
+    function fallback() {
+      var field = document.createElement('textarea'); field.value = text; field.setAttribute('readonly', '');
+      field.style.cssText = 'position:fixed;left:0;top:0;opacity:0'; document.body.appendChild(field); field.select();
+      var copied = false; try { copied = document.execCommand('copy'); } catch (_) {}
+      field.remove(); button.focus(); notice(copied ? 'Copied — ready to share!' : 'Sharing unavailable in this browser');
+    }
+    if (navigator.share) return navigator.share({ text: text }).catch(function (error) { if (error.name !== 'AbortError') return copy(); });
+    return copy();
+  };
   var today = key(new Date());
-  function wordState() { var s = json('df_game'); return s && s.day === day(new Date()) ? s : null; }
+  function wordState() { var s = json('df_game'); return s && s.day === day(new Date()) && Array.isArray(s.guesses) && typeof s.status === 'string' ? s : null; }
   function completed(name) {
     if (name === 'word') { var s = wordState(); return !!(s && (s.status === 'won' || s.status === 'lost')); }
     return !!read((name === 'scramble' ? 'ds_played_' : 'dt_played_') + today);
@@ -24,6 +40,7 @@
     { id: 'trivia', label: 'The Daily Trivia', url: '/trivia.html', detail: 'One question. One chance.' }
   ];
   function updateHome() {
+    today = key(new Date());
     if (game !== 'home') return;
     games.forEach(function (g) {
       var status = document.getElementById(g.id === 'word' ? 'wordStatusText' : g.id === 'scramble' ? 'scrambleStatusText' : 'triviaStatusText');
@@ -57,6 +74,7 @@
     });
   }
   function renderNext() {
+    today = key(new Date());
     if (game === 'home' || practice || !completed(game)) return;
     var host = document.getElementById(game === 'word' ? 'statsSub' : game === 'scramble' ? 'result' : 'resultPanel');
     if (!host) return;
@@ -92,7 +110,7 @@
       if (href.indexOf('ko-fi.com/thedailyfive') !== -1) track('support_click', { placement: link.closest('.df-journey') ? 'post_game' : 'page' });
       if (/^(\/?)(play|scramble|trivia)\.html/.test(href)) track('game_select', { destination_game: /scramble/.test(href) ? 'scramble' : /trivia/.test(href) ? 'trivia' : 'word', placement: link.closest('#df-next') ? 'post_game' : 'page' });
     }
-    if (e.target.closest('#keyboard .key, #tiles .tile, .option-btn')) start();
+    if (e.target.closest('#keyboard .key, #tilesRow .tile, .option-btn')) start();
   });
   document.addEventListener('keydown', function (e) { if (/^[a-z]$/i.test(e.key) && !/INPUT|TEXTAREA/.test(e.target.tagName)) start(); });
   window.addEventListener('df:complete', function (e) { if (!practice) { track('game_complete', { outcome: e.detail && e.detail.won ? 'won' : 'lost' }); renderNext(); } });

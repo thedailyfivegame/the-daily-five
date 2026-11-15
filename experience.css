@@ -2,6 +2,7 @@
 :root{--df-paper:#f4efe4;--df-ink:#1c1a16;--df-muted:#575143;--df-line:#cdc4ad;--df-green:#3f7a4f;--df-gold:#c89a2b}
 [data-theme=dark],body.dark{--df-paper:#1c1a15;--df-ink:#f0ebe0;--df-muted:#c1b9a8;--df-line:#514b3e;--df-green:#4a8f5e}
 a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--df-gold);outline-offset:4px}
+#tilesRow button.tile,#answerRow button.slot{color:var(--df-ink);padding:0}
 .df-journey{border-top:1px solid var(--df-line);padding:20px 0 4px;margin:18px 0 0;text-align:left;color:var(--df-ink);font-family:'Hanken Grotesk',system-ui,sans-serif}
 .df-journey h2,.df-home-intro h1{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:24px;line-height:1.15;margin:6px 0 10px;letter-spacing:-.025em}
 .df-journey p{font-size:14px;line-height:1.55;margin:8px 0;color:var(--df-muted)}

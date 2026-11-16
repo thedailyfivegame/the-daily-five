@@ -1,6 +1,6 @@
 // Service Worker — The Daily Five
 // v6 — cache all pages including archive and about
-const CACHE = 'df-v6';
+const CACHE = 'df-v7';
 
 const PRECACHE = [
   '/',
@@ -13,6 +13,8 @@ const PRECACHE = [
   '/splash.png',
   '/archive.html',
   '/about.html',
+  '/experience.js?v=20261115',
+  '/experience.css?v=20261115',
 ];
 
 // ── Install: pre-cache everything ──────────────────────────────
@@ -27,7 +29,7 @@ self.addEventListener('install', e => {
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      Promise.all(keys.filter(k => k.startsWith('df-') && k !== CACHE).map(k => caches.delete(k)))
     )
   );
   self.clients.claim();
@@ -52,7 +54,7 @@ self.addEventListener('fetch', e => {
         const networkFetch = fetch(e.request)
           .then(res => { if (res.ok) cache.put(e.request, res.clone()); return res; })
           .catch(() => null);
-        return cached || await networkFetch;
+        return await networkFetch || cached || new Response('You’re offline. Reconnect to load this game.', {status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}});
       }
 
       // For all other assets: cache-first, update in background

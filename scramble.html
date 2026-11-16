@@ -251,6 +251,9 @@
   <meta name="twitter:title" content="The Daily Scramble — The Daily Five"/>
   <meta name="twitter:description" content="Unscramble the hidden word. One puzzle daily — no replays."/>
   <meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
+<link rel="stylesheet" href="/experience.css?v=20261115"/>
+<script defer src="/experience.js?v=20261115"></script>
+<link rel="canonical" href="https://www.thedailyfive.net/scramble.html"/>
 </head>
 <body>
 <header>
@@ -453,7 +456,9 @@ function buildUI(){
   var ar=document.getElementById('answerRow');
   ar.innerHTML='';
   for(var i=0;i<5;i++){
-    var slot=document.createElement('div');
+    var slot=document.createElement('button');
+    slot.type='button';
+    slot.setAttribute('aria-label','Clear from answer position '+(i+1));
     slot.className='slot';
     slot.id='slot-'+i;
     slot.dataset.idx=i;
@@ -465,7 +470,9 @@ function buildUI(){
   var tr=document.getElementById('tilesRow');
   tr.innerHTML='';
   for(var i=0;i<5;i++){
-    var tile=document.createElement('div');
+    var tile=document.createElement('button');
+    tile.type='button';
+    tile.setAttribute('aria-label','Choose letter '+scrambledLetters[i]);
     tile.className='tile';
     tile.id='tile-'+i;
     tile.dataset.idx=i;
@@ -583,6 +590,7 @@ function submitAnswer(){
 
   // Submit to Firebase
   submitScore(won, elapsed);
+  window.dispatchEvent(new CustomEvent('df:complete',{detail:{won:won}}));
 }
 
 function showResult(won, elapsed, guess){
@@ -686,12 +694,14 @@ function loadLeaderboard(){
 // ── SHARE ──
 document.getElementById('shareBtn').onclick = function(){
   var titleEl = document.querySelector('#result .result-title');
-  var won = titleEl && titleEl.textContent.indexOf('Solved') !== -1;
-  var timeText = won ? titleEl.textContent : '';
+  var won = S.get('ds_won_'+todayKey())==='1';
+  var timeText = won && titleEl && titleEl.textContent.indexOf('Solved') !== -1 ? titleEl.textContent : 'Solved today!';
+  window.dispatchEvent(new CustomEvent('df:share',{detail:{method:navigator.share?'native':'clipboard'}}));
   var text = 'The Daily Scramble #'+(DAY+1)+'\n'+
     (won ? '\u2705 '+timeText : '\u274c Not solved')+'\n\n'+
-    '\uD83D\uDD24 '+WORD+'\n'+
+    'A fresh five-letter challenge every day.\n'+
     'www.thedailyfive.net/scramble.html';
+  if(window.DFShare){window.DFShare(text,this);return;}
   if(navigator.share){
     navigator.share({title:'The Daily Scramble', text:text}).catch(function(){});
   } else {
@@ -718,7 +728,7 @@ document.getElementById('shareBtn').onclick = function(){
     <span class="footer-sep">&middot;</span>
     <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a>
     <span class="footer-sep">&middot;</span>
-    <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
+    <a href="mailto:thedailyfive.game@gmail.com">Contact</a>
   </div>
   <div class="footer-copy">&copy; <span id="footerYear"></span> The Daily Five</div>
   <script>(function(){var y=document.getElementById('footerYear');if(y)y.textContent=new Date().getFullYear();})();</script>

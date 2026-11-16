@@ -1,0 +1,24 @@
+/* The existing newspaper palette, shared across the player journey. */
+:root{--df-paper:#f4efe4;--df-ink:#1c1a16;--df-muted:#575143;--df-line:#cdc4ad;--df-green:#3f7a4f;--df-gold:#c89a2b}
+[data-theme=dark],body.dark{--df-paper:#1c1a15;--df-ink:#f0ebe0;--df-muted:#c1b9a8;--df-line:#514b3e;--df-green:#4a8f5e}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--df-gold);outline-offset:4px}
+#tilesRow button.tile,#answerRow button.slot{color:var(--df-ink);padding:0}
+.df-journey{border-top:1px solid var(--df-line);padding:20px 0 4px;margin:18px 0 0;text-align:left;color:var(--df-ink);font-family:'Hanken Grotesk',system-ui,sans-serif}
+.df-journey h2,.df-home-intro h1{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:24px;line-height:1.15;margin:6px 0 10px;letter-spacing:-.025em}
+.df-journey p{font-size:14px;line-height:1.55;margin:8px 0;color:var(--df-muted)}
+.df-journey .df-eyebrow,.df-eyebrow{font-size:10px;font-weight:700;letter-spacing:.16em;color:var(--df-green)}
+.df-next-links{display:grid;gap:8px;margin:16px 0}
+.df-next-link{display:block;padding:13px 15px;background:var(--df-paper);border:1px solid var(--df-line);border-radius:4px;text-decoration:none;color:var(--df-ink)}
+.df-next-link:hover{border-color:var(--df-green)}
+.df-next-link strong{display:block;font-size:14px}.df-next-link span{display:block;margin-top:5px;font-size:12px;color:var(--df-muted)}
+.df-reset{font-variant-numeric:tabular-nums}.df-reset strong{color:var(--df-green)}
+.df-support{padding:16px;background:var(--df-paper);border-left:3px solid var(--df-gold);margin:16px 0 4px;border-radius:2px}
+.df-support>strong{font-family:'Fraunces',Georgia,serif;font-size:19px}.df-support p{font-size:13px}
+.df-support a{display:inline-block;color:var(--df-green);font-size:14px;font-weight:700;text-underline-offset:3px;padding:8px 0}
+.df-support small{display:block;font-size:11px;line-height:1.5;color:var(--df-muted)}
+.df-home-intro{max-width:1100px;margin:auto;padding:26px 20px 4px}.df-home-intro h1{font-size:clamp(26px,4vw,38px);max-width:650px}.df-home-intro p{max-width:650px;font-size:14px;line-height:1.6;color:var(--df-muted)}
+.df-home-support{max-width:1060px;margin:16px auto 24px;padding:20px;border-top:1px solid var(--df-line)}
+.df-roadmap{max-width:1100px;margin:auto;padding:18px 20px}.df-roadmap summary{font-size:12px;letter-spacing:.08em;cursor:pointer;padding:12px 0;font-weight:700;color:var(--df-muted)}
+.df-roadmap .games-section{padding:14px 0}
+@media(max-width:600px){.df-journey h2{font-size:22px}.df-home-support{margin:12px 20px}.df-home-intro{padding-top:20px}.header-top{flex-direction:column;gap:12px}.header-actions{position:static!important;transform:none!important;justify-content:center;flex-wrap:wrap}.hero{padding-top:20px}.df-next-link{min-height:64px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

@@ -4,15 +4,15 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>The Daily Five &#8212; Daily Word Puzzles &amp; Games</title>
-  <meta name="description" content="Five free daily word puzzles. Play The Daily Five word game, The Daily Scramble, Trivia, and more. No sign-up needed."/>
+  <meta name="description" content="Three free daily games: a five-letter word puzzle, a word scramble and trivia. Play in your browser, no sign-up needed."/>
   <meta property="og:title" content="The Daily Five — Free Daily Word Puzzles & Games"/>
-  <meta property="og:description" content="Five free daily word puzzles. Play The Daily Five word game, The Daily Scramble, Trivia, and more. No sign-up needed."/>
+  <meta property="og:description" content="Three free daily games: a five-letter word puzzle, a word scramble and trivia. Play in your browser, no sign-up needed."/>
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://www.thedailyfive.net/"/>
   <meta property="og:image" content="https://www.thedailyfive.net/og-image.png"/>
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="The Daily Five — Free Daily Word Puzzles"/>
-  <meta name="twitter:description" content="Five free daily puzzles. New games every day at midnight."/>
+  <meta name="twitter:description" content="Three free daily games. Word puzzle, scramble and trivia. New challenges every day."/>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -180,6 +180,9 @@
       .masthead{font-size:clamp(28px,7vw,36px);}
     }
   </style>
+<link rel="stylesheet" href="/experience.css?v=20261115"/>
+<script defer src="/experience.js?v=20261115"></script>
+<link rel="canonical" href="https://www.thedailyfive.net/"/>
 </head>
 <body>
 
@@ -248,10 +251,12 @@
   <span id="editionLabel"></span>
 </div>
 
+<main id="main-content">
+<section class="df-home-intro" aria-labelledby="daily-pause-title"><p class="df-eyebrow">A LITTLE CHALLENGE. A DAILY RITUAL.</p><h1 id="daily-pause-title">Make a little room for play.</h1><p>Three free daily games, made for your next break. Pick a puzzle, follow your curiosity, and come back for something fresh tomorrow.</p></section>
 <!-- HERO -->
 <div class="hero">
   <div class="hero-left">
-    <h1 class="hero-headline">The Daily<br>Five</h1>
+    <h2 class="hero-headline">The Daily<br>Five</h2>
     <div class="tile-preview">
       <div class="tile-row"><div class="tp g">C</div><div class="tp y">R</div><div class="tp">A</div><div class="tp">N</div><div class="tp">E</div></div>
       <div class="tile-row"><div class="tp g">C</div><div class="tp g">O</div><div class="tp y">U</div><div class="tp">R</div><div class="tp">T</div></div>
@@ -303,7 +308,7 @@
         <span class="dot" id="triviaDot"></span>
         <span class="status-text" id="triviaStatusText">Ready to play</span>
       </div>
-      <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:18px;">One trivia question per day. One shot to answer. Get it right and earn coins.</p>
+      <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:18px;">One trivia question per day. One shot to answer. Answer, learn a fun fact, and see how you did.</p>
       <a class="play-btn" href="trivia.html" style="align-self:flex-start;">Play Now &#8594;</a>
     </div>
     <div class="trivia-card-divider" style="background:var(--line);width:2px;"></div>
@@ -345,14 +350,14 @@
       <div class="how-step"><div class="step-num">1</div><div class="step-text">You are shown <strong>5 scrambled letter tiles</strong> &mdash; unscramble them to find the word.</div></div>
       <div class="how-step"><div class="step-num">2</div><div class="step-text"><strong>Tap a tile</strong> to place it in the next answer slot. The timer starts on your first tap.</div></div>
       <div class="how-step"><div class="step-num">3</div><div class="step-text">Tap a filled slot to <strong>remove</strong> letters from that position onwards.</div></div>
-      <div class="how-step"><div class="step-num">4</div><div class="step-text">Once all 5 slots are filled, your answer submits automatically.</div></div>
+      <div class="how-step"><div class="step-num">4</div><div class="step-text">Once all 5 slots are filled, tap <strong>Submit</strong> to check your answer.</div></div>
       <div class="how-step"><div class="step-num">5</div><div class="step-text">Your final <strong>time</strong> is your score &mdash; the lower the better!</div></div>
     </div>
     <div class="how-col">
       <h4>Good to Know</h4>
       <div class="tip-box">All words are common 5-letter English words &mdash; no obscure vocabulary.</div>
       <div class="tip-box">A new scramble is available every day at <strong>midnight</strong>.</div>
-      <div class="tip-box">Complete the daily scramble to earn <strong style="color:var(--amber);">&#127922; 6 coins</strong>.</div>
+      <div class="tip-box">Solve the daily scramble to earn <strong style="color:var(--amber);">&#127922; 6 coins</strong>.</div>
     </div>
   </div>
   <div class="how-panel" id="panel-trivia">
@@ -372,6 +377,8 @@
   </div>
 </div>
 
+<section class="df-home-support"><div class="df-support"><strong>Small games. Independent spirit.</strong><p>The Daily Five is made by Sunny. If these puzzles brighten your day, an optional coffee helps support their upkeep and development.</p><a href="https://ko-fi.com/thedailyfive" target="_blank" rel="noopener">Support The Daily Five ↗</a><small>Always optional. The games are free to play.</small></div></section>
+<details class="df-roadmap"><summary>WHAT’S NEXT FOR THE DAILY FIVE?</summary>
 <!-- COMING SOON -->
 <div class="section-label"><span>Coming Soon</span></div>
 <div class="games-section">
@@ -383,6 +390,8 @@
   </div>
 </div>
 
+</details>
+</main>
 <!-- FOOTER -->
 <footer>
   <div class="footer-links">
@@ -398,7 +407,7 @@
     <span class="footer-sep">&middot;</span>
     <a href="https://www.instagram.com/thedailyfive.game/" target="_blank" rel="noopener">Instagram</a>
     <span class="footer-sep">&middot;</span>
-    <a href="mailto:thedailyfivegame@gmail.com">Contact</a>
+    <a href="mailto:thedailyfive.game@gmail.com">Contact</a>
   </div>
   <div class="footer-copy">&copy; <span id="footerYear"></span> The Daily Five &mdash; Free daily word puzzles &middot; New games every day</div>
 </footer>
@@ -408,8 +417,8 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script>
 var _fbCfg={apiKey:"AIzaSyAy0iARQPIZSeE4W_Qco7ctonY_758yvvU",authDomain:"thedailyfive-f7103.firebaseapp.com",projectId:"thedailyfive-f7103",storageBucket:"thedailyfive-f7103.appspot.com"};
-firebase.initializeApp(_fbCfg);
-var _auth=firebase.auth();
+var _auth=null;try{firebase.initializeApp(_fbCfg);_auth=firebase.auth();}catch(e){}
+function _authUnavailable(){document.getElementById('authError').textContent='Sign-in is temporarily unavailable. You can still play all three games without an account.';}
 
 // Theme
 (function(){var t=localStorage.getItem('df_theme')||'light';document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';})();
@@ -483,20 +492,20 @@ _tSI.onclick=function(){_setMode(false);};
 _tSU.onclick=function(){_setMode(true);};
 
 // Google sign-in
-document.getElementById('googleBtn').onclick=function(){document.getElementById('authError').textContent='';var p=new firebase.auth.GoogleAuthProvider();_auth.signInWithPopup(p).catch(function(e){document.getElementById('authError').textContent=e.message;});};
+document.getElementById('googleBtn').onclick=function(){if(!_auth){_authUnavailable();return;}document.getElementById('authError').textContent='';var p=new firebase.auth.GoogleAuthProvider();_auth.signInWithPopup(p).catch(function(e){document.getElementById('authError').textContent=e.message;});};
 
 // Email sign-in
-document.getElementById('emailAuthBtn').onclick=function(){var em=document.getElementById('emailInput').value.trim();var pw=document.getElementById('passwordInput').value;if(!em||!pw){document.getElementById('authError').textContent='Please enter your email and password.';return;}document.getElementById('authError').textContent='';var p=_isSignUp?_auth.createUserWithEmailAndPassword(em,pw):_auth.signInWithEmailAndPassword(em,pw);p.catch(function(e){document.getElementById('authError').textContent=e.message;});};
+document.getElementById('emailAuthBtn').onclick=function(){if(!_auth){_authUnavailable();return;}var em=document.getElementById('emailInput').value.trim();var pw=document.getElementById('passwordInput').value;if(!em||!pw){document.getElementById('authError').textContent='Please enter your email and password.';return;}document.getElementById('authError').textContent='';var p=_isSignUp?_auth.createUserWithEmailAndPassword(em,pw):_auth.signInWithEmailAndPassword(em,pw);p.catch(function(e){document.getElementById('authError').textContent=e.message;});};
 document.getElementById('emailInput').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('emailAuthBtn').click();});
 document.getElementById('passwordInput').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('emailAuthBtn').click();});
 
 // User chip dropdown
 document.getElementById('userChip').addEventListener('click',function(e){e.stopPropagation();document.getElementById('userDropdown').classList.toggle('open');});
 document.addEventListener('click',function(){document.getElementById('userDropdown').classList.remove('open');});
-document.getElementById('signOutBtn').onclick=function(){_auth.signOut();};
+document.getElementById('signOutBtn').onclick=function(){if(_auth)_auth.signOut();};
 
 // Auth state
-_auth.onAuthStateChanged(function(user){
+if(_auth)_auth.onAuthStateChanged(function(user){
   var sib=document.getElementById('signInBtn');
   var uc=document.getElementById('userChip');
   if(user){

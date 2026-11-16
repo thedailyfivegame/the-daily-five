@@ -2,6 +2,11 @@
   "version": 2,
   "routes": [
     {
+      "src": "/index.html",
+      "headers": {"Location": "/"},
+      "status": 301
+    },
+    {
       "src": "/play",
       "dest": "/play.html"
     },

@@ -28,7 +28,7 @@
     body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(128,120,100,.04) 1px,transparent 1px);background-size:4px 4px;pointer-events:none;z-index:0;}
     *{position:relative;z-index:1;}
     /* Header */
-    header{border-bottom:3px solid var(--ink);padding:10px 20px 0;transition:border-color var(--trans);}
+    header{z-index:10;border-bottom:3px solid var(--ink);padding:10px 20px 0;transition:border-color var(--trans);}
     .dateline{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:8px;}
     .header-top{display:flex;align-items:center;justify-content:center;padding-bottom:10px;position:relative;}
     .masthead{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(34px,8vw,64px);line-height:.93;letter-spacing:-.02em;text-align:center;}
@@ -60,9 +60,9 @@
     .rule span{white-space:nowrap;}
     /* Hero */
     .hero{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;max-width:1100px;margin:0 auto;padding:28px 20px;border-bottom:1.5px solid var(--line);}
-    .hero-left{padding-right:28px;display:flex;flex-direction:column;justify-content:center;}
+    .hero-left{padding-right:28px;display:grid;grid-template-rows:auto 158px auto 1fr auto;align-content:start;}
     .hero-divider{background:var(--line);width:1px;}
-    .hero-right{padding-left:28px;display:flex;flex-direction:column;justify-content:center;}
+    .hero-right{padding-left:28px;display:grid;grid-template-rows:auto 158px auto 1fr auto;align-content:start;}
     .hero-badge{font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--accent);border:1px solid var(--accent);padding:2px 7px;border-radius:2px;display:inline-block;margin-bottom:12px;}
     .hero-badge.new{color:var(--green);border-color:var(--green);}
     .hero-headline{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(28px,4vw,44px);line-height:1.0;letter-spacing:-.02em;margin-bottom:10px;}
@@ -180,6 +180,19 @@
       .header-actions{position:static;transform:none;align-self:flex-end;}
       .masthead{font-size:clamp(28px,7vw,36px);}
     }
+    .dateline,.header-top{max-width:1100px;margin-left:auto;margin-right:auto;}
+    .scramble-tile-preview{gap:16px;}
+    .scramble-tile-preview .scramble-preview{margin-bottom:0;}
+    .hero .play-btn{justify-self:start;}
+    @media(max-width:1000px){
+      .header-top{flex-direction:column;gap:12px;}
+      .header-actions{position:static;transform:none;align-self:center;justify-content:center;flex-wrap:wrap;}
+    }
+    @media(max-width:640px){
+      .hero-left,.hero-right{grid-template-rows:auto auto auto auto auto;}
+      .header-actions{align-self:center;}
+      .user-dropdown{min-width:190px;max-width:calc(100vw - 32px);}
+    }
   </style>
 <link rel="stylesheet" href="/experience.css?v=20261115"/>
 <script defer src="/experience.js?v=20261115"></script>
@@ -269,9 +282,9 @@
   </div>
   <div class="hero-divider"></div>
   <div class="hero-right">
-    <h2 class="hero-headline" style="font-size:clamp(24px,3.5vw,38px);">The Daily<br>Scramble</h2>
-    <div class="scramble-preview"><div class="sp">F</div><div class="sp">A</div><div class="sp">T</div><div class="sp">E</div><div class="sp">R</div></div>
-    <div style="display:flex;gap:5px;margin-bottom:16px;"><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div></div>
+    <h2 class="hero-headline">The Daily<br>Scramble</h2>
+    <div class="tile-preview scramble-tile-preview"><div class="scramble-preview"><div class="sp">F</div><div class="sp">A</div><div class="sp">T</div><div class="sp">E</div><div class="sp">R</div></div>
+    <div class="scramble-preview"><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div><div class="sp slot"></div></div></div>
     <div class="status-row"><span class="dot" id="scrambleDot"></span><span class="status-text" id="scrambleStatusText">Ready to play</span></div>
     <p class="hero-body">Five letters, all mixed up. Tap them in the right order as fast as you can. Timer starts on first tap.</p>
     <a class="play-btn outline" href="scramble.html">Play Now &#8594;</a>
@@ -510,7 +523,23 @@ document.getElementById('passwordInput').addEventListener('keydown',function(e){
 // User chip dropdown
 document.getElementById('userChip').addEventListener('click',function(e){e.stopPropagation();document.getElementById('userDropdown').classList.toggle('open');});
 document.addEventListener('click',function(){document.getElementById('userDropdown').classList.remove('open');});
-document.getElementById('signOutBtn').onclick=function(){if(_auth)_auth.signOut();};
+document.getElementById('userDropdown').addEventListener('click',function(e){e.stopPropagation();});
+document.getElementById('signOutBtn').onclick=function(e){
+  e.stopPropagation();
+  if(!_auth){_authUnavailable();return;}
+  var button=this;
+  button.disabled=true;
+  button.textContent='Signing out…';
+  _auth.signOut().then(function(){
+    document.getElementById('userDropdown').classList.remove('open');
+  }).catch(function(error){
+    console.error('Sign-out failed:',error);
+    document.getElementById('dropdownName').textContent='Could not sign out. Please try again.';
+  }).finally(function(){
+    button.disabled=false;
+    button.textContent='Sign Out';
+  });
+};
 
 // Auth state
 if(_auth)_auth.onAuthStateChanged(function(user){
@@ -526,7 +555,7 @@ if(_auth)_auth.onAuthStateChanged(function(user){
     document.getElementById('dropdownName').textContent=user.email||name;
     var coins=parseInt(localStorage.getItem('df_coins')||'0');
     document.getElementById('userCoins').textContent=coins>0?('🪩'+coins):'';
-  }else{sib.style.display='';uc.style.display='none';}
+  }else{sib.style.display='';uc.style.display='none';document.getElementById('userDropdown').classList.remove('open');}
 });
 
 

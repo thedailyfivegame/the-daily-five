@@ -60,12 +60,12 @@
     .rule span{white-space:nowrap;}
     /* Hero */
     .hero{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;max-width:1100px;margin:0 auto;padding:28px 20px;border-bottom:1.5px solid var(--line);}
-    .hero-left{padding-right:28px;display:grid;grid-template-rows:auto 158px auto 1fr auto;align-content:start;}
+    .hero-left{padding-right:28px;display:grid;grid-template-rows:auto 110px auto 1fr auto;align-content:start;}
     .hero-divider{background:var(--line);width:1px;}
-    .hero-right{padding-left:28px;display:grid;grid-template-rows:auto 158px auto 1fr auto;align-content:start;}
+    .hero-right{padding-left:28px;display:grid;grid-template-rows:auto 110px auto 1fr auto;align-content:start;}
     .hero-badge{font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--accent);border:1px solid var(--accent);padding:2px 7px;border-radius:2px;display:inline-block;margin-bottom:12px;}
     .hero-badge.new{color:var(--green);border-color:var(--green);}
-    .hero-headline{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(28px,4vw,44px);line-height:1.0;letter-spacing:-.02em;margin-bottom:10px;}
+    .hero-headline{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(28px,3.5vw,38px);line-height:1.0;letter-spacing:-.02em;margin-bottom:10px;}
     .hero-body{font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:18px;}
     .play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:12px 22px;border-radius:var(--radius);text-decoration:none;border:2px solid var(--ink);transition:background var(--trans),color var(--trans),border-color var(--trans);align-self:flex-start;}
     .play-btn:hover{background:var(--accent);border-color:var(--accent);}
@@ -181,7 +181,9 @@
       .masthead{font-size:clamp(28px,7vw,36px);}
     }
     .dateline,.header-top{max-width:1100px;margin-left:auto;margin-right:auto;}
-    .scramble-tile-preview{gap:16px;}
+    .scramble-tile-preview{gap:6px;}
+    .scramble-tile-preview .sp{width:42px;height:42px;font-size:18px;}
+    .scramble-tile-preview .scramble-preview{gap:5px;}
     .scramble-tile-preview .scramble-preview{margin-bottom:0;}
     .hero .play-btn{justify-self:start;}
     @media(max-width:1000px){
@@ -274,7 +276,6 @@
     <div class="tile-preview">
       <div class="tile-row"><div class="tp g">C</div><div class="tp y">R</div><div class="tp">A</div><div class="tp">N</div><div class="tp">E</div></div>
       <div class="tile-row"><div class="tp g">C</div><div class="tp g">O</div><div class="tp y">U</div><div class="tp">R</div><div class="tp">T</div></div>
-      <div class="tile-row"><div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div><div class="tp empty"></div></div>
     </div>
     <div class="status-row"><span class="dot" id="wordDot"></span><span class="status-text" id="wordStatusText">Ready to play</span></div>
     <p class="hero-body">Guess the hidden 5-letter word in six tries. A new word drops every day at midnight.</p>

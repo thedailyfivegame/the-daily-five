@@ -14,7 +14,7 @@
   <script>
   (function(){
     var cfg={apiKey:"AIzaSyAy0iARQPIZSeE4W_Qco7ctonY_758yvvU",authDomain:"thedailyfive-f7103.firebaseapp.com",projectId:"thedailyfive-f7103",storageBucket:"thedailyfive-f7103.appspot.com"};
-    try{if(!firebase.apps.length)firebase.initializeApp(cfg);window._db=firebase.firestore();firebase.auth().signInAnonymously().catch(function(){});}catch(e){window._db=null;}
+    try{if(!firebase.apps.length)firebase.initializeApp(cfg);window._db=firebase.firestore();firebase.auth().signInAnonymously().catch(function(e){console.error('Trivia sign-in failed:',e.code,e.message);});}catch(e){window._db=null;}
   })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -501,7 +501,7 @@ function _answer(chosen) {
       var tName=localStorage.getItem('df_lb_name')||'Anonymous';
       var tDoc={day:_dayIdx,name:tName,correct:correct,ts:firebase.firestore.FieldValue.serverTimestamp()};
       var tId=tName.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+'_'+_dayIdx;
-      window._db.collection('trivia_scores').doc(tId).set(tDoc).catch(function(){});
+      window._db.collection('trivia_scores').doc(tId).set(tDoc).catch(function(e){console.error('Trivia score save failed:',e.code,e.message);});
     }catch(e){}
   }
 

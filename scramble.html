@@ -15,6 +15,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="score-sync.js?v=20261117"></script>
   <script>
   (function(){
     var cfg={
@@ -25,7 +26,7 @@
     };
     try{
       if(!firebase.apps.length) firebase.initializeApp(cfg);
-      window._db=firebase.firestore();firebase.auth().signInAnonymously().catch(function(){});
+      window._db=firebase.firestore();
     }catch(e){ window._db=null; }
   })();
   </script>
@@ -612,20 +613,8 @@ function showResult(won, elapsed, guess){
 }
 
 function submitScore(won, elapsed){
-  if(!window._db) return;
-  var name=S.get('df_lb_name');
-  if(!name) return;
-  var doc={
-    day:DAY,
-    name:name,
-    time:elapsed,
-    won:won,
-    ts:firebase.firestore.FieldValue.serverTimestamp()
-  };
-  var id=name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+'_'+DAY;
-  window._db.collection('scramble_scores').doc(id).set(doc).catch(function(){});
+  DFSaveScore('scramble_scores', DAY, {time:elapsed,won:won}, 'result', false, loadLeaderboard);
 }
-
 function loadLeaderboard(){
   if(!window._db){
     document.getElementById('lbList').innerHTML='<div class="empty">Leaderboard unavailable.</div>';

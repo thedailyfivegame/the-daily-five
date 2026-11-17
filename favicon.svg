@@ -1,4 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#1c1a16"/>
-  <text x="16" y="24" font-family="Georgia, serif" font-weight="900" font-size="22" text-anchor="middle" fill="#f4efe4">5</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><title>The Daily Five</title><rect width="512" height="512" rx="92" fill="#f4efe4"/><rect x="28" y="28" width="456" height="456" rx="72" fill="#315d46"/><rect x="48" y="48" width="416" height="416" rx="54" fill="#f4efe4"/><text x="256" y="315" text-anchor="middle" font-family="Georgia,serif" font-size="300" font-weight="bold" fill="#315d46">5</text><g fill="#315d46"><rect x="116" y="400" width="40" height="40" rx="6"/><rect x="176" y="400" width="40" height="40" rx="6"/><rect x="236" y="400" width="40" height="40" rx="6"/><rect x="296" y="400" width="40" height="40" rx="6"/></g><rect x="356" y="400" width="40" height="40" rx="6" fill="#c89a2b"/></svg>

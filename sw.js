@@ -1,6 +1,6 @@
 // Service Worker — The Daily Five
 // v6 — cache all pages including archive and about
-const CACHE = 'df-v7';
+const CACHE = 'df-v8-brand-icons';
 
 const PRECACHE = [
   '/',
@@ -9,6 +9,11 @@ const PRECACHE = [
   '/manifest.json',
   '/words.js',
   '/favicon.svg',
+  '/favicon.ico',
+  '/favicon-96.png',
+  '/apple-touch-icon.png',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
   '/og-image.png',
   '/splash.png',
   '/archive.html',

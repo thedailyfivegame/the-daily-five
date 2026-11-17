@@ -244,6 +244,7 @@ function sbUseHint(type){if(typeof gameStatus!=='undefined'&&gameStatus!=='playi
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="score-sync.js?v=20261117"></script>
 <script>
 (function(){
   var cfg={
@@ -1750,21 +1751,10 @@ document.getElementById('lbNameInput').addEventListener('keydown',function(e){
 })();
 
 function submitScore(){
-  if(!window._db) return;
-  var name = S.get('df_lb_name');
-  if(!name) return;
-  if(gameStatus === 'playing') return;
+  if(IS_PRACTICE || gameStatus === 'playing') return;
   var won = gameStatus === 'won';
-  var tries = won ? guesses.length : 7;
-  // Daily leaderboard
-  var docId = 'day' + DAY + '_' + name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
-  window._db.collection('scores').doc(docId).set({
-    day: DAY, name: name, tries: tries, won: won,
-    ts: firebase.firestore.FieldValue.serverTimestamp()
-  }).catch(function(){});
-
+  DFSaveScore('scores', DAY, {tries:won ? guesses.length : 7,won:won}, 'statsTitle', true, loadLeaderboard);
 }
-
 function loadLeaderboard(){
   if(!window._db){ document.getElementById('lbList').innerHTML='<div class="lb-loading">Leaderboard unavailable.</div>'; return; }
   document.getElementById('lbList').innerHTML='<div class="lb-loading">Loading…</div>';
@@ -2030,6 +2020,7 @@ if(!IS_PRACTICE&&window._db){
 })();
 
 if(gameStatus!=='playing' && !IS_PRACTICE){
+  submitScore();
   setTimeout(function(){ openStats(true); },400);
 } else {
   var st=getStats();

@@ -11,10 +11,11 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="score-sync.js?v=20261117"></script>
   <script>
   (function(){
     var cfg={apiKey:"AIzaSyAy0iARQPIZSeE4W_Qco7ctonY_758yvvU",authDomain:"thedailyfive-f7103.firebaseapp.com",projectId:"thedailyfive-f7103",storageBucket:"thedailyfive-f7103.appspot.com"};
-    try{if(!firebase.apps.length)firebase.initializeApp(cfg);window._db=firebase.firestore();firebase.auth().signInAnonymously().catch(function(){});}catch(e){window._db=null;}
+    try{if(!firebase.apps.length)firebase.initializeApp(cfg);window._db=firebase.firestore();}catch(e){window._db=null;}
   })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -495,16 +496,6 @@ function _answer(chosen) {
   var result = {correct: correct, chosen: chosen};
   localStorage.setItem(_storageKey, JSON.stringify(result));
 
-  // Write to Firestore
-  if(window._db){
-    try{
-      var tName=localStorage.getItem('df_lb_name')||'Anonymous';
-      var tDoc={day:_dayIdx,name:tName,correct:correct,ts:firebase.firestore.FieldValue.serverTimestamp()};
-      var tId=tName.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+'_'+_dayIdx;
-      window._db.collection('trivia_scores').doc(tId).set(tDoc).catch(function(){});
-    }catch(e){}
-  }
-
   // Award coins
   if (correct) {
     var coins = parseInt(localStorage.getItem('df_coins') || '0');
@@ -534,6 +525,7 @@ function _showResult(correct, chosen, animate) {
   }
 
   panel.classList.add('show');
+  DFSaveScore('trivia_scores', _dayIdx, {correct:correct}, 'resultPanel', false);
   var igb = document.getElementById('igFollowBanner');
   if(igb) igb.style.display='block';
 }

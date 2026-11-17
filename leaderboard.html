@@ -289,6 +289,7 @@ var today = new Date();
 var viewYear = today.getFullYear();
 var viewMonth = today.getMonth();
 var currentTab = 'monthly';
+var rankingsRequest = 0;
 var EPOCH = new Date('2025-01-01T00:00:00');
 
 function dayIdx(date){
@@ -333,6 +334,7 @@ function fmt(n){
 
 // ── Load all 3 collections ──
 function loadRankings(){
+  var request = ++rankingsRequest;
   if(!window._db){
     document.getElementById('rankList').innerHTML = '<div class="empty">Leaderboard unavailable.</div>';
     return;
@@ -358,10 +360,11 @@ function loadRankings(){
     ];
   }
 
-  Promise.allSettled(queries).then(function(results){
-    var wordSnap = results[0].status==='fulfilled'?results[0].value:{docs:[]};
-    var scramSnap = results[1].status==='fulfilled'?results[1].value:{docs:[]};
-    var trivSnap = results[2].status==='fulfilled'?results[2].value:{docs:[]};
+  Promise.all(queries).then(function(results){
+    if(request !== rankingsRequest) return;
+    var wordSnap = results[0];
+    var scramSnap = results[1];
+    var trivSnap = results[2];
     var players = {};
 
     function ensure(slug, name){
@@ -407,7 +410,7 @@ function loadRankings(){
     if(sorted.length === 0){
       var period = currentTab === 'monthly' ? MOS_NAMES[viewMonth]+' '+viewYear : 'today';
       document.getElementById('rankList').innerHTML =
-        '<div class="empty">No scores yet for '+period+'.<br>Play all three games to appear here! 🎯</div>';
+        '<div class="empty">No scores yet for '+period+'.<br>Win a word game or scramble, or answer trivia correctly, to appear here! 🎯</div>';
       return;
     }
 
@@ -457,8 +460,10 @@ function loadRankings(){
     }
 
   }).catch(function(e){
+    if(request !== rankingsRequest) return;
+    console.error('Could not load rankings:', e);
     document.getElementById('rankList').innerHTML =
-      '<div class="empty">Could not load rankings.<br><small>'+e.message+'</small></div>';
+      '<div class="empty">Could not load rankings.<br><small>Please try Refresh in a moment.</small></div>';
   });
 }
 

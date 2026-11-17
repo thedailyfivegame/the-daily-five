@@ -39,7 +39,7 @@
     .auth-btn:hover{background:var(--accent);}
     .lb-btn{display:inline-flex;align-items:center;background:var(--amber);color:#1c1a16;text-decoration:none;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;border-radius:var(--radius);white-space:nowrap;transition:opacity var(--trans);gap:4px;}
     .lb-btn:hover{opacity:.8;}
-    .lb-banner{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto 0;padding:14px 20px;background:var(--paper-2);border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);gap:12px;flex-wrap:wrap;}
+    .lb-banner{display:flex;align-items:center;justify-content:space-between;max-width:1400px;margin:0 auto 0;padding:14px 20px;background:var(--paper-2);border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);gap:12px;flex-wrap:wrap;}
     .lb-banner-text{font-size:13px;font-weight:600;color:var(--ink-soft);}
     .lb-banner-btn{display:inline-flex;align-items:center;gap:5px;background:var(--green);color:#fff;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:9px 16px;border-radius:var(--radius);white-space:nowrap;transition:opacity var(--trans);}
     .lb-banner-btn:hover{opacity:.85;}
@@ -59,7 +59,7 @@
     .rule{display:flex;align-items:center;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--ink);padding:4px 20px;font-size:9px;letter-spacing:.25em;text-transform:uppercase;font-weight:700;color:var(--ink-soft);justify-content:space-between;}
     .rule span{white-space:nowrap;}
     /* Hero */
-    .hero{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;max-width:1100px;margin:0 auto;padding:28px 20px;border-bottom:1.5px solid var(--line);}
+    .hero{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;max-width:1400px;margin:0 auto;padding:28px 20px;border-bottom:1.5px solid var(--line);}
     .hero-left{padding-right:28px;display:grid;grid-template-rows:auto 110px auto 1fr auto;align-content:start;}
     .hero-divider{background:var(--line);width:1px;}
     .hero-right{padding-left:28px;display:grid;grid-template-rows:auto 110px auto 1fr auto;align-content:start;}
@@ -88,11 +88,11 @@
     .status-text{color:var(--ink-muted);}
     .status-text.played{color:var(--green);}
     /* Section label */
-    .section-label{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line);max-width:1100px;margin:0 auto;}
+    .section-label{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line);max-width:1400px;margin:0 auto;}
     .section-label span{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--ink-muted);white-space:nowrap;}
     .section-label::before,.section-label::after{content:'';flex:1;height:1px;background:var(--line);}
     /* How to Play */
-    .how-to-section{max-width:1100px;margin:0 auto;padding:24px 20px 32px;}
+    .how-to-section{max-width:1400px;margin:0 auto;padding:24px 20px 32px;}
     .how-tabs{display:flex;border-bottom:2px solid var(--line);margin-bottom:24px;}
     .how-tab{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--ink-muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color var(--trans),border-color var(--trans);font-family:'Hanken Grotesk',sans-serif;}
     .how-tab.active{color:var(--ink);border-bottom-color:var(--ink);}
@@ -112,7 +112,7 @@
     .tip-box{background:var(--paper-2);border:1px solid var(--line);border-radius:4px;padding:14px 16px;font-size:13px;color:var(--ink-soft);line-height:1.6;margin-top:8px;}
     .tip-box strong{color:var(--ink);}
     /* Coming soon */
-    .games-section{max-width:1100px;margin:0 auto;padding:0 20px 48px;}
+    .games-section{max-width:1400px;margin:0 auto;padding:0 20px 48px;}
     .coming-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:20px;}
     .mini-card{background:var(--paper-2);border:1.5px solid var(--line);border-radius:4px;padding:20px 18px;opacity:.55;}
     .mini-icon{font-size:24px;margin-bottom:10px;}
@@ -120,7 +120,7 @@
     .mini-desc{font-size:12px;color:var(--ink-muted);line-height:1.4;margin-bottom:8px;}
     .mini-badge{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-muted);border:1px solid var(--line);padding:2px 6px;border-radius:2px;display:inline-block;}
     /* Streak bar */
-    .streak-bar{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .streak-bar{max-width:1400px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
     .streak-left{display:flex;align-items:center;gap:10px;}
     .streak-flame{font-size:22px;line-height:1;}
     .streak-count{font-family:'Fraunces',serif;font-weight:900;font-size:26px;line-height:1;letter-spacing:-.02em;}
@@ -180,7 +180,9 @@
       .header-actions{position:static;transform:none;align-self:flex-end;}
       .masthead{font-size:clamp(28px,7vw,36px);}
     }
-    .dateline,.header-top{max-width:1100px;margin-left:auto;margin-right:auto;}
+    #main-content>.df-home-intro,.df-roadmap{max-width:1400px;}
+    .df-home-support{max-width:1360px;}
+    .dateline,.header-top{max-width:1400px;margin-left:auto;margin-right:auto;}
     .scramble-tile-preview{gap:6px;}
     .scramble-tile-preview .sp{width:42px;height:42px;font-size:18px;}
     .scramble-tile-preview .scramble-preview{gap:5px;}
@@ -315,7 +317,7 @@
 
 <!-- TRIVIA LIVE CARD -->
 <div class="section-label"><span>More Games</span></div>
-<div style="max-width:1100px;margin:0 auto;padding:24px 20px;">
+<div style="max-width:1400px;margin:0 auto;padding:24px 20px;">
   <div class="trivia-card" style="display:grid;grid-template-columns:1fr 2px 1fr;gap:0;border:1.5px solid var(--line);border-radius:4px;overflow:hidden;">
     <div style="padding:28px 32px;display:flex;flex-direction:column;justify-content:center;">
       <h2 style="font-family:'Fraunces',serif;font-weight:900;font-size:clamp(22px,3.5vw,34px);line-height:1.0;letter-spacing:-.02em;margin-bottom:10px;">The Daily<br>Trivia</h2>

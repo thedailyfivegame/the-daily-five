@@ -9,7 +9,7 @@
   function key(d) { return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
   function day(d) { return Math.floor((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - new Date(2025, 0, 1)) / 86400000); }
   function track(name, extra) {
-    if (practice || location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
+    if (practice || !/^(www\.)?thedailyfive\.net$/.test(location.hostname)) return;
     if (typeof window.gtag === 'function') window.gtag('event', name, Object.assign({ game_name: game }, extra || {}));
   }
   window.DFShare = function (text, button) {

@@ -119,6 +119,12 @@
         ctx.font = (index === 0 ? 'bold 38px' : '32px') + ' sans-serif'; ctx.fillStyle = '#1c1a16'; ctx.fillText(line.replace(/[✅❌📚]/gu, '').trim(), 80, y, 920); y += 78;
       }
     });
+    if (y < 700) {
+      ctx.fillStyle = '#ede6d4'; ctx.fillRect(80, 730, 920, 270);
+      ctx.fillStyle = '#1c1a16'; ctx.font = 'bold 68px Georgia, serif'; ctx.fillText('Your turn.', 126, 835);
+      ctx.fillStyle = '#575147'; ctx.font = '34px sans-serif';
+      ctx.fillText(game === 'word' ? 'Five letters. Six guesses.' : game === 'scramble' ? 'Five letters. Beat the clock.' : 'One question. One chance.', 126, 916, 820);
+    }
     ctx.fillStyle = '#3f7a4f'; ctx.fillRect(80, 1138, 920, 2); ctx.font = 'bold 34px Georgia, serif'; ctx.fillText('Your next daily pause is waiting.', 80, 1200);
     ctx.fillStyle = '#575147'; ctx.font = '28px sans-serif'; ctx.fillText('Play free · www.thedailyfive.net', 80, 1254);
     return canvas;

@@ -89,7 +89,7 @@
     box.innerHTML = '<p class="df-eyebrow">YOUR DAILY PAUSE</p><h2>' + (remaining.length ? 'One more little challenge?' : 'Your daily trio is complete.') + '</h2>' +
       '<p>' + (remaining.length ? 'Keep the good part of your break going. No sign-up needed.' : 'Share a spoiler-free result with a friend, then come back tomorrow.') + '</p>' +
       '<div class="df-next-links">' + remaining.map(function (g) { return '<a class="df-next-link" href="' + g.url + '"><strong>' + g.label + ' →</strong><span>' + g.detail + '</span></a>'; }).join('') + '</div>' +
-      '<p class="df-reset">Fresh puzzles in <strong data-df-countdown></strong><br><small>Resets at midnight in your device’s time zone.</small></p>' +
+      (game === 'word' ? '' : '<p class="df-reset">Fresh puzzles in <strong data-df-countdown></strong><br><small>Resets at midnight in your device’s time zone.</small></p>') +
       '<div class="df-support"><strong>Enjoy your daily pause?</strong><p>These games are made independently by Sunny. An optional coffee helps support their upkeep and development.</p><a href="https://ko-fi.com/thedailyfive" target="_blank" rel="noopener">Support The Daily Five ↗</a><small>The games stay free. No support required to play.</small></div>';
     countdown();
   }

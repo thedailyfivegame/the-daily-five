@@ -6,8 +6,8 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4991106296689056" crossorigin="anonymous"></script>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>The Daily Scramble — The Daily Five</title>
-  <meta name="description" content="Unscramble the daily 5-letter word as fast as you can."/>
+  <title>Free Daily Word Scramble Game | The Daily Five</title>
+  <meta name="description" content="Unscramble a five-letter word in this free daily word game. Arrange the letters, submit your answer and see your time. A fresh challenge every day."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -244,20 +244,21 @@
 .kofi-btn:hover{background:var(--accent);color:#fff;}
 </style>
   <meta property="og:type" content="website"/>
-  <meta property="og:title" content="The Daily Scramble — The Daily Five"/>
-  <meta property="og:description" content="Unscramble the hidden word. One puzzle daily — no replays."/>
+  <meta property="og:title" content="Free Daily Word Scramble Game | The Daily Five"/>
+  <meta property="og:description" content="Unscramble a five-letter word in this free daily word game. Arrange the letters, submit your answer and see your time. A fresh challenge every day."/>
   <meta property="og:url" content="https://www.thedailyfive.net/scramble.html"/>
   <meta property="og:image" content="https://www.thedailyfive.net/og-image.png"/>
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="The Daily Scramble — The Daily Five"/>
-  <meta name="twitter:description" content="Unscramble the hidden word. One puzzle daily — no replays."/>
+  <meta name="twitter:description" content="Unscramble a five-letter word in this free daily word game. Arrange the letters, submit your answer and see your time. A fresh challenge every day."/>
   <meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
 <link rel="stylesheet" href="/experience.css?v=20261115"/>
-<script defer src="/experience.js?v=20261115"></script>
+<script defer src="/experience.js?v=20261118"></script>
 <link rel="canonical" href="https://www.thedailyfive.net/scramble.html"/>
   <link rel="icon" href="/favicon.ico" sizes="any"/>
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"The Daily Scramble","url":"https://www.thedailyfive.net/scramble.html","description":"Unscramble a five-letter word in this free daily word game. Arrange the letters, submit your answer and see your time. A fresh challenge every day.","applicationCategory":"GameApplication","operatingSystem":"Any","isAccessibleForFree":true,"inLanguage":"en","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 </head>
 <body>
 <header>
@@ -498,6 +499,7 @@ function placeTile(tileIdx){
     document.getElementById('timer').classList.add('running');
   }
 
+  window.dispatchEvent(new CustomEvent('df:start'));
   answer.push(tileIdx);
   placed.push(tileIdx);
 
@@ -725,5 +727,6 @@ document.getElementById('shareBtn').onclick = function(){
   <div class="footer-copy">&copy; <span id="footerYear"></span> The Daily Five</div>
   <script>(function(){var y=document.getElementById('footerYear');if(y)y.textContent=new Date().getFullYear();})();</script>
 </footer>
+<section class="df-game-guide" aria-label="Game instructions" style="max-width:640px;margin:24px auto;padding:20px;line-height:1.7;color:var(--ink-soft)"><h2 style="font-size:20px">How to play the daily word scramble</h2><p>Tap the five letter tiles to arrange them into a word. Tap a filled slot to remove a letter, or clear your answer and rearrange it before submitting. You get one submitted answer each day. Your timer starts with your first tile.</p><p>All three games are free to play without an account. <a href="/play.html">Daily word puzzle</a> · <a href="/trivia.html">Daily trivia</a></p></section>
 </body>
 </html>

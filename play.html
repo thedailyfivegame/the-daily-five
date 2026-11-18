@@ -212,10 +212,10 @@ function sbUseHint(type){if(typeof gameStatus!=='undefined'&&gameStatus!=='playi
 
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-<title>Play The Daily Five — Free Daily 5-Letter Word Game</title>
-<meta name="description" content="Play The Daily Five — a free daily word puzzle. Guess the 5-letter word in 6 tries. New word every midnight. Track your streak and compete on the leaderboard."/>
-<meta property="og:title" content="The Daily Five — Play Today's Word"/>
-<meta property="og:description" content="Guess the 5-letter word in 6 tries. A new word every day at midnight. Free, no sign-up, dark mode, leaderboard."/>
+<title>Free Daily 5-Letter Word Puzzle | The Daily Five</title>
+<meta name="description" content="Guess today’s five-letter word in six tries. Use letter clues, build a daily streak and share your result. Play free in your browser without signing up."/>
+<meta property="og:title" content="Free Daily 5-Letter Word Puzzle | The Daily Five"/>
+<meta property="og:description" content="Guess today’s five-letter word in six tries. Use letter clues, build a daily streak and share your result. Play free in your browser without signing up."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://www.thedailyfive.net/play.html"/>
 <meta property="og:image" content="https://www.thedailyfive.net/og-image.png"/>
@@ -223,7 +223,7 @@ function sbUseHint(type){if(typeof gameStatus!=='undefined'&&gameStatus!=='playi
 <meta property="og:image:height" content="630"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="The Daily Five -- Play Today's Word Puzzle"/>
-<meta name="twitter:description" content="Guess the 5-letter word in 6 tries. A new word every day. Free, no sign-up."/>
+<meta name="twitter:description" content="Guess today’s five-letter word in six tries. Use letter clues, build a daily streak and share your result. Play free in your browser without signing up."/>
 <meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
 <link rel="canonical" href="https://www.thedailyfive.net/play.html"/>
 <meta name="theme-color" content="#f4efe4" id="themeColor"/>
@@ -979,7 +979,7 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 .ig-dismiss:hover{color:#555;}
 </style>
 <link rel="stylesheet" href="/experience.css?v=20261115"/>
-<script defer src="/experience.js?v=20261115"></script>
+<script defer src="/experience.js?v=20261118"></script>
   <link rel="icon" href="/favicon.ico" sizes="any"/>
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
@@ -1490,6 +1490,7 @@ function handleKey(k){
     submitGuess(); return;
   }
   if(/^[A-Z]$/.test(k) && current.length<COLS){
+    window.dispatchEvent(new CustomEvent('df:start'));
     current+=k;
     soundKey(); vibrate(8);
     renderCurrent();
@@ -2310,5 +2311,6 @@ function dismissIgPrompt(){
   <a href="privacy.html" style="color:#555;text-decoration:none;margin:0 10px;">Privacy</a>·
   <a href="https://ko-fi.com/thedailyfive" target="_blank" rel="noopener" style="color:#555;text-decoration:none;margin:0 10px;">&#9749; Support</a>
 </nav>
+<section class="df-game-guide" aria-label="Game instructions" style="max-width:640px;margin:24px auto;padding:20px;line-height:1.7;color:var(--ink-soft)"><h2 style="font-size:20px">How to play the daily word puzzle</h2><p>Enter a five-letter word and press Enter. Green letters are in the right place, yellow letters belong elsewhere, and grey letters are absent. You have six guesses, with optional hints available. A fresh daily word arrives at midnight in your device’s time zone.</p><p>All three games are free to play without an account. <a href="/scramble.html">Daily word scramble</a> · <a href="/trivia.html">Daily trivia</a></p></section>
 </body>
 </html>

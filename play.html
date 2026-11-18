@@ -982,8 +982,8 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 .ig-dismiss{background:none;border:none;font-size:18px;color:#aaa;cursor:pointer;padding:4px;flex-shrink:0;line-height:1;}
 .ig-dismiss:hover{color:#555;}
 </style>
-<link rel="stylesheet" href="/experience.css?v=20261115"/>
-<script defer src="/experience.js?v=20261118-results"></script>
+<link rel="stylesheet" href="/experience.css?v=20261118-retention"/>
+<script defer src="/experience.js?v=20261118-retention"></script>
   <link rel="icon" href="/favicon.ico" sizes="any"/>
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
@@ -1901,9 +1901,11 @@ function buildShare(){
   var grid=guesses.map(function(g){ return scoreGuess(g).map(function(s){ return emoji[s]; }).join(''); }).join('\n');
   return head+'\n\n'+grid+'\n\nhttps://thedailyfive.net';
 }
+window.DFGetShare = buildShare;
 document.getElementById('shareBtn').addEventListener('click',function(){
   var text=buildShare();
   window.dispatchEvent(new CustomEvent('df:share',{detail:{method:navigator.share?'native':'clipboard'}}));
+  if(window.DFShare){window.DFShare(text,this);return;}
   if(navigator.share){ navigator.share({text:text}).catch(function(error){ if(error.name!=='AbortError') copyText(text); }); }
   else copyText(text);
 });

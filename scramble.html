@@ -252,8 +252,8 @@
   <meta name="twitter:title" content="The Daily Scramble — The Daily Five"/>
   <meta name="twitter:description" content="Unscramble a five-letter word in this free daily word game. Arrange the letters, submit your answer and see your time. A fresh challenge every day."/>
   <meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
-<link rel="stylesheet" href="/experience.css?v=20261115"/>
-<script defer src="/experience.js?v=20261118"></script>
+<link rel="stylesheet" href="/experience.css?v=20261118-retention"/>
+<script defer src="/experience.js?v=20261118-retention"></script>
 <link rel="canonical" href="https://www.thedailyfive.net/scramble.html"/>
   <link rel="icon" href="/favicon.ico" sizes="any"/>
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
@@ -688,25 +688,15 @@ function loadLeaderboard(){
 
 
 // ── SHARE ──
+window.DFGetShare = function(){
+  var won = S.get('ds_won_'+todayKey())==='1', saved = null;
+  try { saved = JSON.parse(S.get('ds_result_'+todayKey())||'null'); } catch (_) {}
+  var summary = won ? (saved && typeof saved.time==='number' ? '✅ Solved in '+fmtTime(saved.time)+'!' : '✅ Solved today!') : '❌ Not solved';
+  return 'The Daily Scramble #'+(DAY+1)+'\n'+summary+'\n\nA fresh five-letter challenge every day.\nhttps://www.thedailyfive.net/scramble.html';
+};
 document.getElementById('shareBtn').onclick = function(){
-  var titleEl = document.querySelector('#result .result-title');
-  var won = S.get('ds_won_'+todayKey())==='1';
-  var timeText = won && titleEl && titleEl.textContent.indexOf('Solved') !== -1 ? titleEl.textContent : 'Solved today!';
   window.dispatchEvent(new CustomEvent('df:share',{detail:{method:navigator.share?'native':'clipboard'}}));
-  var text = 'The Daily Scramble #'+(DAY+1)+'\n'+
-    (won ? '\u2705 '+timeText : '\u274c Not solved')+'\n\n'+
-    'A fresh five-letter challenge every day.\n'+
-    'www.thedailyfive.net/scramble.html';
-  if(window.DFShare){window.DFShare(text,this);return;}
-  if(navigator.share){
-    navigator.share({title:'The Daily Scramble', text:text}).catch(function(){});
-  } else {
-    navigator.clipboard.writeText(text).then(function(){
-      var btn = document.getElementById('shareBtn');
-      btn.textContent = '\u2713 Copied!';
-      setTimeout(function(){ btn.innerHTML = '&#128279; Share Result'; }, 2000);
-    });
-  }
+  if(window.DFShare) return window.DFShare(window.DFGetShare(),this);
 };
 </script>
 

@@ -199,6 +199,7 @@
   <link rel="icon" href="/favicon.ico" sizes="any"/>
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<script src="/score-sync.js?v=20261118guest"></script>
 </head>
 <body>
 <header>
@@ -328,7 +329,7 @@ function slugify(name){
 }
 
 function getMySlug(){
-  return slugify(S.get('df_lb_name')||'');
+  return S.get('df_rank_player_id') || slugify(S.get('df_lb_name')||'');
 }
 
 function fmt(n){
@@ -350,16 +351,16 @@ function loadRankings(){
     var startDay = dayIdx(new Date(viewYear, viewMonth, 1));
     var endDay = dayIdx(new Date(viewYear, viewMonth + 1, 0));
     queries = [
-      window._db.collection('scores').where('day','>=',startDay).where('day','<=',endDay).limit(2000).get(),
-      window._db.collection('scramble_scores').where('day','>=',startDay).where('day','<=',endDay).limit(2000).get(),
-      window._db.collection('trivia_scores').where('day','>=',startDay).where('day','<=',endDay).limit(2000).get()
+      window._db.collection(DFScoreCollection('scores')).where('day','>=',startDay).where('day','<=',endDay).limit(2000).get(),
+      window._db.collection(DFScoreCollection('scramble_scores')).where('day','>=',startDay).where('day','<=',endDay).limit(2000).get(),
+      window._db.collection(DFScoreCollection('trivia_scores')).where('day','>=',startDay).where('day','<=',endDay).limit(2000).get()
     ];
   } else {
     var todayDay = dayIdx(today);
     queries = [
-      window._db.collection('scores').where('day','==',todayDay).get(),
-      window._db.collection('scramble_scores').where('day','==',todayDay).get(),
-      window._db.collection('trivia_scores').where('day','==',todayDay).get()
+      window._db.collection(DFScoreCollection('scores')).where('day','==',todayDay).get(),
+      window._db.collection(DFScoreCollection('scramble_scores')).where('day','==',todayDay).get(),
+      window._db.collection(DFScoreCollection('trivia_scores')).where('day','==',todayDay).get()
     ];
   }
 
@@ -368,7 +369,7 @@ function loadRankings(){
     var wordSnap = results[0];
     var scramSnap = results[1];
     var trivSnap = results[2];
-    var players = {};
+    var players = Object.create(null);
 
     function ensure(slug, name){
       if(!players[slug]) players[slug] = {name: name || slug, word:0, scram:0, triv:0};
@@ -377,7 +378,7 @@ function loadRankings(){
     wordSnap.docs.forEach(function(doc){
       var d = doc.data();
       if(!d.won || !d.name) return;
-      var sl = slugify(d.name); if(!sl) return;
+      var sl = DFScorePlayer(d); if(!sl) return;
       ensure(sl, d.name);
       players[sl].word++;
     });
@@ -385,7 +386,7 @@ function loadRankings(){
     scramSnap.docs.forEach(function(doc){
       var d = doc.data();
       if(!d.won || !d.name) return;
-      var sl = slugify(d.name); if(!sl) return;
+      var sl = DFScorePlayer(d); if(!sl) return;
       ensure(sl, d.name);
       players[sl].scram++;
     });
@@ -393,7 +394,7 @@ function loadRankings(){
     trivSnap.docs.forEach(function(doc){
       var d = doc.data();
       if(!d.correct || !d.name) return;
-      var sl = slugify(d.name); if(!sl) return;
+      var sl = DFScorePlayer(d); if(!sl) return;
       ensure(sl, d.name);
       players[sl].triv++;
     });
@@ -433,7 +434,7 @@ function loadRankings(){
         '<div class="rank-row'+(isMe?' me':'')+'">' +
           rankCell +
           '<div>' +
-            '<div class="player-name">'+(p.name||'Anonymous')+'</div>' +
+            '<div class="player-name">'+DFEscape(p.name||'Anonymous')+'</div>' +
             '<div class="player-sub">'+sub.join(' · ')+'</div>' +
           '</div>' +
           '<div class="stat-cell">' +

@@ -19,7 +19,7 @@ function setCoins(n){
   renderCoinDisplay();
   try{
     var u=firebase.auth&&firebase.auth().currentUser;
-    if(u) db.collection('users').doc(u.uid).set({coins:n},{merge:true});
+    if(u && !u.isAnonymous) db.collection('users').doc(u.uid).set({coins:n},{merge:true});
   }catch(e){}
 }
 
@@ -190,7 +190,7 @@ function claimAdCoins(){setCoins(getCoins()+5);closeAdModal();showCoinPop('+5 �
   renderCoinDisplay();
   try{
     firebase.auth&&firebase.auth().onAuthStateChanged(function(u){
-      if(!u) return;
+      if(!u || u.isAnonymous) return;
       db.collection('users').doc(u.uid).get().then(function(doc){
         if(doc.exists&&typeof doc.data().coins==='number'){
           var fb=doc.data().coins,loc=getCoins();
@@ -243,7 +243,7 @@ function sbUseHint(type){if(typeof gameStatus!=='undefined'&&gameStatus!=='playi
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="score-sync.js?v=20261117"></script>
+<script src="score-sync.js?v=20261118guest"></script>
 <script>
 (function(){
   var cfg={
@@ -623,15 +623,8 @@ main {
 }
 @keyframes slideUp { from { transform:translateY(16px); opacity:0; } to { transform:none; opacity:1; } }
 
-#statsOverlay {
-  padding-top: max(16px, env(safe-area-inset-top));
-  padding-bottom: max(16px, env(safe-area-inset-bottom));
-}
-#statsOverlay .modal {
-  max-height: 100%;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-}
+#statsOverlay { padding-top: max(16px, env(safe-area-inset-top)); padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+#statsOverlay .modal { max-height: 100%; overflow-y: auto; overscroll-behavior-y: contain; }
 body:has(#statsOverlay.open) #igPrompt.show { display: none; }
 
 .modal-close {
@@ -1513,7 +1506,7 @@ function handleKey(k){
   }
 }
 document.addEventListener('keydown',function(e){
-  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  if(e.metaKey||e.ctrlKey||e.altKey||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable) return;
   handleKey(e.key);
 });
 
@@ -1620,7 +1613,7 @@ function saveGame(){
   if(window._db&&(gameStatus==='won'||gameStatus==='lost')){
     try{
       var _u=firebase.auth&&firebase.auth().currentUser;
-      if(_u){
+      if(_u && !_u.isAnonymous){
         window._db.collection('userGames').doc(_u.uid+'_day'+DAY).set({
           uid:_u.uid, day:DAY, guesses:guesses, status:gameStatus,
           ts:firebase.firestore.FieldValue.serverTimestamp()
@@ -1774,14 +1767,14 @@ function submitScore(){
 function loadLeaderboard(){
   if(!window._db){ document.getElementById('lbList').innerHTML='<div class="lb-loading">Leaderboard unavailable.</div>'; return; }
   document.getElementById('lbList').innerHTML='<div class="lb-loading">Loading…</div>';
-  window._db.collection('scores')
+  window._db.collection(DFScoreCollection('scores'))
     .where('day','==',DAY)
     .where('won','==',true)
     .limit(20)
     .get()
     .then(function(snap){
       if(snap.empty){ document.getElementById('lbList').innerHTML='<div class="lb-loading">No scores yet today. Play to be first!</div>'; return; }
-      var myName = (S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+      var myName = S.get('df_rank_player_id') || (S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
       var html = '';
       var medals = ['🥇','🥈','🥉'];
       var myRank = -1;
@@ -1789,13 +1782,13 @@ function loadLeaderboard(){
       sortedDocs.forEach(function(doc, i){
         var d = doc.data();
         var rank = i + 1;
-        var isMe = myName && doc.id.indexOf(myName) > -1;
+        var isMe = myName && DFScorePlayer(d) === myName;
         if(isMe) myRank = rank;
         var medal = medals[i] || rank;
         var triesLabel = d.tries === 1 ? '1 try' : d.tries + ' tries';
         html += '<div class="lb-entry'+(isMe?' me':'')+'">'+
           '<span class="lb-rank-cell">'+medal+'</span>'+
-          '<span class="lb-name'+(isMe?' me':'')+'">'+(d.name||'Anonymous')+'</span>'+
+          '<span class="lb-name'+(isMe?' me':'')+'">'+DFEscape(d.name||'Anonymous')+'</span>'+
           '<span class="lb-score">'+d.tries+'</span>'+
           '<span class="lb-tries">'+triesLabel+'</span>'+
           '</div>';
@@ -1808,7 +1801,7 @@ function loadLeaderboard(){
         document.getElementById('lbMyEntry').innerHTML =
           '<div class="lb-entry me">'+
           '<span class="lb-rank-cell">'+myMedal+'</span>'+
-          '<span class="lb-name me">'+(myData.name||'You')+'</span>'+
+          '<span class="lb-name me">'+DFEscape(myData.name||'You')+'</span>'+
           '<span class="lb-score">'+myData.tries+'</span>'+
           '</div>';
         document.getElementById('lbMyRank').style.display='';
@@ -1845,20 +1838,20 @@ function loadMonthlyLeaderboard(){
   var today=new Date();
   var monthFirstDay=DAY-(today.getDate()-1);
   var month=today.toISOString().slice(0,7);
-  var myName=(S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+  var myName=S.get('df_rank_player_id') || (S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
   // Use existing scores collection (already has read access)
-  window._db.collection('scores')
+  window._db.collection(DFScoreCollection('scores'))
     .where('day','>=',monthFirstDay)
     .limit(500)
     .get()
     .then(function(snap){
       // Aggregate wins per player client-side
-      var players={};
+      var players = Object.create(null);
       snap.docs.forEach(function(doc){
         var d=doc.data();
         if(!d.won||!d.name) return;
-        var slug=(d.name||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
-        if(!players[slug]) players[slug]={name:d.name,wins:0,totalGuesses:0};
+        var slug=DFScorePlayer(d);
+        if(!players[slug]) players[slug]={name:d.name,playerId:slug,wins:0,totalGuesses:0};
         players[slug].wins++;
         players[slug].totalGuesses+=(d.tries||6);
       });
@@ -1872,13 +1865,13 @@ function loadMonthlyLeaderboard(){
       var html='<div style="text-align:center;font-weight:700;margin-bottom:8px">🏆 '+month.slice(0,4)+' / '+month.slice(5,7)+'</div>';
       var myRank=-1;
       sorted.slice(0,20).forEach(function(p,i){
-        var slug=p.name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+        var slug=p.playerId;
         var isMe=myName&&slug===myName;
         if(isMe) myRank=i+1;
         var avg=p.wins>0?(p.totalGuesses/p.wins).toFixed(1):'—';
         html+='<div class="lb-entry'+(isMe?' me':'')+'">'+
           '<span class="lb-rank-cell">'+(medals[i]||(i+1))+'</span>'+
-          '<span class="lb-name'+(isMe?' me':'')+'">'+(p.name||'Anonymous')+'</span>'+
+          '<span class="lb-name'+(isMe?' me':'')+'">'+DFEscape(p.name||'Anonymous')+'</span>'+
           '<span class="lb-score">'+p.wins+'W</span>'+
           '<span class="lb-tries">avg '+avg+'</span>'+
           '</div>';
@@ -2092,6 +2085,7 @@ function initAuth(){
 }
 
 function handleAuthState(user){
+  if(user && user.isAnonymous) user=null;
   var btn=document.getElementById('openAuth');
   if(!btn) return;
   if(user){

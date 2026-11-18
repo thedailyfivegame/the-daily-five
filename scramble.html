@@ -577,7 +577,7 @@ function submitAnswer(){
   }
 
   document.getElementById('timer').classList.remove('running');
-  document.getElementById('timer').classList.add(won?'done-win':'');
+  if(won) document.getElementById('timer').classList.add('done-win');
   document.getElementById('submitBtn').disabled=true;
   document.getElementById('clearBtn').disabled=true;
 

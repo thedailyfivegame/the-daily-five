@@ -1,6 +1,6 @@
 // Service Worker — The Daily Five
 // v6 — cache all pages including archive and about
-const CACHE = 'df-v10-retention-sharing';
+const CACHE = 'df-v11-optional-support';
 
 const PRECACHE = [
   '/',
@@ -18,8 +18,9 @@ const PRECACHE = [
   '/splash.png',
   '/archive.html',
   '/about.html',
-  '/experience.js?v=20261118-retention',
-  '/experience.css?v=20261118-retention',
+  '/experience.js?v=20261118-support',
+  '/experience.css?v=20261118-support',
+  '/support.js?v=20261118',
 ];
 
 // ── Install: pre-cache everything ──────────────────────────────

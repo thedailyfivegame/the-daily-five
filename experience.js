@@ -149,7 +149,7 @@
       '<p>' + (remaining.length ? 'Keep the good part of your break going. No sign-up needed.' : 'Share a spoiler-free result with a friend, then come back tomorrow.') + '</p>' +
       '<div class="df-next-links">' + remaining.map(function (g) { return '<a class="df-next-link" href="' + g.url + '"><strong>' + g.label + ' →</strong><span>' + g.detail + '</span></a>'; }).join('') + '</div>' +
       (game === 'word' ? '' : '<p class="df-reset">Fresh puzzles in <strong data-df-countdown></strong><br><small>Resets at midnight in your device’s time zone.</small></p>') +
-      '<div class="df-support"><strong>Enjoy your daily pause?</strong><p>These games are made independently by Sunny. An optional coffee helps support their upkeep and development.</p><a href="https://ko-fi.com/thedailyfive" target="_blank" rel="noopener">Support The Daily Five ↗</a><small>The games stay free. No support required to play.</small></div>';
+      '<div class="df-support" data-support-placement="post_game"><strong>Enjoyed your daily pause?</strong><p>I’m Sunny, the maker of The Daily Five. An optional coffee helps me keep the website running and improve the daily puzzles.</p><a class="df-support-cta" href="https://ko-fi.com/thedailyfive" target="_blank" rel="noopener">Buy Sunny a coffee ↗</a><small>Opens Ko-fi · One-time tips available<br>Always optional. All games stay free.</small></div>';
     countdown();
   }
   // Daily puzzle events are unique per game, device and local date.
@@ -205,7 +205,6 @@
     var link = e.target.closest('a');
     if (link) {
       var href = link.getAttribute('href') || '';
-      if (href.indexOf('ko-fi.com/thedailyfive') !== -1) track('support_click', { placement: link.closest('.df-journey') ? 'post_game' : 'page' });
       if (/^(\/?)(play|scramble|trivia)\.html/.test(href)) track('game_select', { destination_game: /scramble/.test(href) ? 'scramble' : /trivia/.test(href) ? 'trivia' : 'word', placement: link.closest('#df-next') ? 'post_game' : 'page' });
     }
   }, true);

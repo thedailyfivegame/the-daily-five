@@ -53,11 +53,11 @@
       link.setAttribute('aria-label', (done ? 'View result for ' : active ? 'Continue ' : 'Play ') + g.label);
     });
     var s = wordState();
-    if (s && completed('word')) {
+    if (games.some(function (g) { return completed(g.id); })) {
       var count = 0, date = new Date();
       for (var i = 0; i < 365; i++) {
         var k = key(date), isToday = i === 0;
-        if ((isToday && completed('word')) || read('df_played_' + k) || read('ds_played_' + k) || read('dt_played_' + k)) count++;
+        if ((isToday && games.some(function (g) { return completed(g.id); })) || read('df_played_' + k) || read('ds_played_' + k) || read('dt_played_' + k)) count++;
         else break;
         date.setDate(date.getDate() - 1);
       }
@@ -93,16 +93,35 @@
       '<div class="df-support"><strong>Enjoy your daily pause?</strong><p>These games are made independently by Sunny. An optional coffee helps support their upkeep and development.</p><a href="https://ko-fi.com/thedailyfive" target="_blank" rel="noopener">Support The Daily Five ↗</a><small>The games stay free. No support required to play.</small></div>';
     countdown();
   }
-  var started = false;
-  function start() {
-    if (started || game === 'home' || completed(game) || practice) return;
-    started = true; track('game_start');
-    try {
-      var last = localStorage.getItem('df_last_visit_date');
-      if (last && last !== today) track('returning_player');
-      localStorage.setItem('df_last_visit_date', today);
-    } catch (_) {}
+  // Daily puzzle events are unique per game, device and local date.
+  // Browsers without storage still deduplicate for this page lifetime.
+  var sent = {};
+  function once(name, extra) {
+    var id = 'df_event_v2_' + key(new Date()) + '_' + game + '_' + name;
+    if (sent[id] || read(id)) return;
+    sent[id] = true;
+    try { localStorage.setItem(id, '1'); } catch (_) {}
+    track(name, Object.assign({ event_version: 2, puzzle_date: key(new Date()), game_mode: 'daily' }, extra || {}));
   }
+  function visit() {
+    if (practice) return;
+    var date = key(new Date()), last = read('df_last_visit_date');
+    if (last && last !== date) {
+      var marker = 'df_return_v2_' + date;
+      if (!read(marker) && !sent[marker]) {
+        sent[marker] = true;
+        track('returning_player', { event_version: 2, previous_visit_date: last });
+        try { localStorage.setItem(marker, '1'); } catch (_) {}
+      }
+    }
+    try { localStorage.setItem('df_last_visit_date', date); } catch (_) {}
+  }
+  function start() {
+    if (game === 'home' || completed(game) || practice) return;
+    once('game_start');
+  }
+  window.addEventListener('df:start', start);
+  visit();
   document.addEventListener('click', function (e) {
     var link = e.target.closest('a');
     if (link) {
@@ -110,12 +129,10 @@
       if (href.indexOf('ko-fi.com/thedailyfive') !== -1) track('support_click', { placement: link.closest('.df-journey') ? 'post_game' : 'page' });
       if (/^(\/?)(play|scramble|trivia)\.html/.test(href)) track('game_select', { destination_game: /scramble/.test(href) ? 'scramble' : /trivia/.test(href) ? 'trivia' : 'word', placement: link.closest('#df-next') ? 'post_game' : 'page' });
     }
-    if (e.target.closest('#keyboard .key, #tilesRow .tile, .option-btn')) start();
   }, true);
-  document.addEventListener('keydown', function (e) { if (/^[a-z]$/i.test(e.key) && !/INPUT|TEXTAREA/.test(e.target.tagName)) start(); });
-  window.addEventListener('df:complete', function (e) { if (!practice) { track('game_complete', { outcome: e.detail && e.detail.won ? 'won' : 'lost' }); renderNext(); } });
+  window.addEventListener('df:complete', function (e) { if (!practice) { once('game_complete', { outcome: e.detail && e.detail.won ? 'won' : 'lost' }); renderNext(); } });
   window.addEventListener('df:share', function (e) { track('share_intent', { method: e.detail && e.detail.method || 'unknown' }); });
-  window.addEventListener('pageshow', function () { updateHome(); renderNext(); });
+  window.addEventListener('pageshow', function () { visit(); updateHome(); renderNext(); });
   window.addEventListener('storage', function () { updateHome(); renderNext(); });
   updateHome(); renderNext(); countdown(); setInterval(countdown, 1000);
 })();

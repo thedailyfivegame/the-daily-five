@@ -107,8 +107,8 @@
   <meta name="twitter:title" content="The Daily Trivia — One Question. One Shot."/>
   <meta name="twitter:description" content="Test your knowledge with one free trivia question every day. Pick one of four answers, learn a new fact and come back tomorrow. No sign-up needed."/>
   <meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
-<link rel="stylesheet" href="/experience.css?v=20261115"/>
-<script defer src="/experience.js?v=20261118"></script>
+<link rel="stylesheet" href="/experience.css?v=20261118-retention"/>
+<script defer src="/experience.js?v=20261118-retention"></script>
 <link rel="canonical" href="https://www.thedailyfive.net/trivia.html"/>
   <link rel="icon" href="/favicon.ico" sizes="any"/>
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
@@ -536,24 +536,13 @@ function _showResult(correct, chosen, animate) {
 }
 
 // ── SHARE ───────────────────────────────────────────────────────────────────
+window.DFGetShare = function(){
+  var res = {}; try { res = JSON.parse(localStorage.getItem(_storageKey)||'{}'); } catch (_) {}
+  return 'The Daily Trivia #'+(_dayIdx+1)+'\n'+(res.correct?'✅ Got it!':'❌ Missed it')+'\n\n📚 '+_q.c+'\nhttps://www.thedailyfive.net/trivia.html';
+};
 document.getElementById('shareBtn').onclick = function(){
-  var res = JSON.parse(localStorage.getItem(_storageKey) || '{}');
-  var correct = res.correct;
   window.dispatchEvent(new CustomEvent('df:share',{detail:{method:navigator.share?'native':'clipboard'}}));
-  var text = 'The Daily Trivia #' + (_dayIdx + 1) + '\n' +
-    (correct ? '✅ Got it!' : '❌ Missed it') + '\n\n' +
-    '📚 ' + _q.c + '\n' +
-    'www.thedailyfive.net/trivia.html';
-  if(window.DFShare){window.DFShare(text,this);return;}
-  if (navigator.share) {
-    navigator.share({title:'The Daily Trivia', text:text}).catch(function(){});
-  } else {
-    navigator.clipboard.writeText(text).then(function(){
-      var btn = document.getElementById('shareBtn');
-      btn.textContent = '✓ Copied!';
-      setTimeout(function(){ btn.innerHTML = '&#128279; Share Result'; }, 2000);
-    });
-  }
+  if(window.DFShare) return window.DFShare(window.DFGetShare(),this);
 };
 
 // ── COUNTDOWN ────────────────────────────────────────────────────────────────

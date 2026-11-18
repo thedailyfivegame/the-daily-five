@@ -354,7 +354,7 @@
       <div class="how-step"><div class="step-num">2</div><div class="step-text">Type any valid word and press <strong>Enter</strong> to submit your guess.</div></div>
       <div class="how-step"><div class="step-num">3</div><div class="step-text">After each guess, tile colours show how close you are to the answer.</div></div>
       <div class="how-step"><div class="step-num">4</div><div class="step-text">One puzzle per day &mdash; a new word drops at <strong>midnight</strong>.</div></div>
-      <div class="how-step"><div class="step-num">5</div><div class="step-text">Sign in to appear on the <strong>leaderboard</strong> and earn coins.</div></div>
+      <div class="how-step"><div class="step-num">5</div><div class="step-text">Choose a display name to appear on the <strong>leaderboard</strong> and earn coins.</div></div>
     </div>
     <div class="how-col">
       <h4>Tile Colours</h4>
@@ -550,6 +550,7 @@ document.getElementById('signOutBtn').onclick=function(e){
 
 // Auth state
 if(_auth)_auth.onAuthStateChanged(function(user){
+  if(user && user.isAnonymous) user=null;
   var sib=document.getElementById('signInBtn');
   var uc=document.getElementById('userChip');
   if(user){

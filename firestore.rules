@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function member() {
+      return request.auth != null && request.auth.token.firebase.sign_in_provider != 'anonymous';
+    }
+    function guest(document) {
+      return request.auth != null
+        && request.auth.token.firebase.sign_in_provider == 'anonymous'
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.playerId == 'guest_' + request.auth.uid
+        && request.resource.data.day is int
+        && request.resource.data.day >= 0 && request.resource.data.day <= 36500
+        && document == 'guest_' + request.auth.uid + '_' + string(request.resource.data.day)
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 2 && request.resource.data.name.size() <= 20
+        && request.resource.data.ts == request.time;
+    }
+    function scoreFields(kind) {
+      return (kind == 'word'
+        && request.resource.data.keys().hasOnly(['day','name','playerId','uid','ts','tries','won'])
+        && request.resource.data.tries is int && request.resource.data.tries >= 1 && request.resource.data.tries <= 8
+        && request.resource.data.won is bool)
+      || (kind == 'scramble'
+        && request.resource.data.keys().hasOnly(['day','name','playerId','uid','ts','time','won'])
+        && request.resource.data.time is number && request.resource.data.time >= 0 && request.resource.data.time <= 86400000
+        && request.resource.data.won is bool)
+      || (kind == 'trivia'
+        && request.resource.data.keys().hasOnly(['day','name','playerId','uid','ts','correct'])
+        && request.resource.data.correct is bool);
+    }
+    function kind(collection) {
+      return collection == 'scores' || collection == 'preview_scores' ? 'word'
+        : collection == 'scramble_scores' || collection == 'preview_scramble_scores' ? 'scramble' : 'trivia';
+    }
+    match /{collection}/{document} {
+      allow read: if collection in ['scores','scramble_scores','trivia_scores','preview_scores','preview_scramble_scores','preview_trivia_scores'];
+      allow create, update: if collection in ['scores','scramble_scores','trivia_scores','preview_scores','preview_scramble_scores','preview_trivia_scores']
+        && (member() || (guest(document) && scoreFields(kind(collection))));
+      allow delete: if collection in ['scores','scramble_scores','trivia_scores'] && member();
+    }
+  }
+}

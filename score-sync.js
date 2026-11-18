@@ -1,70 +1,61 @@
-// Share the existing Google sign-in session before writing a daily score.
+/* Public display names with a browser guest identity; Google sign-in stays optional. */
 (function(){
-  window.DFSaveScore = function(collection, day, fields, targetId, wordId, onSaved){
-    var target = document.getElementById(targetId);
-    var statusId = 'score-status-' + collection;
-    var status = document.getElementById(statusId);
-    if(!status){
-      status = document.createElement('div');
-      status.id = statusId;
-      status.setAttribute('role','status');
-      status.style.cssText = 'margin:12px 0;font-size:13px;line-height:1.5;';
-      if(target) target.parentNode.insertBefore(status,target.nextSibling);
-      else document.body.appendChild(status);
+  'use strict';
+  function read(key){try{return localStorage.getItem(key)||'';}catch(_){return '';}}
+  function write(key,value){try{localStorage.setItem(key,value);}catch(_){}}
+  function clean(name){return String(name||'').replace(/[\u0000-\u001f\u007f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,20);}
+  function slug(name){return name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');}
+  window.DFScoreCollection=function(name){return /^(www\.)?thedailyfive\.net$/.test(location.hostname)?name:'preview_'+name;};
+  window.DFEscape=function(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
+  window.DFScorePlayer=function(data){return data.playerId||slug(String(data.name||''));};
+  var ready;
+  function userReady(){
+    if(!ready){ready=new Promise(function(resolve,reject){
+      var auth=firebase.auth(),off=function(){},settled=false;
+      var timer=setTimeout(function(){off();reject(new Error('Authentication timed out'));},12000);
+      off=auth.onAuthStateChanged(function(user){if(settled)return;settled=true;clearTimeout(timer);Promise.resolve().then(off);resolve(user);},function(error){clearTimeout(timer);reject(error);});
+    });}
+    return ready.then(function(){return firebase.auth().currentUser;});
+  }
+  var joining;
+  function guestUser(){
+    if(!joining)joining=firebase.auth().signInAnonymously().then(function(result){return result.user;}).finally(function(){joining=null;});
+    return joining;
+  }
+  window.DFSaveScore=function(collection,day,fields,targetId,wordId,onSaved){
+    if(new URLSearchParams(location.search).get('practice')==='1')return;
+    var target=document.getElementById(targetId),statusId='score-status-'+collection;
+    var status=document.getElementById(statusId);
+    if(!status){status=document.createElement('div');status.id=statusId;status.setAttribute('role','status');status.style.cssText='margin:12px 0;font-size:13px;line-height:1.5;';if(target)target.insertAdjacentElement('afterend',status);else document.body.appendChild(status);}
+    var busy=false;
+    function message(text,action,label){status.replaceChildren();var p=document.createElement('p');p.textContent=text;status.appendChild(p);if(action){var b=document.createElement('button');b.type='button';b.textContent=label;b.style.cssText='padding:9px 14px;font:inherit;cursor:pointer;';b.onclick=action;status.appendChild(b);}}
+    function form(user){
+      status.replaceChildren();var label=document.createElement('label'),input=document.createElement('input'),button=document.createElement('button'),note=document.createElement('p'),form=document.createElement('form');
+      input.id='guest-name-'+collection;input.type='text';input.maxLength=20;input.minLength=2;input.required=true;input.autocomplete='nickname';input.value=clean(read('df_lb_name')||(!user?.isAnonymous&&user?.displayName)||'');input.placeholder='Your public display name';input.style.cssText='max-width:100%;padding:10px;font:inherit;';
+      label.htmlFor=input.id;label.textContent='Your name in rankings';label.style.display='block';
+      button.type='submit';button.textContent='Join rankings';button.style.cssText='padding:10px 14px;margin:8px;font:inherit;cursor:pointer;';
+      note.textContent='No sign-in needed. Your name and score will be public. This browser remembers your guest player; clearing browser data starts a new player.';
+      form.append(label,input,button,note);status.appendChild(form);
+      form.onsubmit=function(e){e.preventDefault();var name=clean(input.value);if(name.length<2){input.setCustomValidity('Enter a name with at least two characters.');input.reportValidity();return;}input.setCustomValidity('');write('df_lb_name',name);save(name);};
+      input.oninput=function(){input.setCustomValidity('');};
     }
-    function message(text, action, label){
-      status.textContent = text;
-      if(action){
-        var button = document.createElement('button');
-        button.type = 'button';
-        button.textContent = label;
-        button.style.cssText = 'display:block;margin:8px auto;padding:8px 12px;cursor:pointer;font:inherit;';
-        button.onclick = action;
-        status.appendChild(button);
-      }
-    }
-    function failed(error){
-      console.error('Score save failed (' + collection + '):', error);
-      message('Your result is saved on this device, but could not be saved to rankings.', save, 'Retry saving');
-    }
-    function signIn(){
-      var provider = new firebase.auth.GoogleAuthProvider();
-      // Start the popup directly from the click so browsers do not block it.
-      firebase.auth().signInWithPopup(provider).then(save).catch(function(error){
-        console.error('Score sign-in failed:', error);
-        message('Sign-in did not finish. Your result is still saved on this device.', signIn, 'Sign in with Google');
-      });
-    }
-    function save(){
-      message('Saving score…');
-      if(!window._db || !window.firebase || !firebase.auth){
-        message('Rankings are unavailable. Your result is saved on this device.', save, 'Retry saving');
-        return;
-      }
-      // currentUser can be null while a previously signed-in session is restoring.
-      var auth = firebase.auth();
-      new Promise(function(resolve,reject){
-        var unsubscribe = auth.onAuthStateChanged(function(user){
-          unsubscribe();
-          resolve(user);
-        },reject);
-      }).then(function(user){
-        if(!user || user.isAnonymous){
-          message('Sign in to save this result to rankings. Playing is always free.', signIn, 'Sign in with Google');
-          return;
-        }
-        var name;
-        try{name = localStorage.getItem('df_lb_name');}catch(e){}
-        name = name || user.displayName || 'Player';
-        var slug = name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'') || user.uid;
-        var id = wordId ? 'day' + day + '_' + slug : slug + '_' + day;
-        var data = Object.assign({},fields,{day:day,name:name,ts:firebase.firestore.FieldValue.serverTimestamp()});
-        return window._db.collection(collection).doc(id).set(data).then(function(){
-          message('Score saved to rankings.');
-          if(onSaved) onSaved();
+    function save(name){
+      if(busy)return;busy=true;message('Saving score…');
+      if(!window._db||!window.firebase||!firebase.auth){busy=false;message('Rankings are unavailable. Your result is still on this device.',function(){save(name);},'Retry saving');return;}
+      userReady().then(function(user){return user||guestUser();}).then(function(user){
+        var identity=user.isAnonymous?'guest_'+user.uid:(slug(name)||user.uid);
+        var id=user.isAnonymous?identity+'_'+day:(wordId?'day'+day+'_'+identity:identity+'_'+day);
+        var data=Object.assign({},fields,{day:day,name:name,playerId:identity,uid:user.uid,ts:firebase.firestore.FieldValue.serverTimestamp()});
+        return window._db.collection(DFScoreCollection(collection)).doc(id).set(data).then(function(){
+          write('df_rank_player_id',identity);write('df_lb_name',name);
+          message('Score saved as '+name+'. Come back tomorrow to build your monthly score.');
+          var rankings=document.createElement('a');rankings.href='/leaderboard.html';rankings.textContent='View rankings →';status.appendChild(rankings);
+          var change=document.createElement('button');change.type='button';change.textContent='Change name';change.style.cssText='display:block;margin:8px auto;padding:6px;font:inherit;';change.onclick=function(){form(user);};status.appendChild(change);
+          if(onSaved)onSaved();
         });
-      }).catch(failed);
+      }).catch(function(error){ready=null;console.error('Score save failed:',error);message('Could not save to rankings. Your result is still on this device.',function(){save(name);},'Retry saving');}).finally(function(){busy=false;});
     }
-    save();
+    if(!window.firebase||!firebase.auth){message('Rankings are unavailable. Your result is still on this device.',function(){window.DFSaveScore(collection,day,fields,targetId,wordId,onSaved);},'Retry saving');return;}
+    userReady().then(function(user){var name=clean(read('df_lb_name')||(!user?.isAnonymous&&user?.displayName)||'');if(name.length>=2)save(name);else form(user);}).catch(function(){form(null);});
   };
 })();

@@ -15,7 +15,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="score-sync.js?v=20261117"></script>
+<script src="score-sync.js?v=20261118guest"></script>
   <script>
   (function(){
     var cfg={
@@ -401,7 +401,7 @@ function fmtTime(ms){
   return s+'s';
 }
 function getMyName(){
-  return (S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+  return S.get('df_rank_player_id') || (S.get('df_lb_name')||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
 }
 
 // ── Theme ──
@@ -586,6 +586,7 @@ function submitAnswer(){
 
   // Mark played in localStorage
   S.set('ds_played_'+todayKey(),'1');
+  S.set('ds_result_'+todayKey(),JSON.stringify({won:won,time:elapsed}));
   if(won) S.set('ds_won_'+todayKey(),'1');
 
   // Award coins
@@ -626,7 +627,7 @@ function loadLeaderboard(){
     return;
   }
   var myName=getMyName();
-  window._db.collection('scramble_scores')
+  window._db.collection(DFScoreCollection('scramble_scores'))
     .where('day','==',DAY)
     .where('won','==',true)
     .limit(50)
@@ -641,12 +642,12 @@ function loadLeaderboard(){
       var html='';
       docs.forEach(function(item,i){
         var d=item.data;
-        var slug=(d.name||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+        var slug=DFScorePlayer(d);
         var isMe=myName&&slug===myName;
         var rankCell=i<3?'<span class="rank-num medal">'+MEDALS[i]+'</span>':'<span class="rank-num">'+(i+1)+'</span>';
         html+='<div class="rank-row'+(isMe?' me':'')+'">'
           +rankCell
-          +'<div class="player-name">'+(d.name||'Anonymous')+'</div>'
+          +'<div class="player-name">'+DFEscape(d.name||'Anonymous')+'</div>'
           +'<div class="time-val">'+fmtTime(d.time)+'</div>'
           +'</div>';
       });
@@ -679,6 +680,7 @@ function loadLeaderboard(){
     el.classList.add('show');
     document.getElementById('lbSection').style.display='';document.getElementById('igFollowBanner').style.display='';
     loadLeaderboard();
+    try{var saved=JSON.parse(S.get('ds_result_'+tk)||'null');if(saved && typeof saved.time==='number')submitScore(saved.won,saved.time);}catch(_){}
     return;
   }
   buildUI();

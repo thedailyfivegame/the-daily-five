@@ -1,6 +1,6 @@
 // Service Worker — The Daily Five
 // v6 — cache all pages including archive and about
-const CACHE = 'df-v8-brand-icons';
+const CACHE = 'df-v9-journey-analytics';
 
 const PRECACHE = [
   '/',
@@ -18,7 +18,7 @@ const PRECACHE = [
   '/splash.png',
   '/archive.html',
   '/about.html',
-  '/experience.js?v=20261115',
+  '/experience.js?v=20261118',
   '/experience.css?v=20261115',
 ];
 

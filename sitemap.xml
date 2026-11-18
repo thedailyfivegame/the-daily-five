@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.thedailyfive.net/</loc>
-    <lastmod>2026-11-16</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -41,4 +41,6 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
+  <url><loc>https://www.thedailyfive.net/five-letter-word-clues.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://www.thedailyfive.net/word-scramble-tips.html</loc><lastmod>2026-11-18</lastmod></url>
 </urlset>

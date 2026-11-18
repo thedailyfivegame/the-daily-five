@@ -623,6 +623,17 @@ main {
 }
 @keyframes slideUp { from { transform:translateY(16px); opacity:0; } to { transform:none; opacity:1; } }
 
+#statsOverlay {
+  padding-top: max(16px, env(safe-area-inset-top));
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+#statsOverlay .modal {
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+body:has(#statsOverlay.open) #igPrompt.show { display: none; }
+
 .modal-close {
   position: absolute; right: 12px; top: 10px;
   background: none; border: none; font-size: 22px;
@@ -979,7 +990,7 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 .ig-dismiss:hover{color:#555;}
 </style>
 <link rel="stylesheet" href="/experience.css?v=20261115"/>
-<script defer src="/experience.js?v=20261118"></script>
+<script defer src="/experience.js?v=20261118-results"></script>
   <link rel="icon" href="/favicon.ico" sizes="any"/>
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
@@ -1700,7 +1711,9 @@ function openStats(isEnd){
   if(played){ sub=gameStatus==='won'?'You got it in '+guesses.length+(guesses.length===1?' try.':' tries.'):'Today\'s word was '+ANSWER+'.'; }
   document.getElementById('statsSub').textContent=sub;
 
-  document.getElementById('statsOverlay').classList.add('open');
+  var overlay = document.getElementById('statsOverlay');
+  overlay.classList.add('open');
+  overlay.querySelector('.modal').scrollTop = 0;
   if(played && !IS_PRACTICE) startClock();
   if(IS_PRACTICE && played){var _ea=document.getElementById("endActions");if(_ea)_ea.innerHTML=(PRACTICE_WORD?'<a href="archive.html" style="flex:1;text-align:center;padding:10px;background:#6b7280;color:#fff;border-radius:8px;font-weight:600;font-size:0.9rem;text-decoration:none;display:block;">📚 Back to Archive</a> ':'')+' <a href="" onclick="location.reload();return false;" style="flex:1;text-align:center;padding:10px;background:var(--accent,#6aaa64);color:#fff;border-radius:8px;font-weight:600;font-size:0.9rem;text-decoration:none;display:block;">&#127918; Play Again</a>';}
 }

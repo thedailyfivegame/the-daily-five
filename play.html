@@ -805,7 +805,7 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 #adClaimBtn[hidden]{display:none;}
 
 /* Coins and hints share the game's quiet cream, green and gold palette. */
-#leftSidebar{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 32px rgba(28,26,22,.06);gap:10px;}
+#leftSidebar{max-height:calc(100dvh - 144px);overflow-y:auto;overscroll-behavior:contain;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 32px rgba(28,26,22,.06);gap:10px;}
 @media(min-width:1200px){#leftSidebar{width:230px;left:max(12px,calc(50% - 590px));}}
 .sb-balance{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;gap:10px;padding:14px 12px;box-shadow:none;}
 .sb-coin-emoji{width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--amber);border-radius:50%;color:var(--amber-dim);font-size:23px;}
@@ -1426,7 +1426,7 @@ function submitGuess(){
   var won = guess===ANSWER;
   if(won){
     gameStatus='won'; showIgPrompt();
-    recordResult(true, guesses.length); if(!IS_PRACTICE) setTimeout(function(){awardDailyCoins(guesses.length);},totalReveal+2300);
+    recordResult(true, guesses.length); if(!IS_PRACTICE) awardDailyCoins(guesses.length);
     if(!IS_PRACTICE) setTimeout(function(){ submitScore(); }, totalReveal + 200);
     setTimeout(function(){
       row.classList.add('bounce');
@@ -2104,6 +2104,7 @@ if(savedHints){usedRevealPos=Array.isArray(savedHints.revealed)?savedHints.revea
 document.addEventListener('DOMContentLoaded',initCoins,{once:true});
 
 loadGame();
+if(gameStatus==='won'&&!IS_PRACTICE)awardDailyCoins(guesses.length);
 renderCurrent();
 // Cross-device sync: if logged in and haven't played today, check Firestore
 if(!IS_PRACTICE&&window._db){

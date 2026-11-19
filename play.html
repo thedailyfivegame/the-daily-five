@@ -843,6 +843,9 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 .coin-pop{color:var(--green);text-shadow:none;}
 .sb-balance:focus-visible,.sb-hint-btn:focus-visible,.hint-option:focus-visible,.close-modal-btn:focus-visible,.sb-ad-earn:focus-visible,#hintBtn:focus-visible,#mobileCoinPill:focus-visible{outline:3px solid var(--green);outline-offset:3px;}
 @media(prefers-reduced-motion:reduce){.sb-balance,.sb-hint-btn,.sb-ad-earn{transition:none;}.sb-balance:hover,.sb-hint-btn:hover,.sb-ad-earn:hover{transform:none;}}
+
+/* Rewarded-ad entry points remain hidden until serving is approved. */
+.sb-earn-section,.watch-ad-btn,.coin-ad-btn,.earn-row-ad{display:none!important;}
 </style>
 <link rel="stylesheet" href="/experience.css?v=20261118-support"/>
 <script defer src="/experience.js?v=20261118-support"></script>
@@ -1857,6 +1860,8 @@ document.addEventListener('keydown',function(e){
 /* ════════════════════════════════════════
    COINS & HINTS SYSTEM
    ════════════════════════════════════════ */
+// Enable only after the publisher account is approved for rewarded H5 ads.
+var REWARDED_ADS_ENABLED=false;
 var COIN_KEY='tdf_coins_v1',walletRevision=0;
 var letterCheckMode=false,letterCheckCost=0;
 var usedRevealPos=[];
@@ -2034,6 +2039,7 @@ function addExtraRow(restoring){
 var rewardRequest=null,adPlaying=false;
 function rewardMessage(text){document.getElementById('adStatus').textContent=text;}
 function openAdModal(){
+  if(!REWARDED_ADS_ENABLED){toast('Earn coins by solving the daily puzzle.');return;}
   closeHintModal();
   document.getElementById('adOverlay').classList.add('open');
   var btn=document.getElementById('adClaimBtn');btn.hidden=true;btn.disabled=true;btn.onclick=null;
@@ -2377,7 +2383,7 @@ function dismissIgPrompt(){
       <div class="earn-row"><span>Solve in 4 guesses</span><span class="earn-amount">+2 bonus</span></div>
       <div class="earn-row"><span>3-day streak</span><span class="earn-amount">+2 🪙</span></div>
       <div class="earn-row"><span>7-day streak</span><span class="earn-amount">+5 🪙</span></div>
-      <div class="earn-row"><span>Watch an ad</span><span class="earn-amount">+5 🪙</span></div>
+      <div class="earn-row earn-row-ad"><span>Watch an ad</span><span class="earn-amount">+5 🪙</span></div>
     </div>
     <button class="coin-ad-btn" onclick="openAdModal();closeCoinModal()">📺 Watch Ad for +5 🪙</button>
   </div>

@@ -1,6 +1,6 @@
 // Service Worker — The Daily Five
 // v6 — cache all pages including archive and about
-const CACHE = 'df-v11-optional-support';
+const CACHE = 'df-v12-mobile-hints';
 
 const PRECACHE = [
   '/',

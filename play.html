@@ -46,6 +46,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="score-sync.js?v=20261118guest"></script>
+<script src="/guest-coins.js?v=1"></script>
 <script>
 (function(){
   var cfg={
@@ -883,7 +884,7 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 <main>
   <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="Wordle game board"></div></div>
   <div class="keyboard" id="keyboard" role="group" aria-label="Keyboard"></div>
-<div id="hintBar"><button id="mobileCoinPill" onclick="openCoinModal()">🪙 <span id="mbCoinCount">10</span></button><button id="hintBtn" onclick="openHintModal()">💡 Hint &nbsp;<span id="hintCostTag">from 3 coins</span></button></div>
+<div id="hintBar"><button id="mobileCoinPill" onclick="openCoinModal()">🪙 <span id="mbCoinCount">10</span></button><button id="hintBtn" onclick="openHintModal()">💡 Choose a hint</button></div>
 </main>
 
 <!-- ═══ AD BANNER ═══ -->
@@ -1862,19 +1863,18 @@ document.addEventListener('keydown',function(e){
    ════════════════════════════════════════ */
 // Enable only after the publisher account is approved for rewarded H5 ads.
 var REWARDED_ADS_ENABLED=false;
-var COIN_KEY='tdf_coins_v1',walletRevision=0;
+var walletRevision=0;
 var letterCheckMode=false,letterCheckCost=0;
 var usedRevealPos=[];
 
 function getCoins(){
-  var raw=S.get(COIN_KEY), n=raw===null?10:Number(raw);
-  return Number.isSafeInteger(n)&&n>=0?n:10;
+  return DFGuestCoins.balance(S);
 }
 
 function setCoins(n){
   walletRevision++;
   n=Number.isFinite(n)?Math.max(0,Math.floor(n)):getCoins();
-  S.set(COIN_KEY,String(n));
+  DFGuestCoins.saveBalance(S,n);
   renderCoinDisplay();
   try{
     var u=firebase.auth&&firebase.auth().currentUser;
@@ -1944,6 +1944,10 @@ function openHintModal(){
   document.getElementById('hintOverlay').classList.add('open');
 }
 function closeHintModal(){document.getElementById('hintOverlay').classList.remove('open');}
+
+function chooseHint(type){
+  if(document.getElementById('hintOverlay').classList.contains('open')) useHint(type);
+}
 
 function useHint(type){
   if(gameStatus!=='playing'){toast('Today’s puzzle is complete. Come back tomorrow.');return;}
@@ -2084,17 +2088,18 @@ function closeAdModal(){
 }
 
 function initCoins(){
-  var hadWallet=S.get(COIN_KEY)!==null;
-  if(S.get(COIN_KEY)===null) S.set(COIN_KEY,'10');
+  var hadWallet=DFGuestCoins.hasBalance(S);
   renderCoinDisplay();
+  window.addEventListener('storage',renderCoinDisplay);
+  window.addEventListener('pageshow',renderCoinDisplay);
   try{
     firebase.auth&&firebase.auth().onAuthStateChanged(function(u){
       if(!u || u.isAnonymous) return;
       if(!window._db)return;
       window._db.collection('users').doc(u.uid).get().then(function(doc){
         if(doc.exists&&typeof doc.data().coins==='number'){
-          var fb=doc.data().coins,loc=getCoins();
-          if(Number.isSafeInteger(fb)&&fb>=0&&!hadWallet&&walletRevision===0){S.set(COIN_KEY,String(fb));renderCoinDisplay();}
+          var fb=doc.data().coins;
+          if(Number.isSafeInteger(fb)&&fb>=0&&!hadWallet&&walletRevision===0){DFGuestCoins.saveBalance(S,fb+DFGuestCoins.earned(S));renderCoinDisplay();}
         }
       }).catch(function(){});
     });
@@ -2104,7 +2109,7 @@ function initCoins(){
 function sbUseHint(type){if(typeof gameStatus!=='undefined'&&gameStatus!=='playing'){toast('Today’s puzzle is complete. Come back tomorrow.',1500);return;}useHint(type);}
 
 // Inline controls delegate to functions in the same scope as the active game.
-Object.assign(window,{openCoinModal:openCoinModal,closeCoinModal:closeCoinModal,openHintModal:openHintModal,closeHintModal:closeHintModal,useHint:useHint,sbUseHint:sbUseHint,openAdModal:openAdModal,closeAdModal:closeAdModal});
+Object.assign(window,{openCoinModal:openCoinModal,closeCoinModal:closeCoinModal,openHintModal:openHintModal,closeHintModal:closeHintModal,chooseHint:chooseHint,useHint:useHint,sbUseHint:sbUseHint,openAdModal:openAdModal,closeAdModal:closeAdModal});
 var savedHints=IS_PRACTICE?null:S.getObj('df_hints_'+DAY,null);
 if(savedHints){usedRevealPos=Array.isArray(savedHints.revealed)?savedHints.revealed.filter(function(n){return Number.isInteger(n)&&n>=0&&n<COLS;}):[];if(savedHints.rows===7)addExtraRow(true);}
 document.addEventListener('DOMContentLoaded',initCoins,{once:true});
@@ -2345,15 +2350,15 @@ function dismissIgPrompt(){
     <button class="close-modal-btn" aria-label="Close" onclick="closeHintModal()">&times;</button>
     <p class="coin-eyebrow">A LITTLE HELP</p><h2>A nudge in the right direction.</h2>
     <p class="hint-sub">You have <strong id="hintCoinBalance">0</strong> 🪙</p>
-    <button type="button" class="hint-option" data-cost="5" onclick="useHint('reveal')">
+    <button type="button" class="hint-option" data-cost="5" onclick="chooseHint('reveal')">
       <div class="ho-left"><div class="ho-title">🔤 Reveal a Letter</div><div class="ho-desc">Shows one correct letter in position</div></div>
       <span class="ho-cost">5 🪙</span>
     </button>
-    <button type="button" class="hint-option" data-cost="3" onclick="useHint('check')">
+    <button type="button" class="hint-option" data-cost="3" onclick="chooseHint('check')">
       <div class="ho-left"><div class="ho-title">💬 Check a Letter</div><div class="ho-desc">Tap any key — is it in the word?</div></div>
       <span class="ho-cost">3 🪙</span>
     </button>
-    <button type="button" class="hint-option" data-cost="8" onclick="useHint('extra')">
+    <button type="button" class="hint-option" data-cost="8" onclick="chooseHint('extra')">
       <div class="ho-left"><div class="ho-title">One extra guess</div><div class="ho-desc">One extra guess; this puzzle becomes unranked</div></div>
       <span class="ho-cost">8 🪙</span>
     </button>

@@ -488,6 +488,7 @@ function _showAlreadyPlayed(res) {
 
 // ── ANSWER ──────────────────────────────────────────────────────────────────
 function _answer(chosen) {
+  if(localStorage.getItem(_storageKey)) return;
   window.dispatchEvent(new CustomEvent('df:start'));
   var correct = (chosen === _q.a);
   var btns = _optWrap.querySelectorAll('.option-btn');
@@ -499,14 +500,8 @@ function _answer(chosen) {
   });
 
   // Save result
-  var result = {correct: correct, chosen: chosen};
+  var result = {correct: correct, chosen: chosen, walletCredit: correct ? 3 : 0};
   localStorage.setItem(_storageKey, JSON.stringify(result));
-
-  // Award coins
-  if (correct) {
-    var coins = parseInt(localStorage.getItem('df_coins') || '0');
-    localStorage.setItem('df_coins', coins + 3);
-  }
 
   _showResult(correct, chosen, true);
   window.dispatchEvent(new CustomEvent('df:complete',{detail:{won:correct}}));

@@ -1,11 +1,11 @@
 // Service Worker — The Daily Five
-// v6 — cache all pages including archive and about
-const CACHE = 'df-v12-mobile-hints';
+const CACHE = 'df-v13-guest-wallet';
 
 const PRECACHE = [
   '/',
   '/index.html',
   '/play.html',
+  '/guest-coins.js?v=1',
   '/manifest.json',
   '/words.js',
   '/favicon.svg',
@@ -41,7 +41,7 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-// ── Fetch: stale-while-revalidate for pages, cache-first for assets ──
+// ── Fetch: network-first for pages, cache-first for assets ──
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
 
@@ -54,7 +54,7 @@ self.addEventListener('fetch', e => {
     caches.open(CACHE).then(async cache => {
       const cached = await cache.match(e.request);
 
-      // For HTML pages use stale-while-revalidate so updates ship quickly
+      // For HTML pages prefer the current server version
       const isHTML = e.request.headers.get('accept')?.includes('text/html');
       if (isHTML) {
         const networkFetch = fetch(e.request)

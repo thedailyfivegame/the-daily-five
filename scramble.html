@@ -563,6 +563,8 @@ function updateTimer(){
 
 function submitAnswer(){
   if(gameOver||answer.length!==5) return;
+  var key=todayKey();
+  if(S.get('ds_played_'+key)==='1'||S.get('ds_result_'+key)) return;
 
   endTime=Date.now();
   clearInterval(timerInterval);
@@ -582,33 +584,26 @@ function submitAnswer(){
   document.getElementById('submitBtn').disabled=true;
   document.getElementById('clearBtn').disabled=true;
 
-  // Show result
-  showResult(won, elapsed, guess);
-
-  // Mark played in localStorage
-  S.set('ds_played_'+todayKey(),'1');
-  S.set('ds_result_'+todayKey(),JSON.stringify({won:won,time:elapsed}));
-  if(won) S.set('ds_won_'+todayKey(),'1');
-
-  // Award coins
-  if(won){
-    var coins=parseInt(S.get('df_coins')||'0')+6;
-    S.set('df_coins',coins);
-  }
+  // Store the guest credit with its result so a retry cannot add it twice.
+  var serialized=JSON.stringify({won:won,time:elapsed,walletCredit:won?6:0});
+  S.set('ds_result_'+key,serialized);
+  var saved=S.get('ds_result_'+key)===serialized;
+  S.set('ds_played_'+key,'1');
+  if(won) S.set('ds_won_'+key,'1');
+  showResult(won, elapsed, guess, saved);
 
   // Submit to Firebase
   submitScore(won, elapsed);
   window.dispatchEvent(new CustomEvent('df:complete',{detail:{won:won}}));
 }
 
-function showResult(won, elapsed, guess){
+function showResult(won, elapsed, guess, saved){
   var el=document.getElementById('result');
-  var coins=won?'+6 🪙':'';
   if(won){
     el.innerHTML='<div class="result-emoji">🎉</div>'+
       '<div class="result-title">Solved in '+fmtTime(elapsed)+'!</div>'+
       '<div class="result-sub">The word was <strong>'+WORD+'</strong></div>'+
-      (coins?'<div class="result-coins">'+coins+' coins earned</div>':'');
+      '<div class="result-coins">'+(saved?'+6 🪙 coins earned':'Coins could not be saved on this device.')+'</div>';
   } else {
     el.innerHTML='<div class="result-emoji">😬</div>'+
       '<div class="result-title">Not quite!</div>'+
@@ -662,7 +657,9 @@ function loadLeaderboard(){
 // ── Check if already played today ──
 (function(){
   var tk=todayKey();
-  if(S.get('ds_played_'+tk)==='1'){
+  var saved;
+  try{saved=JSON.parse(S.get('ds_result_'+tk));}catch(_){}
+  if(S.get('ds_played_'+tk)==='1'||saved){
     // Already played — show already played state
     gameOver=true;
     buildUI();
@@ -673,7 +670,7 @@ function loadLeaderboard(){
     document.getElementById('submitBtn').disabled=true;
     document.getElementById('clearBtn').disabled=true;
 
-    var won=S.get('ds_won_'+tk)==='1';
+    var won=saved?saved.won:S.get('ds_won_'+tk)==='1';
     var el=document.getElementById('result');
     el.innerHTML='<div class="result-emoji">'+(won?'✅':'😬')+'</div>'
       +'<div class="result-title">Already played today!</div>'
@@ -681,7 +678,7 @@ function loadLeaderboard(){
     el.classList.add('show');
     document.getElementById('lbSection').style.display='';document.getElementById('igFollowBanner').style.display='';
     loadLeaderboard();
-    try{var saved=JSON.parse(S.get('ds_result_'+tk)||'null');if(saved && typeof saved.time==='number')submitScore(saved.won,saved.time);}catch(_){}
+    try{if(saved && typeof saved.time==='number')submitScore(saved.won,saved.time);}catch(_){}
     return;
   }
   buildUI();

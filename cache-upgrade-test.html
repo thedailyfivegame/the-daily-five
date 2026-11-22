@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Daily Five cache upgrade verification</title><meta name="robots" content="noindex"></head><body><h1>Cache upgrade verification</h1><p>Preview-only fixture testing the exact production v12 and PR #15 v13 service workers.</p><button id="run">Run upgrade test</button><pre id="out">Ready</pre><script>
+const out=document.getElementById('out');const results=[];
+function record(name,pass,detail){results.push({name,pass,detail});out.textContent=JSON.stringify(results,null,2);if(!pass)throw Error(name);}
+function activated(worker){return new Promise((resolve,reject)=>{if(!worker)return reject(Error('Missing worker'));if(worker.state==='activated')return resolve();const timeout=setTimeout(()=>reject(Error('Activation timed out')),25000);worker.addEventListener('statechange',()=>{if(worker.state==='activated'){clearTimeout(timeout);resolve();}if(worker.state==='redundant'){clearTimeout(timeout);reject(Error('Worker redundant'));}});});}
+async function control(){if(navigator.serviceWorker.controller)return;await new Promise(resolve=>navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));}
+document.getElementById('run').onclick=async()=>{document.getElementById('run').disabled=true;try{
+const old=await navigator.serviceWorker.register('/cache-v12.js',{scope:'/',updateViaCache:'none'});await activated(old.installing||old.waiting||old.active);await control();let keys=await caches.keys();record('v12 installed',keys.includes('df-v12-mobile-hints'),keys);
+const oldCache=await caches.open('df-v12-mobile-hints');await oldCache.put('/upgrade-probe.html',new Response('OLD CACHED HTML',{headers:{'Content-Type':'text/html'}}));
+const next=await navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'});await activated(next.installing||next.waiting||next.active);keys=await caches.keys();record('v13 activated and v12 removed',keys.includes('df-v13-guest-wallet')&&!keys.includes('df-v12-mobile-hints'),keys);
+const cache=await caches.open('df-v13-guest-wallet');const wallet=await cache.match('/guest-coins.js?v=1');record('wallet script precached',!!wallet&& (await wallet.text()).includes('DFGuestCoins'),!!wallet);
+await cache.put('/upgrade-probe.html',new Response('STALE HTML',{headers:{'Content-Type':'text/html'}}));const response=await fetch('/upgrade-probe.html',{headers:{Accept:'text/html'}});const text=await response.text();record('HTML network-first after upgrade',text.includes('FRESH NETWORK HTML'),text);
+out.textContent+='\nALL CACHE UPGRADE CHECKS PASSED';
+}catch(e){out.textContent+='\nFAILED: '+e.message;}}
+</script></body></html>

@@ -112,8 +112,15 @@
     }
     .game-subtitle{
       font-size:13px;color:var(--ink-soft);text-align:center;
-      margin-bottom:28px;
+      margin-bottom:14px;
     }
+    .game-rules{
+      max-width:460px;margin:0 auto 20px;padding:10px 12px;
+      border:1px solid var(--line);border-radius:var(--radius);
+      background:var(--paper-2);color:var(--ink-soft);
+      font-size:12px;line-height:1.45;text-align:center;
+    }
+    .game-rules strong{color:var(--ink);}
 
     /* ── Timer ── */
     .timer-row{
@@ -283,6 +290,7 @@
 
   <div id="gameArea">
     <div class="game-subtitle">Tap the letters in the correct order to spell the word</div>
+    <p class="game-rules" id="gameRules">Your timer starts on your first tile. Clear removes selected letters only; the clock keeps running. You get one submitted answer per day, and an incorrect answer uses it too.</p>
 
     <!-- Answer slots -->
     <div class="answer-row" id="answerRow"></div>

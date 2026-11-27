@@ -33,11 +33,25 @@ service cloud.firestore {
       return collection == 'scores' || collection == 'preview_scores' ? 'word'
         : collection == 'scramble_scores' || collection == 'preview_scramble_scores' ? 'scramble' : 'trivia';
     }
+    function scoreCollection(collection) {
+      return collection in ['scores','scramble_scores','trivia_scores',
+        'preview_scores','preview_scramble_scores','preview_trivia_scores'];
+    }
+    function ownsExistingScore() {
+      return request.auth != null && resource.data.get('uid', '') == request.auth.uid;
+    }
+    function canSaveScore(collection, document) {
+      return (member() && request.resource.data.uid == request.auth.uid)
+        || (guest(document) && scoreFields(kind(collection)));
+    }
     match /{collection}/{document} {
-      allow read: if collection in ['scores','scramble_scores','trivia_scores','preview_scores','preview_scramble_scores','preview_trivia_scores'];
-      allow create, update: if collection in ['scores','scramble_scores','trivia_scores','preview_scores','preview_scramble_scores','preview_trivia_scores']
-        && (member() || (guest(document) && scoreFields(kind(collection))));
-      allow delete: if collection in ['scores','scramble_scores','trivia_scores'] && member();
+      allow read: if scoreCollection(collection);
+      allow create: if scoreCollection(collection) && canSaveScore(collection, document);
+      // Existing rows without an owner remain visible and cannot be claimed by clients.
+      allow update: if scoreCollection(collection) && ownsExistingScore()
+        && canSaveScore(collection, document);
+      allow delete: if collection in ['scores','scramble_scores','trivia_scores']
+        && member() && ownsExistingScore();
     }
   }
 }

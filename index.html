@@ -197,10 +197,17 @@
       .header-actions{align-self:center;}
       .user-dropdown{min-width:190px;max-width:calc(100vw - 32px);}
     }
+    .install-guide{margin-top:8px;padding-bottom:4px;}
+    .install-guide summary{width:fit-content;padding:10px 0;cursor:pointer;color:var(--df-muted);font-size:14px;text-decoration:underline;text-underline-offset:3px;}
+    .install-guide p + p{margin-top:8px;}
+    @media(display-mode:standalone){.install-guide{display:none;}}
   </style>
 <link rel="stylesheet" href="/experience.css?v=20261118-support"/>
 <script defer src="/experience.js?v=20261118-support"></script>
 <link rel="canonical" href="https://www.thedailyfive.net/"/>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#f4efe4"/>
+<script defer src="/pwa.js"></script>
   <link rel="icon" href="/favicon.ico" sizes="any"/>
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
@@ -274,7 +281,15 @@
 </div>
 
 <main id="main-content">
-<section class="df-home-intro" aria-labelledby="daily-pause-title"><p class="df-eyebrow">A LITTLE CHALLENGE. A DAILY RITUAL.</p><h1 id="daily-pause-title">Make a little room for play.</h1><p>The Daily Five brings you three free daily games: a five-letter word puzzle, a word scramble and trivia. Pick a puzzle for your next break, follow your curiosity, and come back for something fresh tomorrow.</p></section>
+<section class="df-home-intro" aria-labelledby="daily-pause-title"><p class="df-eyebrow">A LITTLE CHALLENGE. A DAILY RITUAL.</p><h1 id="daily-pause-title">Make a little room for play.</h1><p>The Daily Five brings you three free daily games: a five-letter word puzzle, a word scramble and trivia. Pick a puzzle for your next break, follow your curiosity, and come back for something fresh tomorrow.</p>
+  <details class="install-guide">
+    <summary>Install The Daily Five</summary>
+    <p><strong>iPhone guest progress:</strong> The Home Screen app can start with a separate guest profile. Your Safari coins, streak and progress may stay in Safari. Keep playing in Safari if you want to continue with that guest profile.</p>
+    <p><strong>iPhone (Safari)</strong> Tap Share, then Add to Home Screen. Turn on Open as Web App if shown, then tap Add.</p>
+    <p><strong>Android (Chrome)</strong> Open the three-dot menu, choose Add to home screen, then Install. Some versions show Install app directly.</p>
+    <p>Open The Daily Five from your Home Screen to start with Word. Connect to the internet to play the daily games.</p>
+  </details>
+</section>
 <!-- HERO -->
 <div class="hero">
   <div class="hero-left">

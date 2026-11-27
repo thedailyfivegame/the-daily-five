@@ -6,8 +6,9 @@
   var practice = new URLSearchParams(location.search).get('practice') === '1';
   function read(key) { try { return localStorage.getItem(key); } catch (_) { return null; } }
   function json(key) { try { return JSON.parse(read(key)); } catch (_) { return null; } }
-  function key(d) { return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
-  function day(d) { return Math.floor((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - new Date(2025, 0, 1)) / 86400000); }
+  var key = DFDailyDate.key;
+  var day = DFDailyDate.index;
+  if (!practice) DFDailyDate.reloadAtMidnight();
   function track(name, extra) {
     if (practice || !/^(www\.)?thedailyfive\.net$/.test(location.hostname)) return;
     if (typeof window.gtag === 'function') window.gtag('event', name, Object.assign({ game_name: game }, extra || {}));
@@ -156,11 +157,11 @@
   // Browsers without storage still deduplicate for this page lifetime.
   var sent = {};
   function once(name, extra) {
-    var id = 'df_event_v2_' + key(new Date()) + '_' + game + '_' + name;
+    var id = 'df_event_v2_' + key(DFDailyDate.pageDate) + '_' + game + '_' + name;
     if (sent[id] || read(id)) return;
     sent[id] = true;
     try { localStorage.setItem(id, '1'); } catch (_) {}
-    track(name, Object.assign({ event_version: 2, puzzle_date: key(new Date()), game_mode: 'daily' }, extra || {}));
+    track(name, Object.assign({ event_version: 2, puzzle_date: key(DFDailyDate.pageDate), game_mode: 'daily' }, extra || {}));
   }
   function civilDate(value) {
     var m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(value || '');
@@ -193,7 +194,7 @@
   function notePlay() {
     if (practice || !/^(www\.)?thedailyfive\.net$/.test(location.hostname)) return;
     visit();
-    try { localStorage.setItem('df_last_play_date', key(new Date())); } catch (_) {}
+    try { localStorage.setItem('df_last_play_date', key(DFDailyDate.pageDate)); } catch (_) {}
   }
   function start() {
     if (game === 'home' || completed(game) || practice) return;

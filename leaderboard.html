@@ -200,6 +200,7 @@
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
 <script src="/score-sync.js?v=20261118guest"></script>
+<script src="/daily-date.js"></script>
 </head>
 <body>
 <header>
@@ -294,12 +295,6 @@ var viewYear = today.getFullYear();
 var viewMonth = today.getMonth();
 var currentTab = 'monthly';
 var rankingsRequest = 0;
-var EPOCH = new Date('2025-01-01T00:00:00');
-
-function dayIdx(date){
-  return Math.floor((date.getTime() - EPOCH.getTime()) / 86400000);
-}
-
 var MOS_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 function changeMonth(dir){
@@ -348,15 +343,15 @@ function loadRankings(){
 
   var queries;
   if(currentTab === 'monthly'){
-    var startDay = dayIdx(new Date(viewYear, viewMonth, 1));
-    var endDay = dayIdx(new Date(viewYear, viewMonth + 1, 0));
+    var startDay = DFDailyDate.index(new Date(viewYear, viewMonth, 1));
+    var endDay = DFDailyDate.index(new Date(viewYear, viewMonth + 1, 0));
     queries = [
       window._db.collection(DFScoreCollection('scores')).where('day','>=',startDay).where('day','<=',endDay).limit(2000).get(),
       window._db.collection(DFScoreCollection('scramble_scores')).where('day','>=',startDay).where('day','<=',endDay).limit(2000).get(),
       window._db.collection(DFScoreCollection('trivia_scores')).where('day','>=',startDay).where('day','<=',endDay).limit(2000).get()
     ];
   } else {
-    var todayDay = dayIdx(today);
+    var todayDay = DFDailyDate.index(new Date());
     queries = [
       window._db.collection(DFScoreCollection('scores')).where('day','==',todayDay).get(),
       window._db.collection(DFScoreCollection('scramble_scores')).where('day','==',todayDay).get(),

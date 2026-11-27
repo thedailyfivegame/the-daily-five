@@ -260,13 +260,14 @@
   <meta name="twitter:description" content="Unscramble a five-letter word in this free daily word game. Arrange the letters, submit your answer and see your time. A fresh challenge every day."/>
   <meta name="twitter:image" content="https://www.thedailyfive.net/og-image.png"/>
 <link rel="stylesheet" href="/experience.css?v=20261118-support"/>
-<script defer src="/experience.js?v=20261118-support"></script>
+<script defer src="/experience.js?v=20261127-daily-date"></script>
 <link rel="canonical" href="https://www.thedailyfive.net/scramble.html"/>
   <link rel="icon" href="/favicon.ico" sizes="any"/>
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"The Daily Scramble","url":"https://www.thedailyfive.net/scramble.html","description":"Unscramble a five-letter word in this free daily word game. Arrange the letters, submit your answer and see your time. A fresh challenge every day.","applicationCategory":"GameApplication","operatingSystem":"Any","isAccessibleForFree":true,"inLanguage":"en","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <script defer src="/support.js?v=20261118"></script>
+<script src="/daily-date.js"></script>
 </head>
 <body>
 <header>
@@ -397,13 +398,8 @@ var S = {
 };
 var MEDALS = ['🥇','🥈','🥉'];
 
-function todayIdx(){
-  var epoch=new Date('2025-01-01T00:00:00');
-  return Math.floor((Date.now()-epoch.getTime())/86400000);
-}
 function todayKey(){
-  var d=new Date();
-  return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+  return DFDailyDate.key(DFDailyDate.pageDate);
 }
 function fmtTime(ms){
   var s=(ms/1000).toFixed(1);
@@ -429,17 +425,17 @@ document.getElementById('themeBtn').onclick=function(){
 
 // ── Header date ──
 (function(){
-  var d=new Date();
+  var d=DFDailyDate.pageDate;
   var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
   document.getElementById('headerDate').textContent=days[d.getDay()]+', '+months[d.getMonth()]+' '+d.getDate();
-  (function(){var epoch=new Date('2025-01-01T00:00:00');var idx=Math.floor((Date.now()-epoch.getTime())/86400000);var el=document.getElementById('headerEdition');if(el)el.textContent='Day #'+idx;})();
-  var idx=todayIdx();
+  var idx=DFDailyDate.index(DFDailyDate.pageDate);
+  document.getElementById('headerEdition').textContent='Day #'+idx;
   document.getElementById('dayLabel').textContent='Day #'+idx;
 })();
 
 // ── Game state ──
-var DAY = todayIdx();
+var DAY = DFDailyDate.index(DFDailyDate.pageDate);
 var WORD = WORDS[DAY % WORDS.length];
 var answer = []; // indices into WORD (which letter positions chosen)
 var placed = []; // which tile indices placed into slots

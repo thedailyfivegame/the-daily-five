@@ -203,7 +203,7 @@
     @media(display-mode:standalone){.install-guide{display:none;}}
   </style>
 <link rel="stylesheet" href="/experience.css?v=20261118-support"/>
-<script defer src="/experience.js?v=20261118-support"></script>
+<script defer src="/experience.js?v=20261127-daily-date"></script>
 <link rel="canonical" href="https://www.thedailyfive.net/"/>
 <link rel="manifest" href="/manifest.json"/>
 <meta name="theme-color" content="#f4efe4"/>
@@ -212,6 +212,8 @@
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
 <script defer src="/support.js?v=20261118"></script>
+<script src="/daily-date.js"></script>
+<script src="/trivia-questions.js"></script>
 </head>
 <body>
 
@@ -285,6 +287,7 @@
   <details class="install-guide">
     <summary>Install The Daily Five</summary>
     <p><strong>iPhone guest progress:</strong> The Home Screen app can start with a separate guest profile. Your Safari coins, streak and progress may stay in Safari. Keep playing in Safari if you want to continue with that guest profile.</p>
+    <p><strong>Signed-in progress:</strong> Your public rankings stay online. On a fresh install, signing in can restore today’s completed Word puzzle and load a saved coin balance into an empty wallet. Older game history and streaks stay with the browser or app where you played.</p>
     <p><strong>iPhone (Safari)</strong> Tap Share, then Add to Home Screen. Turn on Open as Web App if shown, then tap Add.</p>
     <p><strong>Android (Chrome)</strong> Open the three-dot menu, choose Add to home screen, then Install. Some versions show Install app directly.</p>
     <p>Open The Daily Five from your Home Screen to start with Word. Connect to the internet to play the daily games.</p>
@@ -469,10 +472,10 @@ function _authUnavailable(){document.getElementById('authError').textContent='Si
 document.getElementById('themeBtn').onclick=function(){var c=document.documentElement.getAttribute('data-theme');var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('df_theme',n);this.textContent=n==='dark'?'☀️':'🌙';};
 
 // Header date + edition + footer year
-(function(){var d=new Date();var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];var mos=['January','February','March','April','May','June','July','August','September','October','November','December'];var hd=document.getElementById('headerDate');if(hd)hd.textContent=days[d.getDay()]+', '+mos[d.getMonth()]+' '+d.getDate();var epoch=new Date('2025-01-01T00:00:00');var idx=Math.floor((Date.now()-epoch.getTime())/86400000);var he=document.getElementById('headerEst');if(he)he.textContent='Day #'+idx;var fy=document.getElementById('footerYear');if(fy)fy.textContent=d.getFullYear();})();
+(function(){var d=DFDailyDate.pageDate;var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];var mos=['January','February','March','April','May','June','July','August','September','October','November','December'];var hd=document.getElementById('headerDate');if(hd)hd.textContent=days[d.getDay()]+', '+mos[d.getMonth()]+' '+d.getDate();var idx=DFDailyDate.index(DFDailyDate.pageDate);var he=document.getElementById('headerEst');if(he)he.textContent='Day #'+idx;var fy=document.getElementById('footerYear');if(fy)fy.textContent=d.getFullYear();})();
 
 // Status checks
-(function(){var d=new Date();var tk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(localStorage.getItem('df_played_'+tk)==='1'){document.getElementById('wordDot').classList.add('played');document.getElementById('wordStatusText').textContent='Played today ✓';document.getElementById('wordStatusText').classList.add('played');}if(localStorage.getItem('ds_played_'+tk)==='1'){document.getElementById('scrambleDot').classList.add('played');document.getElementById('scrambleStatusText').textContent='Played today ✓';document.getElementById('scrambleStatusText').classList.add('played');}})();
+(function(){var tk=DFDailyDate.key(DFDailyDate.pageDate);if(localStorage.getItem('df_played_'+tk)==='1'){document.getElementById('wordDot').classList.add('played');document.getElementById('wordStatusText').textContent='Played today ✓';document.getElementById('wordStatusText').classList.add('played');}if(localStorage.getItem('ds_played_'+tk)==='1'){document.getElementById('scrambleDot').classList.add('played');document.getElementById('scrambleStatusText').textContent='Played today ✓';document.getElementById('scrambleStatusText').classList.add('played');}})();
 // Streak counter
 (function(){
   function dateKey(d){return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
@@ -583,32 +586,10 @@ if(_auth)_auth.onAuthStateChanged(function(user){
 });
 
 
-// Trivia status
+// The homepage and game use the same question rotation.
 (function(){
-  var QUESTIONS=[
-    {c:"Geography"},{c:"Science"},{c:"History"},{c:"Science"},{c:"Pop Culture"},
-    {c:"Geography"},{c:"Science"},{c:"History"},{c:"Language"},{c:"Science"},
-    {c:"Geography"},{c:"History"},{c:"Science"},{c:"Pop Culture"},{c:"Mathematics"},
-    {c:"Geography"},{c:"Science"},{c:"History"},{c:"Language"},{c:"Science"},
-    {c:"Geography"},{c:"Pop Culture"},{c:"Science"},{c:"History"},{c:"Mathematics"},
-    {c:"Geography"},{c:"Science"},{c:"History"},{c:"Pop Culture"},{c:"Science"},
-    {c:"Geography"},{c:"Language"},{c:"Science"},{c:"History"},{c:"Pop Culture"},
-    {c:"Mathematics"},{c:"Geography"},{c:"Science"},{c:"History"},{c:"Pop Culture"},
-    {c:"Science"},{c:"Mathematics"},{c:"Geography"},{c:"History"},{c:"Pop Culture"},
-    {c:"Science"},{c:"Language"},{c:"History"},{c:"Geography"},{c:"Mathematics"}
-  ];
-  var d=new Date();
-  var epoch=new Date('2025-01-01T00:00:00');
-  var idx=Math.floor((Date.now()-epoch.getTime())/86400000)%QUESTIONS.length;
-  var tk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-  var cat=document.getElementById('triviaCategory');
-  if(cat) cat.textContent=QUESTIONS[idx].c;
-  if(localStorage.getItem('dt_played_'+tk)){
-    var dot=document.getElementById('triviaDot');
-    var txt=document.getElementById('triviaStatusText');
-    if(dot){dot.classList.add('played');}
-    if(txt){txt.textContent='Played today ✓';txt.classList.add('played');}
-  }
+  var day = DFDailyDate.index(DFDailyDate.pageDate);
+  document.getElementById('triviaCategory').textContent = DFTriviaQuestions[day % DFTriviaQuestions.length].c;
 })();
 
 // How to Play tabs

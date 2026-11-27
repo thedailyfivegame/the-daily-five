@@ -29,14 +29,14 @@
     if(!status){status=document.createElement('div');status.id=statusId;status.setAttribute('role','status');status.style.cssText='margin:12px 0;font-size:13px;line-height:1.5;';if(target)target.insertAdjacentElement('afterend',status);else document.body.appendChild(status);}
     var busy=false;
     function message(text,action,label){status.replaceChildren();var p=document.createElement('p');p.textContent=text;status.appendChild(p);if(action){var b=document.createElement('button');b.type='button';b.textContent=label;b.style.cssText='padding:9px 14px;font:inherit;cursor:pointer;';b.onclick=action;status.appendChild(b);}}
-    function form(user){
+    function form(){
       status.replaceChildren();var label=document.createElement('label'),input=document.createElement('input'),button=document.createElement('button'),note=document.createElement('p'),form=document.createElement('form');
-      input.id='guest-name-'+collection;input.type='text';input.maxLength=20;input.minLength=2;input.required=true;input.autocomplete='nickname';input.value=clean(read('df_lb_name')||(!user?.isAnonymous&&user?.displayName)||'');input.placeholder='Your public display name';input.style.cssText='max-width:100%;padding:10px;font:inherit;';
+      input.id='guest-name-'+collection;input.type='text';input.maxLength=20;input.minLength=2;input.required=true;input.autocomplete='nickname';var savedName=clean(read('df_lb_name'));input.value=savedName.includes('@')?'':savedName;input.placeholder='Your public display name';input.style.cssText='max-width:100%;padding:10px;font:inherit;';
       label.htmlFor=input.id;label.textContent='Your name in rankings';label.style.display='block';
-      button.type='submit';button.textContent='Join rankings';button.style.cssText='padding:10px 14px;margin:8px;font:inherit;cursor:pointer;';
-      note.textContent='No sign-in needed. Your name and score will be public. This browser remembers your guest player; clearing browser data starts a new player.';
+      button.type='submit';button.textContent='Publish score';button.style.cssText='padding:10px 14px;margin:8px;font:inherit;cursor:pointer;';
+      note.textContent='Your nickname, result and puzzle date will be public. Use a nickname without personal details.';
       form.append(label,input,button,note);status.appendChild(form);
-      form.onsubmit=function(e){e.preventDefault();var name=clean(input.value);if(name.length<2){input.setCustomValidity('Enter a name with at least two characters.');input.reportValidity();return;}input.setCustomValidity('');write('df_lb_name',name);save(name);};
+      form.onsubmit=function(e){e.preventDefault();var name=clean(input.value);if(name.length<2||name.includes('@')){input.setCustomValidity('Enter a public nickname of at least two characters without an email address.');input.reportValidity();return;}input.setCustomValidity('');write('df_lb_name',name);save(name);};
       input.oninput=function(){input.setCustomValidity('');};
     }
     function save(name){
@@ -50,12 +50,12 @@
           write('df_rank_player_id',identity);write('df_lb_name',name);
           message('Score saved as '+name+'. Come back tomorrow to build your monthly score.');
           var rankings=document.createElement('a');rankings.href='/leaderboard.html';rankings.textContent='View rankings →';status.appendChild(rankings);
-          var change=document.createElement('button');change.type='button';change.textContent='Change name';change.style.cssText='display:block;margin:8px auto;padding:6px;font:inherit;';change.onclick=function(){form(user);};status.appendChild(change);
+          var change=document.createElement('button');change.type='button';change.textContent='Change name';change.style.cssText='display:block;margin:8px auto;padding:6px;font:inherit;';change.onclick=function(){form();};status.appendChild(change);
           if(onSaved)onSaved();
         });
       }).catch(function(error){ready=null;console.error('Score save failed:',error);message('Could not save to rankings. Your result is still on this device.',function(){save(name);},'Retry saving');}).finally(function(){busy=false;});
     }
     if(!window.firebase||!firebase.auth){message('Rankings are unavailable. Your result is still on this device.',function(){window.DFSaveScore(collection,day,fields,targetId,wordId,onSaved);},'Retry saving');return;}
-    userReady().then(function(user){var name=clean(read('df_lb_name')||(!user?.isAnonymous&&user?.displayName)||'');if(name.length>=2)save(name);else form(user);}).catch(function(){form(null);});
+    form();
   };
 })();

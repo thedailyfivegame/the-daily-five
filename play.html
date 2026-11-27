@@ -1,16 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
-
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-RX9TN7SJVP');
-  </script>
-
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
 <title>Free Daily 5-Letter Word Puzzle | The Daily Five</title>
@@ -36,8 +26,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="Daily Five"/>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4991106296689056" crossorigin="anonymous" data-ad-client="ca-pub-4991106296689056"></script>
-<script>window.adsbygoogle=window.adsbygoogle||[];window.adBreak=window.adConfig=function(options){window.adsbygoogle.push(options);};</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
@@ -46,7 +34,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="score-sync.js?v=20261118guest"></script>
+<script src="score-sync.js?v=20261127-privacy"></script>
 <script src="/guest-coins.js?v=1"></script>
 <script>
 (function(){
@@ -850,7 +838,7 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 .sb-earn-section,.watch-ad-btn,.coin-ad-btn,.earn-row-ad,#adBanner{display:none!important;}
 </style>
 <link rel="stylesheet" href="/experience.css?v=20261118-support"/>
-<script defer src="/experience.js?v=20261127-daily-date"></script>
+<script defer src="/experience.js?v=20261127-privacy"></script>
   <link rel="icon" href="/favicon.ico" sizes="any"/>
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
@@ -884,7 +872,7 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
 
 <!-- ═══ GAME ═══ -->
 <main>
-  <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="Wordle game board"></div></div>
+  <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="Daily word game board"></div></div>
   <div class="keyboard" id="keyboard" role="group" aria-label="Keyboard"></div>
 <div id="hintBar"><button id="mobileCoinPill" onclick="openCoinModal()">🪙 <span id="mbCoinCount">10</span></button><button id="hintBtn" onclick="openHintModal()">💡 Choose a hint</button></div>
 </main>
@@ -943,18 +931,6 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
         </div>
         <button class="share-btn" id="shareBtn">Share ⇪</button>
       </div>
-
-      <!-- EMAIL CAPTURE -->
-      <div class="email-capture" id="emailCapture">
-        <p class="email-capture-title">Daily Reminder</p>
-        <p class="email-capture-sub">Get notified when tomorrow&rsquo;s word is ready.</p>
-        <div class="email-row" id="emailRow">
-          <input type="email" class="email-input" id="emailInput" placeholder="your@email.com" autocomplete="email">
-          <button class="email-submit-btn" id="emailSubmit">Notify me</button>
-        </div>
-        <p class="email-success" id="emailSuccess">&#10003; You&rsquo;re in! See you tomorrow.</p>
-      </div>
-
 
       <ul class="how-list" id="howList"></ul>
       <div id="lossReveal" style="display:none;text-align:center;padding:16px 0 4px;">
@@ -1089,6 +1065,7 @@ body.dark .hint-modal,body.dark .ad-modal,body.dark .coin-modal{background:#1212
         <input type="email" class="email-input" id="authEmailInput" placeholder="Email address" autocomplete="email" style="width:100%;margin-bottom:8px">
         <input type="password" class="email-input" id="authPassInput" placeholder="Password" autocomplete="current-password" style="width:100%;margin-bottom:8px">
         <button class="email-submit-btn" id="authEmailBtn" style="width:100%">Sign in</button>
+        <p>By signing in or creating an account, you agree to our <a href="/terms.html">Terms</a>. Read our <a href="/privacy.html">Privacy Policy</a> to learn how we handle your data.</p>
         <p class="auth-toggle">No account? <button id="authToggleBtn">Sign up</button></p>
       </div>
     </div>
@@ -1441,7 +1418,6 @@ function submitGuess(){
     var msgs = ['Genius!','Magnificent!','Impressive!','Splendid!','Great!','Phew!'];
     setTimeout(function(){ toast(msgs[Math.min(guesses.length-1, msgs.length-1)], 2000); }, totalReveal+100);
     setTimeout(function(){ openStats(true); }, totalReveal+1800);
-    setTimeout(initEmailCapture, totalReveal+2600);
   } else if(guesses.length>=ROWS){
     gameStatus='lost'; showIgPrompt();
     recordResult(false,0); if(!IS_PRACTICE) setTimeout(function(){ submitScore(); }, totalReveal + 200);
@@ -2165,38 +2141,6 @@ if(gameStatus!=='playing' && !IS_PRACTICE){
 }
 
 
-
-/* === EMAIL CAPTURE === */
-var _emailInitDone=false;
-function initEmailCapture(){
-  if(IS_PRACTICE||localStorage.getItem('tdf-subscribed')||_emailInitDone) return;
-  _emailInitDone=true;
-  var el=document.getElementById('emailCapture');
-  var input=document.getElementById('emailInput');
-  var btn=document.getElementById('emailSubmit');
-  var row=document.getElementById('emailRow');
-  var succ=document.getElementById('emailSuccess');
-  if(!el) return;
-  el.classList.add('show');
-  btn.addEventListener('click',function(){
-    var email=input.value.trim();
-    if(!email||!/\S+@\S+\.\S+/.test(email)){input.style.borderColor='var(--accent)';return;}
-    btn.textContent='...';
-    try{
-      if(window._db){
-        window._db.collection('subscribers').add({
-          email:email,
-          ts:firebase.firestore.FieldValue.serverTimestamp(),
-          source:window.ReactNativeWebView?'app':'web'
-        });
-      }
-    }catch(e){}
-    localStorage.setItem('tdf-subscribed','1');
-    row.style.display='none';
-    succ.style.display='block';
-    setTimeout(function(){el.classList.remove('show');},3000);
-  });
-}
 
 /* === FIREBASE AUTH === */
 var _auth=null;

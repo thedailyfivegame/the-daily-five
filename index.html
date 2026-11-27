@@ -14,8 +14,8 @@
   <meta name="twitter:title" content="The Daily Five — Free Daily Word Game, Scramble &amp; Trivia"/>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","@id":"https://www.thedailyfive.net/#website","name":"The Daily Five","alternateName":["Daily Five","Daily 5"],"url":"https://www.thedailyfive.net/","description":"Three free daily browser games: a five-letter word puzzle, word scramble and trivia.","inLanguage":"en","sameAs":["https://www.instagram.com/thedailyfive.game/","https://ko-fi.com/thedailyfive"]}</script>
   <meta name="twitter:description" content="Three free daily games. Word puzzle, scramble and trivia. New challenges every day."/>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX9TN7SJVP"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX9TN7SJVP');</script>
+
+
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -203,7 +203,7 @@
     @media(display-mode:standalone){.install-guide{display:none;}}
   </style>
 <link rel="stylesheet" href="/experience.css?v=20261118-support"/>
-<script defer src="/experience.js?v=20261127-daily-date"></script>
+<script defer src="/experience.js?v=20261127-privacy"></script>
 <link rel="canonical" href="https://www.thedailyfive.net/"/>
 <link rel="manifest" href="/manifest.json"/>
 <meta name="theme-color" content="#f4efe4"/>
@@ -237,7 +237,7 @@
     <div class="form-group"><label for="passwordInput">Password</label><input type="password" id="passwordInput" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password"/></div>
     <button class="form-submit" id="emailAuthBtn">Sign In</button>
     <div class="modal-error" id="authError"></div>
-    <div class="modal-note">By signing in you agree to our <a href="/terms.html">Terms</a> and <a href="/privacy.html">Privacy Policy</a>.</div>
+    <div class="modal-note">By signing in or creating an account, you agree to our <a href="/terms.html">Terms</a>. Read our <a href="/privacy.html">Privacy Policy</a> to learn how we handle your data.</div>
   </div>
 </div>
 
@@ -578,7 +578,6 @@ if(_auth)_auth.onAuthStateChanged(function(user){
     if(user.photoURL){av.innerHTML='<img src="'+user.photoURL+'" alt=""/>';}else{av.textContent=((user.displayName||user.email||'?')[0]).toUpperCase();}
     var name=user.displayName||(user.email?user.email.split('@')[0]:'Player');
     document.getElementById('userName').textContent=name;
-    localStorage.setItem('df_lb_name',name);
     document.getElementById('dropdownName').textContent=user.email||name;
     var coins=parseInt(localStorage.getItem('df_coins')||'0');
     document.getElementById('userCoins').textContent=coins>0?('🪩'+coins):'';

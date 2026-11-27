@@ -9,9 +9,11 @@
   var key = DFDailyDate.key;
   var day = DFDailyDate.index;
   if (!practice) DFDailyDate.reloadAtMidnight();
+  function analyticsEnabled() {
+    return !practice && /^(www\.)?thedailyfive\.net$/.test(location.hostname) && typeof window.gtag === 'function';
+  }
   function track(name, extra) {
-    if (practice || !/^(www\.)?thedailyfive\.net$/.test(location.hostname)) return;
-    if (typeof window.gtag === 'function') window.gtag('event', name, Object.assign({ game_name: game }, extra || {}));
+    if (analyticsEnabled()) window.gtag('event', name, Object.assign({ game_name: game }, extra || {}));
   }
   window.DFShare = function (text, button, copyOnly) {
     var label = button.textContent;
@@ -157,6 +159,7 @@
   // Browsers without storage still deduplicate for this page lifetime.
   var sent = {};
   function once(name, extra) {
+    if (!analyticsEnabled()) return;
     var id = 'df_event_v2_' + key(DFDailyDate.pageDate) + '_' + game + '_' + name;
     if (sent[id] || read(id)) return;
     sent[id] = true;
@@ -182,7 +185,7 @@
     return latest;
   }
   function visit() {
-    if (practice || !/^(www\.)?thedailyfive\.net$/.test(location.hostname)) return;
+    if (!analyticsEnabled()) return;
     var date = key(new Date()), previous = previousPlay(), marker = 'df_return_v3_' + date;
     if (previous && !read(marker) && !sent[marker]) {
       sent[marker] = true;
@@ -192,7 +195,7 @@
     try { localStorage.setItem('df_last_visit_date', date); } catch (_) {}
   }
   function notePlay() {
-    if (practice || !/^(www\.)?thedailyfive\.net$/.test(location.hostname)) return;
+    if (!analyticsEnabled()) return;
     visit();
     try { localStorage.setItem('df_last_play_date', key(DFDailyDate.pageDate)); } catch (_) {}
   }

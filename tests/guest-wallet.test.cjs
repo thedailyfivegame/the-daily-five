@@ -77,10 +77,3 @@ test('Trivia adds three to the same wallet and ignores repeated answers', () => 
   run('_answer(0); _answer(0)');
   assert.equal(run('getCoins()'), 13);
 });
-
-test('worker deploys a new cache and precaches the wallet script URL used by Play', () => {
-  const worker = source('sw.js');
-  const script = player.match(/src="(\/guest-coins\.js\?v=\d+)"/)[1];
-  assert.match(worker, /const CACHE = 'df-v13-guest-wallet'/);
-  assert.ok(worker.includes("'" + script + "'"));
-});

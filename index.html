@@ -203,7 +203,7 @@
     @media(display-mode:standalone){.install-guide{display:none;}}
   </style>
 <link rel="stylesheet" href="/experience.css?v=20261118-support"/>
-<script defer src="/experience.js?v=20261127-privacy"></script>
+<script defer src="/experience.js?v=20261128-analytics"></script>
 <link rel="canonical" href="https://www.thedailyfive.net/"/>
 <link rel="manifest" href="/manifest.json"/>
 <meta name="theme-color" content="#f4efe4"/>
@@ -213,7 +213,6 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
 <script defer src="/support.js?v=20261118"></script>
 <script src="/daily-date.js"></script>
-<script src="/trivia-questions.js"></script>
 </head>
 <body>
 
@@ -587,8 +586,27 @@ if(_auth)_auth.onAuthStateChanged(function(user){
 
 // The homepage and game use the same question rotation.
 (function(){
-  var day = DFDailyDate.index(DFDailyDate.pageDate);
-  document.getElementById('triviaCategory').textContent = DFTriviaQuestions[day % DFTriviaQuestions.length].c;
+  var category = document.getElementById('triviaCategory');
+  function loadCategory() {
+    var script = document.createElement('script');
+    script.src = '/trivia-questions.js';
+    script.onload = function () {
+      var day = DFDailyDate.index(DFDailyDate.pageDate);
+      category.textContent = DFTriviaQuestions[day % DFTriviaQuestions.length].c;
+    };
+    script.onerror = function () { category.textContent = 'See today’s question'; };
+    document.head.appendChild(script);
+  }
+  if (!('IntersectionObserver' in window)) {
+    loadCategory();
+    return;
+  }
+  var observer = new IntersectionObserver(function (entries) {
+    if (!entries[0].isIntersecting) return;
+    observer.disconnect();
+    loadCategory();
+  }, { rootMargin: '200px' });
+  observer.observe(category);
 })();
 
 // How to Play tabs

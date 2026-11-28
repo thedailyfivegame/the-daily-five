@@ -78,12 +78,30 @@ test('homepage category and Trivia use the same question on either side of midni
   for (const date of ['2026-11-27T23:59:59', '2026-11-28T00:00:00']) {
     const category = {};
     const DFDailyDate = pageAt(date).dates;
+    let onIntersection;
+    let questionScript;
     const context = {
       DFDailyDate,
       ...questions,
-      document: { getElementById: () => category }
+      window: { IntersectionObserver: true },
+      IntersectionObserver: class {
+        constructor(callback) { onIntersection = callback; }
+        observe(element) { assert.equal(element, category); }
+        disconnect() {}
+      },
+      document: {
+        getElementById: () => category,
+        createElement: () => ({}),
+        head: { appendChild: script => { questionScript = script; } }
+      }
     };
     runInNewContext(home + trivia, context);
+    assert.equal(questionScript, undefined);
+    onIntersection([{ isIntersecting: false }]);
+    assert.equal(questionScript, undefined);
+    onIntersection([{ isIntersecting: true }]);
+    assert.equal(questionScript.src, '/trivia-questions.js');
+    questionScript.onload();
     assert.equal(category.textContent, context._q.c);
     assert.equal(context._storageKey, 'dt_played_' + DFDailyDate.key(DFDailyDate.pageDate));
   }

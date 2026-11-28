@@ -4,16 +4,80 @@
   var path = location.pathname;
   var game = /play(?:\.html)?$/.test(path) ? 'word' : /scramble\.html$/.test(path) ? 'scramble' : /trivia\.html$/.test(path) ? 'trivia' : 'home';
   var practice = new URLSearchParams(location.search).get('practice') === '1';
+  var standalone = navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
   function read(key) { try { return localStorage.getItem(key); } catch (_) { return null; } }
   function json(key) { try { return JSON.parse(read(key)); } catch (_) { return null; } }
   var key = DFDailyDate.key;
   var day = DFDailyDate.index;
   if (!practice) DFDailyDate.reloadAtMidnight();
+  var analyticsSite = !practice && /^(www\.)?thedailyfive\.net$/.test(location.hostname);
+  var analyticsChoiceKey = 'df_optional_analytics';
+  var measurementId = 'G-RX9TN7SJVP';
+  var disabledKey = 'ga-disable-' + measurementId;
+  var analyticsTag;
   function analyticsEnabled() {
-    return !practice && /^(www\.)?thedailyfive\.net$/.test(location.hostname) && typeof window.gtag === 'function';
+    return analyticsSite && window[disabledKey] === false && typeof window.gtag === 'function';
+  }
+  function setAnalytics(enabled) {
+    window[disabledKey] = !enabled;
+    if (!enabled) {
+      window.gtag = undefined;
+      ['_ga', '_ga_' + measurementId.slice(2)].forEach(function (name) {
+        document.cookie = name + '=; Max-Age=0; Path=/';
+        document.cookie = name + '=; Max-Age=0; Path=/; Domain=thedailyfive.net';
+      });
+      return;
+    }
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    if (!analyticsTag) {
+      window.gtag('js', new Date());
+      window.gtag('config', measurementId, {
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false
+      });
+      analyticsTag = document.createElement('script');
+      analyticsTag.async = true;
+      analyticsTag.src = 'https://www.googletagmanager.com/gtag/js?id=' + measurementId;
+      document.head.appendChild(analyticsTag);
+    }
+    visit();
+    trackStandaloneEntry();
+  }
+  function mountAnalyticsChoice() {
+    if (!analyticsSite) return;
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = 'Optional analytics (Google Analytics)';
+    button.title = 'Share page visits and game activity to help improve The Daily Five';
+    var options = document.createElement('p');
+    options.style.cssText = 'text-align:center;padding:12px 16px;margin:0;';
+    options.appendChild(button);
+    var policy = document.createElement('a');
+    policy.href = '/privacy.html';
+    policy.textContent = 'Privacy Policy';
+    options.append(' · ', policy);
+    (document.querySelector('footer') || document.body).appendChild(options);
+    function refresh() {
+      var enabled = read(analyticsChoiceKey) === 'yes';
+      button.setAttribute('aria-pressed', String(enabled));
+      setAnalytics(enabled);
+    }
+    button.addEventListener('click', function () {
+      try { localStorage.setItem(analyticsChoiceKey, read(analyticsChoiceKey) === 'yes' ? 'no' : 'yes'); }
+      catch (_) { return; }
+      refresh();
+    });
+    window.addEventListener('storage', function (event) {
+      if (event.key === analyticsChoiceKey || event.key === null) refresh();
+    });
+    refresh();
   }
   function track(name, extra) {
-    if (analyticsEnabled()) window.gtag('event', name, Object.assign({ game_name: game }, extra || {}));
+    if (analyticsEnabled()) window.gtag('event', name, Object.assign({
+      game_name: game,
+      display_mode: standalone ? 'standalone' : 'browser'
+    }, extra || {}));
   }
   window.DFShare = function (text, button, copyOnly) {
     var label = button.textContent;
@@ -205,6 +269,20 @@
   }
   window.addEventListener('df:start', start);
   visit();
+  var installGuide = document.querySelector('.install-guide');
+  if (installGuide) installGuide.addEventListener('toggle', function () {
+    if (installGuide.open) track('pwa_install_guide_open');
+  });
+  function trackStandaloneEntry() {
+    if (!standalone || !analyticsEnabled()) return;
+    var seenStandaloneEntry = false;
+    try {
+      seenStandaloneEntry = sessionStorage.getItem('df_standalone_entry') === '1';
+      sessionStorage.setItem('df_standalone_entry', '1');
+    } catch (_) {}
+    if (!seenStandaloneEntry) track('pwa_standalone_entry');
+  }
+  mountAnalyticsChoice();
   document.addEventListener('click', function (e) {
     var link = e.target.closest('a');
     if (link) {
